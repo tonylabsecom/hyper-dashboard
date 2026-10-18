@@ -428,7 +428,22 @@ function renderBot() {
   const L = Array.isArray(b.lessons) && b.lessons.length ? b.lessons : ['NO LESSONS YET'];
   const html = '<span class="lesson"><b>BOT LESSONS //</b></span>' + L.map((l) => `<span class="lesson">${esc(typeof l === 'string' ? l : l.text || JSON.stringify(l))}</span>`).join('');
   const el = $('lessons'); if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
+  renderJournal();
 }
+
+/* ---------- decision journal ---------- */
+let jType = 'all';
+function renderJournal() {
+  const J = (Array.isArray((S.bot || {}).journal) ? S.bot.journal : []).slice().sort((a, b) => String(b.ts_utc).localeCompare(String(a.ts_utc)));
+  const types = ['all', 'evolution', 'decision', 'trade', 'risk', 'system'];
+  const fh = types.map((t) => `<button class="${t === jType ? 'on' : ''}" data-t="${t}">${t}${t === 'all' ? '' : ' ' + J.filter((e) => e.type === t).length}</button>`).join('');
+  const f = $('jfilter'); if (f.dataset.h !== fh) { f.dataset.h = fh; f.innerHTML = fh; }
+  const R = J.filter((e) => jType === 'all' || e.type === jType);
+  $('journalCount').textContent = J.length;
+  const html = R.length ? R.map((e) => `<div class="jent jt-${esc(e.type)}"><div class="jhead"><span class="jtag">${esc(e.type)}</span><span class="jtime">${esc(String(e.ts_utc || '').replace('T', ' ').replace('Z', ' UTC'))}</span>${e.version ? `<span class="jver">${esc(e.version)}</span>` : ''}</div><div class="jtitle">${esc(e.title)}</div>${e.detail ? `<div class="jdetail">${esc(e.detail)}</div>` : ''}</div>`).join('') : '<div class="dim jempty">NO JOURNAL ENTRIES YET</div>';
+  const el = $('journal'); if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
+}
+document.addEventListener('click', (ev) => { const b = ev.target.closest && ev.target.closest('#jfilter button'); if (b) { jType = b.dataset.t; renderJournal(); } });
 
 /* ---------- REST polling ---------- */
 async function refreshAccount() {
