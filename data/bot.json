@@ -1,0 +1,286 @@
+{
+ "updated_at": "2026-10-18T23:02:01+07:00",
+ "published_at": "2026-10-18T23:02:57+07:00",
+ "status": "RUNNING",
+ "mode": "LIVE",
+ "strategy": "1H VWAP-FADE · SELF-RETUNED DAILY",
+ "leverage": "20–40",
+ "coins": [
+  "BTC",
+  "NEAR",
+  "PUMP",
+  "XRP",
+  "XMR"
+ ],
+ "equity": 37.8894,
+ "day_pnl_pct": 0.0,
+ "total_pct_vs_baseline": -0.11,
+ "baseline": 37.93,
+ "trades_today": 0,
+ "open_risk_usd": 0,
+ "positions": {},
+ "pending_orders": 0,
+ "last_signal": {
+  "coin": "XMR",
+  "side": "NO SIGNAL",
+  "price": 582.36,
+  "time": "2026-10-18T23:01:03+07:00",
+  "reason": "vwap_fade on 1h bar 22:00: close 582.36 vs VWAP 588.857, RSI 53.8 — no setup"
+ },
+ "confidence": 75,
+ "confidence_basis": "OOS win rate of vwap_fade on XMR",
+ "daily_stop": {
+  "enabled": true,
+  "limit_pct": -3.0,
+  "limit_usd": -1.14,
+  "pnl_today": 0.0,
+  "triggered": false
+ },
+ "kill_switch": false,
+ "halted": null,
+ "limits": {
+  "risk_per_trade_pct": 1.0,
+  "max_open_risk_pct": 3.0,
+  "max_trades_day": 100,
+  "day_stop_pct": -3.0,
+  "kill_dd_pct": -20.0
+ },
+ "selfimprove": {
+  "generated_at": "2026-10-18T22:37:59+07:00",
+  "oos_from": "2026-02-01",
+  "rules": {
+   "MIN_N": 20,
+   "MIN_T": 2.0,
+   "OOS_MONTHS": 8
+  },
+  "coins": {
+   "BTC": {
+    "family": "vwap_fade",
+    "enabled": true,
+    "params": {
+     "k": 2.5,
+     "stop": 3.0,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 16,
+     "avgR": 0.1868,
+     "t": 1.37,
+     "win": 0.812,
+     "sumR": 2.99,
+     "months_pos": "7/8"
+    }
+   },
+   "ETH": {
+    "family": "vwap_fade",
+    "enabled": false,
+    "params": {
+     "k": 2.5,
+     "stop": 3.0,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 12,
+     "avgR": -0.0702,
+     "t": -0.33,
+     "win": 0.667,
+     "sumR": -0.84,
+     "months_pos": "4/6"
+    }
+   },
+   "HYPE": {
+    "family": "vwap_fade",
+    "enabled": false,
+    "params": {
+     "k": 2.5,
+     "stop": 4.5,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 7,
+     "avgR": -0.1308,
+     "t": -0.67,
+     "win": 0.571,
+     "sumR": -0.92,
+     "months_pos": "3/5"
+    }
+   },
+   "ZEC": {
+    "family": "vwap_fade",
+    "enabled": false,
+    "params": {
+     "k": 2.5,
+     "stop": 4.5,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 14,
+     "avgR": -0.12,
+     "t": -0.7,
+     "win": 0.643,
+     "sumR": -1.68,
+     "months_pos": "3/7"
+    }
+   },
+   "NEAR": {
+    "family": "vwap_fade",
+    "enabled": true,
+    "params": {
+     "k": 2.5,
+     "stop": 4.5,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 4,
+     "avgR": 0.2196,
+     "t": 431.35,
+     "win": 1.0,
+     "sumR": 0.88,
+     "months_pos": "2/2"
+    }
+   },
+   "SOL": {
+    "family": "vwap_fade",
+    "enabled": false,
+    "params": {
+     "k": 2.5,
+     "stop": 3.0,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 16,
+     "avgR": -0.0406,
+     "t": -0.26,
+     "win": 0.562,
+     "sumR": -0.65,
+     "months_pos": "4/8"
+    }
+   },
+   "PUMP": {
+    "family": "vwap_fade",
+    "enabled": true,
+    "params": {
+     "k": 2.5,
+     "stop": 3.0,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 10,
+     "avgR": 0.1587,
+     "t": 1.14,
+     "win": 0.8,
+     "sumR": 1.59,
+     "months_pos": "5/6"
+    }
+   },
+   "XRP": {
+    "family": "vwap_fade",
+    "enabled": true,
+    "params": {
+     "k": 2.5,
+     "stop": 3.0,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 21,
+     "avgR": 0.1161,
+     "t": 0.76,
+     "win": 0.762,
+     "sumR": 2.44,
+     "months_pos": "5/8"
+    }
+   },
+   "XMR": {
+    "family": "vwap_fade",
+    "enabled": true,
+    "params": {
+     "k": 2.5,
+     "stop": 3.0,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 16,
+     "avgR": 0.1291,
+     "t": 0.83,
+     "win": 0.75,
+     "sumR": 2.07,
+     "months_pos": "5/7"
+    }
+   },
+   "WLD": {
+    "family": "vwap_fade",
+    "enabled": false,
+    "params": {
+     "k": 2.5,
+     "stop": 4.5,
+     "rsi": 35,
+     "H": 24
+    },
+    "oos": {
+     "n": 12,
+     "avgR": -0.1345,
+     "t": -0.7,
+     "win": 0.583,
+     "sumR": -1.61,
+     "months_pos": "3/7"
+    }
+   }
+  }
+ },
+ "paper_copy": {
+  "updated_at": "2026-10-18T23:02:57+07:00",
+  "equity": 5000.01,
+  "pnl": 0.01,
+  "sleeves": 3,
+  "open_positions": 0,
+  "ws_connected": true,
+  "fees": 0.0,
+  "funding": 0.0,
+  "started_at": "2026-10-18T22:42:33+07:00",
+  "equity_curve": [
+   [
+    "2026-10-18T22:42:34+07:00",
+    5000.01
+   ],
+   [
+    "2026-10-18T22:47:35+07:00",
+    5000.01
+   ],
+   [
+    "2026-10-18T22:54:08+07:00",
+    5000.01
+   ],
+   [
+    "2026-10-18T22:59:12+07:00",
+    5000.01
+   ]
+  ]
+ },
+ "lessons": [
+  "Daily self-review 2026-10-18 (walk-forward, after fees)",
+  "No live trade has closed yet — nothing to learn from real trades so far",
+  "Promotion rule: ≥20 OOS trades, t ≥ 2.0, avgR above the running strategy; OOS window from 2026-02-01",
+  "BTC: ENABLED — vwap_fade OOS n=16, avgR +0.187, t 1.37, win 81%",
+  "ETH: not trading — vwap_fade OOS n=12, avgR -0.070, t -0.33, win 67%",
+  "HYPE: not trading — vwap_fade OOS n=7, avgR -0.131, t -0.67, win 57%",
+  "ZEC: not trading — vwap_fade OOS n=14, avgR -0.120, t -0.7, win 64%",
+  "NEAR: ENABLED — vwap_fade OOS n=4, avgR +0.220, t 431.35, win 100%",
+  "SOL: not trading — vwap_fade OOS n=16, avgR -0.041, t -0.26, win 56%",
+  "PUMP: ENABLED — vwap_fade OOS n=10, avgR +0.159, t 1.14, win 80%",
+  "XRP: ENABLED — vwap_fade OOS n=21, avgR +0.116, t 0.76, win 76%",
+  "XMR: ENABLED — vwap_fade OOS n=16, avgR +0.129, t 0.83, win 75%",
+  "WLD: not trading — vwap_fade OOS n=12, avgR -0.135, t -0.7, win 58%",
+  "Trading live: BTC, NEAR, PUMP, XRP, XMR",
+  "Hard limits (never auto-changed): stop-loss on every trade · 1% risk/trade · open risk ≤ 3% · ≤ 100 trades/day · daily stop −3% · kill switch −20% from 37.93 USDC · no withdrawals/transfers",
+  "Note: few OOS trades per coin, results may be luck; past performance does not guarantee future results"
+ ]
+}
