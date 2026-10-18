@@ -1,4 +1,4 @@
-/* HYPER // QUANTBOT — client-side, read-only Hyperliquid dashboard */
+/* TONY ALPHA — client-side, read-only Hyperliquid dashboard */
 (() => {
 'use strict';
 const CFG = Object.assign({}, window.HYPER_CONFIG || {});

@@ -1,4 +1,4 @@
-# HYPER // QUANTBOT — live Hyperliquid dashboard (static, read-only)
+# TONY ALPHA — live Hyperliquid dashboard (static, read-only)
 
 Plain HTML/CSS/JS, no build step, no backend, no keys. Reads the public
 `https://api.hyperliquid.xyz/info` (POST) and `wss://api.hyperliquid.xyz/ws`.
