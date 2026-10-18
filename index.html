@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>HYPER // QUANTBOT — LIVE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%23f57c00%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="scan"></div>
+<header class="topbar panel">
+  <div class="logo"><span class="glitch" data-t="HYPER">HYPER</span> <span class="dim">//</span> QUANTBOT <span class="at">@Hyperliquid</span></div>
+  <div class="acct" id="acct">0xC357…43C8</div>
+  <div class="status"><span class="dot" id="liveDot"></span><span id="liveTxt">CONNECTING</span></div>
+  <div class="clock"><span class="dim" title="Vietnam time (UTC+7)">VIETNAM TIME (UTC+7)</span> <span id="clock">--:--:--</span><span class="dim" id="date"></span></div>
+</header>
+<div class="marquee panel" id="tickerWrap"><div class="track" id="ticker">LOADING PRICES…</div></div>
+
+<main class="grid">
+  <section class="panel p-portfolio">
+    <h2>PORTFOLIO <span class="dim">// HOLDINGS</span></h2>
+    <div class="equity-label">TOTAL EQUITY (USDC)</div>
+    <div class="equity" id="equity">--.--</div>
+    <canvas class="spark big" id="sparkEquity"></canvas>
+    <div class="stats">
+      <div class="stat"><label>FREE MARGIN</label><b id="freeMargin">--</b><canvas class="spark" id="sparkFree"></canvas></div>
+      <div class="stat"><label>PNL TODAY</label><b id="todayPnl">--</b><canvas class="spark" id="sparkToday"></canvas></div>
+      <div class="stat"><label>TOTAL PNL <span class="dim">vs 37.93</span></label><b id="totalPnl">--</b><canvas class="spark" id="sparkTotal"></canvas></div>
+      <div class="stat"><label>WIN RATE</label><b id="winRate">--</b><canvas class="spark" id="sparkWin"></canvas></div>
+    </div>
+    <div class="breakdown" id="breakdown"></div>
+  </section>
+
+  <section class="panel p-orb">
+    <h2>CORE <span class="dim">// ENERGY CORE</span> <span class="right dim" id="orbState">IDLE</span></h2>
+    <div class="orb-wrap"><canvas id="orb"></canvas><div class="orb-text" id="orbText"></div><div class="orb-sub" id="orbSub"></div></div>
+  </section>
+
+  <section class="panel p-signal">
+    <h2>SIGNAL ENGINE <span class="dim">// SIGNALS</span></h2>
+    <div id="signal" class="signal"><div class="waiting">WAITING FOR BOT DATA<span class="blink">_</span></div></div>
+  </section>
+
+  <section class="panel p-market">
+    <h2>MARKET <span class="dim">// 5M CHART</span> <span class="right" id="coinTabs"></span></h2>
+    <div class="market">
+      <div class="chart-wrap"><div class="chart-head"><b id="mkCoin">BTC-PERP</b> <span id="mkPx">--</span> <span id="mkChg" class="dim"></span></div><canvas id="candles"></canvas></div>
+      <div class="book"><div class="book-head"><span>PRICE</span><span>SIZE</span><span>TOTAL</span></div><div id="asks" class="asks"></div><div class="spread" id="spread">SPREAD --</div><div id="bids" class="bids"></div></div>
+    </div>
+  </section>
+
+  <section class="panel p-positions">
+    <h2>POSITIONS <span class="dim">// OPEN POSITIONS</span> <span class="right dim" id="posCount">0</span></h2>
+    <div id="positions" class="positions"><div class="empty">NO OPEN POSITIONS</div></div>
+  </section>
+
+  <section class="panel p-logs">
+    <h2>TRADE LOGS <span class="dim">// FILL HISTORY</span> <span class="right dim" id="fillCount">0</span></h2>
+    <div id="logs" class="logs"></div>
+  </section>
+
+  <section class="panel p-curve">
+    <h2>EQUITY CURVE <span class="dim">// ACCOUNT VALUE</span></h2>
+    <canvas id="curve"></canvas>
+  </section>
+  <section class="panel p-daily">
+    <h2>DAILY PNL <span class="dim">// PROFIT &amp; LOSS BY DAY</span></h2>
+    <canvas id="daily"></canvas>
+  </section>
+  <section class="panel p-fees">
+    <h2>FEES <span class="dim">// FEES PAID</span></h2>
+    <div class="fees"><div class="fee-big" id="feesTotal">--</div><div class="fee-row"><span>TODAY</span><b id="feesToday">--</b></div><div class="fee-row"><span>FILLS</span><b id="fillsN">--</b></div><div class="fee-row"><span>VOLUME</span><b id="volume">--</b></div><div class="fee-row"><span>REALIZED PNL (GROSS)</span><b id="grossPnl">--</b></div></div>
+  </section>
+</main>
+<div class="marquee panel bottom" id="lessonWrap"><div class="track slow" id="lessons">LESSONS: WAITING FOR BOT DATA…</div></div>
+<footer class="foot dim">READ-ONLY // PUBLIC API api.hyperliquid.xyz // NOT INVESTMENT ADVICE</footer>
+<script src="./config.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

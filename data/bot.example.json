@@ -1,0 +1,31 @@
+{
+  "updated_at": "2026-10-18T22:30:00+07:00",
+  "status": "RUNNING",
+  "strategy": "EMA-CROSS + FUNDING FILTER v3",
+  "leverage": 5,
+  "coins": [
+    "BTC",
+    "ETH"
+  ],
+  "last_signal": {
+    "coin": "BTC",
+    "side": "LONG",
+    "price": 81230,
+    "time": "2026-10-18T22:25:00+07:00",
+    "reason": "EMA9 crossed above EMA21, negative funding"
+  },
+  "confidence": 72,
+  "daily_stop": {
+    "enabled": true,
+    "limit_usd": -1.5,
+    "pnl_today": -0.03,
+    "triggered": false
+  },
+  "kill_switch": false,
+  "lessons": [
+    "No entries when spread > 0.05% — fees eat all the profit",
+    "Small account: taker fee ~0.045% per side, need TP ≥ 0.2%",
+    "Stop trading after 3 consecutive losses",
+    "Never hold a losing trade without a stop: always set a stop when opening a position"
+  ]
+}
