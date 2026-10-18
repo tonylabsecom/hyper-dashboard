@@ -2,7 +2,7 @@
 
 Plain HTML/CSS/JS, no build step, no backend, no keys. Reads the public
 `https://api.hyperliquid.xyz/info` (POST) and `wss://api.hyperliquid.xyz/ws`.
-All times are shown in Vietnam time (Asia/Saigon, UTC+7).
+All times are shown in UTC; daily PnL uses UTC midnight as the day boundary.
 
 - `index.html`, `style.css`, `app.js` — the dashboard
 - `config.js` — account, baseline, default coin, `BOT_JSON_URL` (default `./data/bot.json`)

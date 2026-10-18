@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-18T22:30:00+07:00",
+  "updated_at": "2026-10-18T15:30:00Z",
   "status": "RUNNING",
   "strategy": "EMA-CROSS + FUNDING FILTER v3",
   "leverage": 5,
@@ -11,7 +11,7 @@
     "coin": "BTC",
     "side": "LONG",
     "price": 81230,
-    "time": "2026-10-18T22:25:00+07:00",
+    "time": "2026-10-18T15:25:00Z",
     "reason": "EMA9 crossed above EMA21, negative funding"
   },
   "confidence": 72,

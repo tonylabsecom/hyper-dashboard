@@ -6,7 +6,7 @@ const qs = new URLSearchParams(location.search);
 if (qs.get('user')) CFG.USER = qs.get('user');
 if (qs.get('bot')) CFG.BOT_JSON_URL = qs.get('bot');
 const USER = CFG.USER;
-const TZ = 'Asia/Saigon';
+const TZ = 'UTC';
 const $ = (id) => document.getElementById(id);
 const C = { green:'#0f9d58', red:'#d93025', blue:'#1a73e8', orange:'#f57c00', amber:'#f9a825', ink:'#1d2330', dim:'#8a8f9c', line:'#ece7dc' };
 
@@ -27,8 +27,8 @@ function pxFmt(p) { p = +p; if (!isFinite(p)) return '--'; const a = Math.abs(p)
   const d = a >= 10000 ? 1 : a >= 100 ? 2 : a >= 1 ? 4 : a >= 0.01 ? 5 : 7; return fmt(p, d); }
 const tFmt = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
 const dFmt = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
-const vnTime = (ms) => tFmt.format(new Date(ms));
-const vnDate = (ms) => dFmt.format(new Date(ms));
+const utcTime = (ms) => tFmt.format(new Date(ms));
+const utcDate = (ms) => dFmt.format(new Date(ms));
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 const push = (arr, v, max = 120) => { if (isFinite(v)) { arr.push(v); if (arr.length > max) arr.shift(); } };
 
@@ -62,7 +62,7 @@ function sparkline(cv, data, color) {
 
 /* ---------- clock ---------- */
 function tickClock() {
-  const now = Date.now(); $('clock').textContent = vnTime(now); $('date').textContent = vnDate(now);
+  const now = Date.now(); $('clock').textContent = utcTime(now); $('date').textContent = utcDate(now);
   const live = S.wsAlive && now - S.lastMsg < 30000;
   $('liveDot').className = 'dot ' + (live ? 'live' : S.wsAlive ? '' : 'dead');
   $('liveTxt').textContent = live ? 'LIVE' : S.wsAlive ? 'SYNC' : 'RECONNECT';
@@ -88,12 +88,12 @@ function equityNow() {
 function fillsArr() { return [...S.fills.values()].sort((a, b) => b.time - a.time); }
 
 function stats() {
-  const fills = fillsArr(), today = vnDate(Date.now());
+  const fills = fillsArr(), today = utcDate(Date.now());
   let realizedToday = 0, feesToday = 0, fees = 0, vol = 0, gross = 0, wins = 0, closes = 0;
   const winSeries = []; const chron = [...fills].reverse();
   for (const f of chron) {
     const pnl = +f.closedPnl, fee = +f.fee || 0; fees += fee; vol += f.px * f.sz; gross += pnl;
-    if (vnDate(f.time) === today) { realizedToday += pnl - fee; feesToday += fee; }
+    if (utcDate(f.time) === today) { realizedToday += pnl - fee; feesToday += fee; }
     if (pnl !== 0) { closes++; if (pnl > 0) wins++; winSeries.push((wins / closes) * 100); }
   }
   const upnl = positions().reduce((a, p) => a + p.upnl, 0);
@@ -175,7 +175,7 @@ function updatePosSparks() {
 /* ---------- trade logs ---------- */
 function fillLine(f, isNew) {
   const buy = f.side === 'B', pnl = +f.closedPnl;
-  return `<div class="log ${isNew ? 'new' : ''}"><span class="t">[${vnTime(f.time)}]</span> <span class="side ${buy ? 'up' : 'down'}">${buy ? 'BUY ' : 'SELL'}</span> <span class="coin">${esc(f.coin)}</span> @ <b>${pxFmt(f.px)}</b> <span class="dim">SZ</span> ${f.sz} ${pnl !== 0 ? `<span class="${cls(pnl)}">PNL ${sgn(pnl, 4)}</span>` : ''} <span class="dir">${esc(f.dir || '')}</span></div>`;
+  return `<div class="log ${isNew ? 'new' : ''}"><span class="t">[${utcTime(f.time)}]</span> <span class="side ${buy ? 'up' : 'down'}">${buy ? 'BUY ' : 'SELL'}</span> <span class="coin">${esc(f.coin)}</span> @ <b>${pxFmt(f.px)}</b> <span class="dim">SZ</span> ${f.sz} ${pnl !== 0 ? `<span class="${cls(pnl)}">PNL ${sgn(pnl, 4)}</span>` : ''} <span class="dir">${esc(f.dir || '')}</span></div>`;
 }
 function renderLogs(newTids) {
   const arr = fillsArr().slice(0, 200); $('fillCount').textContent = S.fills.size + ' FILLS';
@@ -213,7 +213,7 @@ function orbEvent(f) {
   orb.mode = pal; orb.until = performance.now() + 5000; orb.flash = 1; orb.rings.push({ r: 0, a: 1, c: color }, { r: -40, a: 1, c: color });
   S.lastEventAt = Date.now();
   const t = $('orbText'); t.textContent = text; t.style.color = color; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
-  $('orbSub').textContent = sub || ''; $('orbState').textContent = 'EVENT // ' + vnTime(Date.now());
+  $('orbSub').textContent = sub || ''; $('orbState').textContent = 'EVENT // ' + utcTime(Date.now());
   clearTimeout(orb.tt); orb.tt = setTimeout(() => { t.classList.remove('show'); $('orbState').textContent = 'IDLE'; }, 5000);
 }
 function drawOrb(t) {
@@ -277,7 +277,7 @@ function drawCandles() {
     ctx.fillStyle = (up ? C.green : C.red) + '30'; const vh = (+c.v / (vmax || 1)) * 28; ctx.fillRect(x - cw * 0.35, h - padB - vh, cw * 0.7, vh);
     ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(x, Y(+c.h)); ctx.lineTo(x, Y(+c.l)); ctx.stroke();
     const y1 = Y(Math.max(o, cl)), y2 = Y(Math.min(o, cl)); ctx.fillStyle = col; ctx.fillRect(x - cw * 0.35, y1, Math.max(1, cw * 0.7), Math.max(1, y2 - y1));
-    if (i % Math.ceil(60 / cw) === 0) { ctx.fillStyle = C.dim; ctx.fillText(vnTime(c.t).slice(0, 5), x - 14, h - 4); }
+    if (i % Math.ceil(60 / cw) === 0) { ctx.fillStyle = C.dim; ctx.fillText(utcTime(c.t).slice(0, 5), x - 14, h - 4); }
   });
   // EMA20 overlay (orange)
   const k = 2 / 21; let e = null; ctx.strokeStyle = C.orange; ctx.lineWidth = 1.3; ctx.beginPath();
@@ -379,12 +379,12 @@ function renderCurve() {
   ctx.setLineDash([4, 4]); ctx.strokeStyle = C.blue; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, Y(CFG.BASELINE)); ctx.lineTo(w - padR, Y(CFG.BASELINE)); ctx.stroke(); ctx.setLineDash([]);
   ctx.fillStyle = C.blue; ctx.fillText('BASELINE ' + CFG.BASELINE, 6, Y(CFG.BASELINE) - 4);
   const lv = d[d.length - 1]; ctx.fillStyle = C.orange; ctx.beginPath(); ctx.arc(X(lv[0]), Y(lv[1]), 3.5, 0, 7); ctx.fill();
-  ctx.fillStyle = C.dim; ctx.fillText(vnDate(t0).slice(5) + ' ' + vnTime(t0).slice(0, 5), 4, h - 6); ctx.textAlign = 'right'; ctx.fillText(vnTime(t1).slice(0, 5) + ' UTC+7', w - padR, h - 6); ctx.textAlign = 'left';
+  ctx.fillStyle = C.dim; ctx.fillText(utcDate(t0).slice(5) + ' ' + utcTime(t0).slice(0, 5), 4, h - 6); ctx.textAlign = 'right'; ctx.fillText(utcTime(t1).slice(0, 5) + ' UTC', w - padR, h - 6); ctx.textAlign = 'left';
 }
 function renderDaily() {
   const { ctx, w, h } = setupCanvas($('daily')); ctx.font = '10px JetBrains Mono, monospace';
-  const days = {}; for (const f of S.fills.values()) { const d = vnDate(f.time); days[d] = (days[d] || 0) + (+f.closedPnl) - (+f.fee || 0); }
-  const keys = []; for (let i = 13; i >= 0; i--) keys.push(vnDate(Date.now() - i * 86400000));
+  const days = {}; for (const f of S.fills.values()) { const d = utcDate(f.time); days[d] = (days[d] || 0) + (+f.closedPnl) - (+f.fee || 0); }
+  const keys = []; for (let i = 13; i >= 0; i--) keys.push(utcDate(Date.now() - i * 86400000));
   const vals = keys.map((k) => days[k] || 0); const m = Math.max(...vals.map(Math.abs), 1e-4);
   const bw = (w - 10) / keys.length, mid = (h - 20) / 2 + 4;
   ctx.strokeStyle = C.line; ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(w, mid); ctx.stroke();
@@ -418,13 +418,13 @@ function renderBot() {
     <div class="kv"><span>BOT STATUS</span><b><span class="badge ${okS ? 'ok' : 'warn'}">${okS ? '● ' : ''}${esc(status)}</span></b></div>
     <div class="kv"><span>STRATEGY</span><b>${esc(b.strategy || '--')}</b></div>
     <div class="kv"><span>LEVERAGE</span><b>${b.leverage ? esc(b.leverage) + 'X' : '--'}</b></div>
-    <div class="sigbox"><div class="dim" style="font-size:9px">LAST SIGNAL ${ls.time ? '· ' + esc(vnTime(Date.parse(ls.time) || Date.now())) : ''}</div>
+    <div class="sigbox"><div class="dim" style="font-size:9px">LAST SIGNAL ${ls.time ? '· ' + esc(utcTime(Date.parse(ls.time) || Date.now())) : ''}</div>
       <div class="big ${/LONG|BUY/.test(side) ? 'up' : /SHORT|SELL/.test(side) ? 'down' : ''}">${esc(side || '--')} ${esc(ls.coin || '')} ${ls.price ? '@ ' + pxFmt(ls.price) : ''}</div>
       ${ls.reason ? `<div class="reason">${esc(ls.reason)}</div>` : ''}</div>
     <div class="kv"><span>CONFIDENCE</span><b>${conf}%</b></div><div class="conf"><i style="width:${conf}%"></i></div>
     <div class="kv"><span>DAILY STOP ${ds.limit_usd != null ? '(' + esc(ds.limit_usd) + ')' : ''}</span><b><span class="badge ${ds.triggered ? 'bad' : 'ok'}">${ds.triggered ? 'TRIGGERED' : ds.enabled === false ? 'OFF' : 'SAFE'}</span></b></div>
     <div class="kv"><span>KILL-SWITCH</span><b><span class="badge ${kill ? 'bad' : 'ok'}">${kill ? 'ON ■' : 'OFF'}</span></b></div>
-    <div class="kv"><span>UPDATED (UTC+7)</span><b class="${stale > 75 ? 'down' : ''}">${b.updated_at ? esc(vnTime(Date.parse(b.updated_at))) + (isFinite(stale) ? ' (' + Math.round(stale) + ' MIN AGO)' : '') : '--'}</b></div>`;
+    <div class="kv"><span>UPDATED (UTC)</span><b class="${stale > 75 ? 'down' : ''}">${b.updated_at ? esc(utcTime(Date.parse(b.updated_at))) + (isFinite(stale) ? ' (' + Math.round(stale) + ' MIN AGO)' : '') : '--'}</b></div>`;
   const L = Array.isArray(b.lessons) && b.lessons.length ? b.lessons : ['NO LESSONS YET'];
   const html = '<span class="lesson"><b>BOT LESSONS //</b></span>' + L.map((l) => `<span class="lesson">${esc(typeof l === 'string' ? l : l.text || JSON.stringify(l))}</span>`).join('');
   const el = $('lessons'); if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
