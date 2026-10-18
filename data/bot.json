@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-18T16:39:12Z",
- "published_at": "2026-10-18T16:39:44Z",
+ "updated_at": "2026-10-18T16:41:17Z",
+ "published_at": "2026-10-18T16:41:44Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.0 · BTC/ETH · SELF-EVOLVING",
@@ -283,7 +283,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-18T16:39:40Z",
+  "updated_at": "2026-10-18T16:41:42Z",
   "equity": 5000.01,
   "pnl": 0.01,
   "sleeves": 3,
@@ -348,5 +348,49 @@
   "PF 0.88 -> 0.803; Sharpe -1.4 -> -1.07; expectancy -0.0716R -> -0.1247R; max DD 34.62% -> 9.81%; trades 932 -> 141",
   "WARNING: Current version v1.0 has NEGATIVE expectancy (-0.072R, PF 0.88) on the last 365 days — it loses money in backtest.",
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
+ ],
+ "journal": [
+  {
+   "ts_utc": "2026-10-18T16:41:16Z",
+   "type": "system",
+   "title": "Live bot started (v1.0)",
+   "detail": "Coins BTC, ETH; mode LIVE.",
+   "version": "v1.0"
+  },
+  {
+   "ts_utc": "2026-10-18T16:35:26Z",
+   "type": "evolution",
+   "title": "v1.0 launched live (15m trend-pullback, BTC/ETH)",
+   "detail": "Params: RSI pullback 40-60, min confluence 4/5, volume x1.0, wick >= 0.4, swing stop (5 bars) / 1.5x ATR, min stop 0.5%, TP1 50% at 1.5R, TP2 3R (single TP 2R if halves < $10), breakeven at 1R, EMA gap >= 0.2%, ATR% >= 0.2%, 24h time stop. Hard limits: 0.5% risk/trade, open risk <= 3%, margin <= 10%, leverage 20-40x, daily stop -3%, kill switch -20% vs 37.93 USDC, entries 07-21 UTC, news filter. 12-month backtest: PF 0.88, expectancy -0.072R, max DD 34.6%, 932 trades. WARNING: unprofitable in backtest; running live by owner's choice.",
+   "version": "v1.0"
+  },
+  {
+   "ts_utc": "2026-10-18T16:35:24Z",
+   "type": "system",
+   "title": "Stopped old 1h and 15m live bots",
+   "detail": "The 1h VWAP-fade bot was replaced by the 15m Donchian bot at 16:25 UTC, which was in turn stopped at 16:35 UTC in favour of TONY ALPHA v1.0. Both were stopped cleanly with no open positions or orders; the daily retune daemon was replaced by the evolution daemon.",
+   "version": null
+  },
+  {
+   "ts_utc": "2026-10-18T16:32:58Z",
+   "type": "evolution",
+   "title": "Round #1: min confluence 4 -> 5 — NOT promoted",
+   "detail": "PF 0.88 -> 0.803; Sharpe -1.40 -> -1.07; expectancy -0.072R -> -0.125R; max DD 34.6% -> 9.8%; trades 932 -> 141. Only Sharpe improved >= 8% (need 2 metrics) and the sample was too small. Kept v1.0.",
+   "version": "v1.0"
+  },
+  {
+   "ts_utc": "2026-10-18T16:32:51Z",
+   "type": "decision",
+   "title": "24h time stop (96 x 15m bars)",
+   "detail": "Any position still open after 24 hours (96 bars) is closed at market, so capital and risk are not tied up in stale trades.",
+   "version": "v1.0"
+  },
+  {
+   "ts_utc": "2026-10-18T16:32:50Z",
+   "type": "decision",
+   "title": "Minimum stop distance set to 0.5%",
+   "detail": "Owner's range was 0.3-0.5%. 0.3% was backtested and performed worse (more noise stop-outs), so v1.0 uses 0.5% (top of range). A hard floor of 0.3% is enforced in the live bot regardless of evolved parameters.",
+   "version": "v1.0"
+  }
  ]
 }
