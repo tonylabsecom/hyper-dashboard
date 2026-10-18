@@ -3,87 +3,186 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<title>TONY ALPHA — LIVE</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%23f57c00%22/%3E%3C/svg%3E">
+<meta name="theme-color" content="#F3F6FA">
+<title>TONY ALPHA — Hyperliquid Bot Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%232F7BEA%22/%3E%3Ctext x=%2216%22 y=%2223%22 font-size=%2220%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Arial%22%3E%CE%B1%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<div class="scan"></div>
-<header class="topbar panel">
-  <div class="logo"><span class="glitch" data-t="TONY ALPHA">TONY ALPHA</span> <span class="at">@Hyperliquid</span></div>
-  <div class="acct" id="acct">0xC357…43C8</div>
-  <div class="status"><span class="dot" id="liveDot"></span><span id="liveTxt">CONNECTING</span></div>
-  <div class="clock"><span class="dim">UTC</span> <span id="clock">--:--:--</span><span class="dim" id="date"></span></div>
-</header>
-<div class="marquee panel" id="tickerWrap"><div class="track" id="ticker">LOADING PRICES…</div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-pos" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+    <symbol id="i-orders" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+    <symbol id="i-hist" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 3"/></symbol>
+    <symbol id="i-evo" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-journal" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 3h7v7M10 14 21 3M19 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M12 14l4-4"/><path d="M3.3 17a9 9 0 1 1 17.4 0"/></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  </defs>
+</svg>
 
-<main class="grid">
-  <section class="panel p-portfolio">
-    <h2>PORTFOLIO <span class="dim">// HOLDINGS</span></h2>
-    <div class="equity-label">TOTAL EQUITY (USDC)</div>
-    <div class="equity" id="equity">--.--</div>
-    <canvas class="spark big" id="sparkEquity"></canvas>
-    <div class="stats">
-      <div class="stat"><label>FREE MARGIN</label><b id="freeMargin">--</b><canvas class="spark" id="sparkFree"></canvas></div>
-      <div class="stat"><label>PNL TODAY</label><b id="todayPnl">--</b><canvas class="spark" id="sparkToday"></canvas></div>
-      <div class="stat"><label>TOTAL PNL <span class="dim">vs 37.93</span></label><b id="totalPnl">--</b><canvas class="spark" id="sparkTotal"></canvas></div>
-      <div class="stat"><label>WIN RATE</label><b id="winRate">--</b><canvas class="spark" id="sparkWin"></canvas></div>
+<div class="page">
+<div class="shell">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="side" id="side">
+    <div class="brand"><span class="alpha">α</span><span class="brand-t">TONY ALPHA</span>
+      <button class="icon-btn close-menu" id="closeMenu" aria-label="Close menu">✕</button></div>
+    <nav class="nav" id="nav">
+      <a href="#overview" class="active"><svg><use href="#i-home"/></svg>Overview</a>
+      <a href="#positions"><svg><use href="#i-pos"/></svg>Positions<span class="nav-badge" id="navPos"></span></a>
+      <a href="#orders"><svg><use href="#i-orders"/></svg>Orders<span class="nav-badge" id="navOrd"></span></a>
+      <a href="#history"><svg><use href="#i-hist"/></svg>History</a>
+      <a href="#evolution"><svg><use href="#i-evo"/></svg>Evolution<span class="nav-dot" id="navEvo"></span></a>
+      <a href="#journal"><svg><use href="#i-journal"/></svg>Journal</a>
+      <a href="#alerts"><svg><use href="#i-bell"/></svg>Alerts<span class="nav-badge warn" id="navAlerts"></span></a>
+    </nav>
+    <div class="side-h">Markets</div>
+    <div class="markets" id="markets">
+      <div class="mkt"><svg><use href="#i-coin"/></svg><span>BTC-PERP</span><b class="mkt-px">--</b><i class="sdot"></i></div>
+      <div class="mkt"><svg><use href="#i-coin"/></svg><span>ETH-PERP</span><b class="mkt-px">--</b><i class="sdot"></i></div>
     </div>
-    <div class="breakdown" id="breakdown"></div>
-  </section>
-
-  <section class="panel p-orb">
-    <h2>CORE <span class="dim">// ENERGY CORE</span> <span class="right dim" id="orbState">IDLE</span></h2>
-    <div class="orb-wrap"><canvas id="orb"></canvas><div class="orb-text" id="orbText"></div><div class="orb-sub" id="orbSub"></div></div>
-  </section>
-
-  <section class="panel p-signal">
-    <h2>SIGNAL ENGINE <span class="dim">// SIGNALS</span></h2>
-    <div id="signal" class="signal"><div class="waiting">WAITING FOR BOT DATA<span class="blink">_</span></div></div>
-  </section>
-
-  <section class="panel p-market">
-    <h2>MARKET <span class="dim">// 5M CHART</span> <span class="right" id="coinTabs"></span></h2>
-    <div class="market">
-      <div class="chart-wrap"><div class="chart-head"><b id="mkCoin">BTC-PERP</b> <span id="mkPx">--</span> <span id="mkChg" class="dim"></span></div><canvas id="candles"></canvas></div>
-      <div class="book"><div class="book-head"><span>PRICE</span><span>SIZE</span><span>TOTAL</span></div><div id="asks" class="asks"></div><div class="spread" id="spread">SPREAD --</div><div id="bids" class="bids"></div></div>
+    <div class="side-h">Quick actions</div>
+    <div class="qa">
+      <a class="qbtn" id="qaHL" target="_blank" rel="noopener"><svg><use href="#i-ext"/></svg>View on Hyperliquid</a>
+      <button class="qbtn" id="qaExport" type="button"><svg><use href="#i-down"/></svg>Export Journal</button>
+      <a class="qbtn" href="#evolution" id="qaRollback"><svg><use href="#i-undo"/></svg>Rollback info</a>
     </div>
-  </section>
+    <div class="brand-card">
+      <span class="alpha sm">α</span>
+      <div><b>TONY ALPHA</b><small>Self-evolving Hyperliquid bot · read-only view</small></div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
 
-  <section class="panel p-positions">
-    <h2>POSITIONS <span class="dim">// OPEN POSITIONS</span> <span class="right dim" id="posCount">0</span></h2>
-    <div id="positions" class="positions"><div class="empty">NO OPEN POSITIONS</div></div>
-  </section>
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <header class="top">
+      <button class="icon-btn hamburger" id="openMenu" aria-label="Open menu"><svg><use href="#i-menu"/></svg></button>
+      <div class="crumbs"><span>Bot</span><i>/</i><span id="crMode">Live</span><i>/</i><b id="crVer">v1.0</b></div>
+      <span class="pill st-pill" id="statusPill"><i></i><span>LOADING</span></span>
+      <div class="top-r">
+        <span class="online" id="online"><i class="ldot"></i><span id="onlineTxt">Connecting</span></span>
+        <span class="clock" id="clock">-- UTC</span>
+        <label class="search"><svg><use href="#i-search"/></svg><input id="search" type="search" placeholder="Search trades, journal…" autocomplete="off"></label>
+        <a class="icon-btn bell" href="#alerts" aria-label="Alerts"><svg><use href="#i-bell"/></svg><i class="bell-dot" id="bellDot"></i></a>
+        <span class="avatar" title="Account">TA</span>
+      </div>
+    </header>
+    <div class="subbar"><span>Formula <b id="sbVer">--</b></span><span>Last update <b id="sbUpd">--</b></span><span>Published <b id="sbPub">--</b></span><span id="sbStrat" class="muted"></span></div>
 
-  <section class="panel p-logs">
-    <h2>TRADE LOGS <span class="dim">// FILL HISTORY</span> <span class="right dim" id="fillCount">0</span></h2>
-    <div id="logs" class="logs"></div>
-  </section>
+    <!-- HERO -->
+    <section class="hero card anim" id="overview" style="--i:0">
+      <div class="hero-chart" id="heroChart"><svg id="chartSvg" preserveAspectRatio="none"></svg><div class="chips-layer" id="chipsLayer"></div><div class="chart-tip" id="chartTip"></div></div>
+      <div class="ov-card">
+        <span class="alpha lg">α</span>
+        <div class="ov-body">
+          <div class="ov-row"><b class="ov-name">TONY ALPHA</b><span class="pill sm" id="ovPill">--</span></div>
+          <div class="ov-meta"><span>Version <b id="ovVer">--</b></span><span>Account <b id="ovAcct">--</b></span></div>
+          <div class="ov-eq"><small>Equity</small><b id="ovEq" class="count" data-d="2">--</b><small>USDC</small></div>
+          <div class="ov-meta"><span>Balance <b id="ovBal">--</b></span><span>uPnL <b id="ovUpnl">--</b></span></div>
+        </div>
+      </div>
+      <div class="hero-ctl">
+        <div class="seg" id="seriesSeg"><button data-s="equity" class="on">Equity</button><button data-s="BTC">BTC</button><button data-s="ETH">ETH</button></div>
+        <div class="seg" id="tfSeg"><button data-tf="24h">24h</button><button data-tf="7d">7d</button><button data-tf="all" class="on">All</button></div>
+      </div>
+      <div class="sig-card" id="sigCard"><svg><use href="#i-gauge"/></svg><div><small>Last signal</small><b id="sigMain">--</b><span id="sigWhy" class="muted"></span></div></div>
+    </section>
 
-  <section class="panel p-curve">
-    <h2>EQUITY CURVE <span class="dim">// ACCOUNT VALUE</span></h2>
-    <canvas id="curve"></canvas>
-  </section>
-  <section class="panel p-daily">
-    <h2>DAILY PNL <span class="dim">// PROFIT &amp; LOSS BY DAY</span></h2>
-    <canvas id="daily"></canvas>
-  </section>
-  <section class="panel p-fees">
-    <h2>FEES <span class="dim">// FEES PAID</span></h2>
-    <div class="fees"><div class="fee-big" id="feesTotal">--</div><div class="fee-row"><span>TODAY</span><b id="feesToday">--</b></div><div class="fee-row"><span>FILLS</span><b id="fillsN">--</b></div><div class="fee-row"><span>VOLUME</span><b id="volume">--</b></div><div class="fee-row"><span>REALIZED PNL (GROSS)</span><b id="grossPnl">--</b></div></div>
-  </section>
-</main>
-<section class="panel p-journal" id="journalWrap">
-  <h2>DECISION JOURNAL <span class="dim">// EVOLUTION · DECISIONS · TRADES · RISK (UTC, NEWEST FIRST)</span> <span class="right dim" id="journalCount">0</span></h2>
-  <div class="jfilter" id="jfilter"></div>
-  <div id="journal" class="journal"><div class="dim jempty">WAITING FOR BOT DATA…</div></div>
-</section>
-<div class="marquee panel bottom" id="lessonWrap"><div class="track slow" id="lessons">LESSONS: WAITING FOR BOT DATA…</div></div>
-<footer class="foot dim">READ-ONLY // PUBLIC API api.hyperliquid.xyz // NOT INVESTMENT ADVICE</footer>
+    <!-- INFO CARDS -->
+    <section class="cards4">
+      <article class="card mini anim" style="--i:1">
+        <header><span class="ic"><svg><use href="#i-shield"/></svg></span><h3>Position &amp; Risk</h3><a href="#positions" class="vd">View details →</a></header>
+        <div class="kv2"><div><small>Open positions</small><b id="rkPos">--</b></div><div><small>Pending orders</small><b id="rkOrd">--</b></div></div>
+        <div class="kv2"><div><small>Open risk</small><b id="rkRisk">--</b></div><div><small>Leverage</small><b id="rkLev">--</b></div></div>
+        <div class="bar-row"><span>Margin used <em id="rkMarginTxt">--</em></span><div class="bar"><i id="rkMarginBar"></i></div></div>
+        <div class="bar-row"><span>Open risk vs 3% cap <em id="rkRiskTxt">--</em></span><div class="bar"><i id="rkRiskBar"></i></div></div>
+      </article>
+      <article class="card mini anim" style="--i:2">
+        <header><span class="ic"><svg><use href="#i-gauge"/></svg></span><h3>Daily Loss Guard</h3><a href="#alerts" class="vd">View details →</a></header>
+        <div class="gauge-wrap">
+          <div class="ring"><svg viewBox="0 0 120 120"><circle class="rt" cx="60" cy="60" r="50"/><circle class="rv" id="ringVal" cx="60" cy="60" r="50"/></svg>
+            <div class="ring-t"><b id="ringNum" class="count" data-d="0" data-suf="%">0%</b><small>of −3% used</small></div></div>
+          <div class="gauge-side">
+            <div><small>PnL today</small><b id="gToday">--</b></div>
+            <div><small>Daily stop at</small><b id="gLim">--</b></div>
+            <div><small>Kill switch at</small><b id="gKill">--</b></div>
+            <div><small>Status</small><b id="gStat" class="ok">--</b></div>
+          </div>
+        </div>
+      </article>
+      <article class="card mini anim" style="--i:3">
+        <header><span class="ic"><svg><use href="#i-coin"/></svg></span><h3>Profit &amp; Loss</h3><a href="#history" class="vd">View details →</a></header>
+        <svg class="spark" id="pnlSpark" viewBox="0 0 300 60" preserveAspectRatio="none"></svg>
+        <div class="pnl3"><div><small>Today</small><b id="pToday" class="count" data-d="2" data-sign="1">--</b></div><div><small>7 days</small><b id="p7d" class="count" data-d="2" data-sign="1">--</b></div><div><small>Total</small><b id="pTot" class="count" data-d="2" data-sign="1">--</b></div></div>
+        <div class="bar-row"><span>Kill-switch buffer left <em id="pKillTxt">--</em></span><div class="bar"><i id="pKillBar" class="g"></i></div></div>
+      </article>
+      <article class="card mini anim" style="--i:4">
+        <header><span class="ic"><svg><use href="#i-bell"/></svg></span><h3>Recent Alerts</h3><a href="#alerts" class="vd">View all →</a></header>
+        <ul class="alerts" id="alertsMini"><li class="muted">Loading…</li></ul>
+      </article>
+    </section>
+
+    <!-- POSITIONS + ORDERS -->
+    <section class="grid2">
+      <article class="card sec reveal" id="positions">
+        <header><span class="ic"><svg><use href="#i-pos"/></svg></span><h3>Open Positions</h3><span class="cnt" id="posCnt">0</span></header>
+        <div id="posBody"></div>
+      </article>
+      <article class="card sec reveal" id="orders">
+        <header><span class="ic"><svg><use href="#i-orders"/></svg></span><h3>Pending Orders</h3><span class="cnt" id="ordCnt">0</span></header>
+        <div id="ordBody"></div>
+      </article>
+    </section>
+
+    <!-- HISTORY -->
+    <article class="card sec reveal" id="history">
+      <header><span class="ic"><svg><use href="#i-hist"/></svg></span><h3>Trade History</h3><span class="muted sm" id="histNote"></span><span class="cnt" id="histCnt">0</span></header>
+      <div class="tbl-wrap"><table class="tbl" id="histTbl"></table></div>
+    </article>
+
+    <!-- EVOLUTION + LIMITS -->
+    <section class="grid2 wide-l">
+      <article class="card sec reveal" id="evolution">
+        <header><span class="ic"><svg><use href="#i-evo"/></svg></span><h3>Evolution</h3><span class="pill sm" id="evoPill">--</span></header>
+        <div id="evoBody" class="muted">Loading…</div>
+      </article>
+      <article class="card sec reveal" id="limits">
+        <header><span class="ic"><svg><use href="#i-shield"/></svg></span><h3>Hard Limits</h3><span class="muted sm">never auto-changed</span></header>
+        <div id="limBody"></div>
+      </article>
+    </section>
+
+    <!-- JOURNAL -->
+    <article class="card sec reveal" id="journal">
+      <header><span class="ic"><svg><use href="#i-journal"/></svg></span><h3>Decision Journal</h3><span class="muted sm">UTC · newest first</span><span class="cnt" id="jCnt">0</span></header>
+      <div class="jfilter" id="jfilter"></div>
+      <div id="jBody" class="journal"></div>
+    </article>
+
+    <!-- ALERTS -->
+    <article class="card sec reveal" id="alerts">
+      <header><span class="ic"><svg><use href="#i-bell"/></svg></span><h3>Alerts &amp; Risk Warnings</h3><span class="cnt" id="alCnt">0</span></header>
+      <ul class="alerts big" id="alertsFull"></ul>
+    </article>
+
+    <footer class="foot">Read-only view · data: bot status file + public api.hyperliquid.xyz · all times UTC · not investment advice</footer>
+  </div>
+</div>
+</div>
 <script src="./config.js"></script>
 <script src="./app.js"></script>
 </body>

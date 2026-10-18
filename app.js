@@ -1,518 +1,413 @@
-/* TONY ALPHA — client-side, read-only Hyperliquid dashboard */
+/* TONY ALPHA — light dashboard. Static, read-only: reads ./data/bot.json + public api.hyperliquid.xyz/info. No keys. */
 (() => {
 'use strict';
-const CFG = Object.assign({}, window.HYPER_CONFIG || {});
+const CFG = Object.assign({ BOT_POLL_MS: 30000, STATE_POLL_MS: 15000 }, window.HYPER_CONFIG || {});
 const qs = new URLSearchParams(location.search);
 if (qs.get('user')) CFG.USER = qs.get('user');
 if (qs.get('bot')) CFG.BOT_JSON_URL = qs.get('bot');
 const USER = CFG.USER;
-const TZ = 'UTC';
 const $ = (id) => document.getElementById(id);
-const C = { green:'#0f9d58', red:'#d93025', blue:'#1a73e8', orange:'#f57c00', amber:'#f9a825', ink:'#1d2330', dim:'#8a8f9c', line:'#ece7dc' };
-
-const S = {
-  spotUsdc: null, perp: null, mids: {}, prevMids: {}, fills: new Map(), portfolio: null,
-  coin: (qs.get('coin') || CFG.DEFAULT_COIN || 'BTC').toUpperCase(),
-  candles: [], book: null, bot: null, orders: [], top: [], ctx: {},
-  hist: { eq: [], free: [], today: [], total: [], win: [] }, posHist: {}, curveLive: [],
-  lastEquity: null, lastPosCoins: null, lastEventAt: 0, wsAlive: false, lastMsg: 0,
-};
+const RM = window.matchMedia('(prefers-reduced-motion: reduce)');
+const S = { bot: null, botOk: false, apiOk: null, apiAt: 0, ch: null, spot: null, orders: [], mids: {}, portfolio: null, fills: [],
+  candles: {}, series: (qs.get('coin') || 'equity'), tf: 'all', jType: 'all', q: '', drawnKey: '' };
+if (!['equity', 'BTC', 'ETH'].includes(S.series)) S.series = 'equity';
 
 /* ---------- utils ---------- */
 const num = (v) => (v == null || v === '' ? NaN : +v);
-const fmt = (v, d = 2) => (isFinite(v) ? v.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--');
-const sgn = (v, d = 2) => (isFinite(v) ? (v >= 0 ? '+' : '') + fmt(v, d) : '--');
+const fmt = (v, d = 2) => (isFinite(v) ? (+v).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }) : '--');
+const sgn = (v, d = 2) => (isFinite(v) ? (v > 0 ? '+' : v < 0 ? '−' : '') + fmt(Math.abs(v), d) : '--');
 const cls = (v) => (v > 0 ? 'up' : v < 0 ? 'down' : '');
-function pxFmt(p) { p = +p; if (!isFinite(p)) return '--'; const a = Math.abs(p);
-  const d = a >= 10000 ? 1 : a >= 100 ? 2 : a >= 1 ? 4 : a >= 0.01 ? 5 : 7; return fmt(p, d); }
-const tFmt = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-const dFmt = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' });
-const utcTime = (ms) => tFmt.format(new Date(ms));
-const utcDate = (ms) => dFmt.format(new Date(ms));
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-const push = (arr, v, max = 120) => { if (isFinite(v)) { arr.push(v); if (arr.length > max) arr.shift(); } };
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ms = (iso) => (iso == null ? NaN : typeof iso === 'number' ? iso : Date.parse(iso));
+const pad = (n) => String(n).padStart(2, '0');
+const utcHM = (t) => { const d = new Date(t); return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`; };
+const utcHMS = (t) => { const d = new Date(t); return `${utcHM(t)}:${pad(d.getUTCSeconds())}`; };
+const utcMD = (t) => { const d = new Date(t); return `${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`; };
+const utcFull = (t) => (isFinite(ms(t)) ? `${new Date(ms(t)).toISOString().slice(0, 10)} ${utcHM(ms(t))} UTC` : '--');
+const ago = (t) => { const s = (Date.now() - ms(t)) / 1000; if (!isFinite(s)) return ''; if (s < 60) return 'just now'; if (s < 3600) return Math.round(s / 60) + ' min ago'; if (s < 86400) return Math.round(s / 3600) + ' h ago'; return Math.round(s / 86400) + ' d ago'; };
+const shortAddr = (a) => (a ? a.slice(0, 6) + '…' + a.slice(-4) : '--');
+const pxFmt = (p) => { p = +p; if (!isFinite(p)) return '--'; const a = Math.abs(p); return fmt(p, a >= 10000 ? 1 : a >= 100 ? 2 : a >= 1 ? 4 : 6); };
+const icon = (id) => `<svg><use href="#${id}"/></svg>`;
+const ease = (t) => 1 - Math.pow(1 - t, 3);
 
 async function info(body) {
   const r = await fetch(CFG.INFO_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error('info ' + body.type + ' ' + r.status);
+  if (!r.ok) throw new Error(body.type + ' ' + r.status);
   return r.json();
 }
 
-function setupCanvas(cv) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  const w = cv.clientWidth, h = cv.clientHeight;
-  if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
-  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
-  return { ctx, w, h };
+/* ---------- animation helpers ---------- */
+function countTo(el, v, o = {}) {
+  if (!el) return;
+  const d = o.d ?? +(el.dataset.d || 2), sign = o.sign ?? el.dataset.sign === '1', suf = o.suf ?? (el.dataset.suf || '');
+  const show = (x) => (sign ? sgn(x, d) : fmt(x, d)) + suf;
+  if (!isFinite(v)) { el.textContent = '--'; el._v = undefined; return; }
+  const from = isFinite(el._v) ? el._v : (o.from ?? 0);
+  if (from === v && el._v !== undefined) { el.textContent = show(v); return; }
+  if (el._v !== undefined && from !== v) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+  el._v = v; cancelAnimationFrame(el._raf);
+  if (RM.matches) { el.textContent = show(v); return; }
+  const t0 = performance.now(), dur = o.dur || 1100;
+  const step = (t) => { const k = clamp((t - t0) / dur, 0, 1); el.textContent = show(from + (v - from) * ease(k)); if (k < 1) el._raf = requestAnimationFrame(step); };
+  el._raf = requestAnimationFrame(step);
 }
+function setBar(el, pct, tone) {
+  if (!el) return; el.className = tone || '';
+  requestAnimationFrame(() => { el.style.width = clamp(isFinite(pct) ? pct : 0, 0, 100) + '%'; });
+}
+function setText(id, t, c) { const e = $(id); if (!e) return; e.textContent = t; if (c !== undefined) e.className = c; }
 
-function sparkline(cv, data, color) {
-  if (!cv) return; const { ctx, w, h } = setupCanvas(cv);
-  if (!data || data.length < 2) { ctx.strokeStyle = C.line; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke(); return; }
-  let mn = Math.min(...data), mx = Math.max(...data); if (mx - mn < 1e-9) { mx += 1e-6; mn -= 1e-6; }
-  const col = color || (data[data.length - 1] >= data[0] ? C.green : C.red);
-  const X = (i) => (i / (data.length - 1)) * (w - 4) + 2, Y = (v) => h - 3 - ((v - mn) / (mx - mn)) * (h - 6);
-  const g = ctx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, col + '40'); g.addColorStop(1, col + '00');
-  ctx.beginPath(); data.forEach((v, i) => (i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v))));
-  ctx.lineTo(X(data.length - 1), h); ctx.lineTo(X(0), h); ctx.fillStyle = g; ctx.fill();
-  ctx.beginPath(); data.forEach((v, i) => (i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)))); ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.stroke();
-  const lx = X(data.length - 1), ly = Y(data[data.length - 1]);
-  ctx.fillStyle = col; ctx.beginPath(); ctx.arc(lx - 1, ly, 2.5, 0, 7); ctx.fill();
-}
-
-/* ---------- clock ---------- */
-function tickClock() {
-  const now = Date.now(); $('clock').textContent = utcTime(now); $('date').textContent = utcDate(now);
-  const live = S.wsAlive && now - S.lastMsg < 30000;
-  $('liveDot').className = 'dot ' + (live ? 'live' : S.wsAlive ? '' : 'dead');
-  $('liveTxt').textContent = live ? 'LIVE' : S.wsAlive ? 'SYNC' : 'RECONNECT';
-}
-setInterval(tickClock, 1000); tickClock();
-$('acct').textContent = USER.slice(0, 6) + '…' + USER.slice(-4);
-$('acct').title = USER;
-
-/* ---------- account state ---------- */
-function positions() {
-  const aps = (S.perp && S.perp.assetPositions) || [];
-  return aps.map((a) => a.position).filter((p) => p && +p.szi !== 0).map((p) => {
-    const szi = +p.szi, entry = +p.entryPx, mid = num(S.mids[p.coin]);
-    const mark = isFinite(mid) ? mid : entry + (+p.unrealizedPnl) / szi;
-    const upnl = isFinite(mid) ? szi * (mid - entry) : +p.unrealizedPnl;
-    return { coin: p.coin, szi, entry, mark, upnl, liq: num(p.liquidationPx), lev: p.leverage, margin: +p.marginUsed, value: Math.abs(szi * mark), roe: +p.returnOnEquity };
-  });
-}
+/* ---------- derived numbers ---------- */
 function equityNow() {
-  if (S.spotUsdc == null) return NaN;
-  return S.spotUsdc + positions().reduce((a, p) => a + p.upnl, 0);
+  const b = S.bot; if (b && isFinite(num(b.equity))) return num(b.equity);
+  if (S.spot) { const u = (S.spot.balances || []).find((x) => x.coin === 'USDC'); if (u) return num(u.total) + upnl(); }
+  return NaN;
 }
-function fillsArr() { return [...S.fills.values()].sort((a, b) => b.time - a.time); }
+function upnl() { return ((S.ch && S.ch.assetPositions) || []).reduce((a, p) => a + num(p.position.unrealizedPnl || 0), 0); }
+function balance() { const u = S.spot && (S.spot.balances || []).find((x) => x.coin === 'USDC'); return u ? num(u.total) : (S.bot ? num(S.bot.equity) - num(S.bot.upnl || 0) : NaN); }
+function baseline() { return num((S.bot && S.bot.baseline) || CFG.BASELINE || 37.93); }
+function killLevel() { return num((S.bot && S.bot.kill_level_usd)) || baseline() * (1 + num(S.bot?.limits?.kill_dd_pct ?? -20) / 100); }
+function equitySeries() {
+  const m = new Map();
+  ((S.bot && S.bot.equity_history) || []).forEach(([t, v]) => { const k = ms(t); if (isFinite(k) && v > 0) m.set(k, +v); });
+  const at = S.portfolio && (S.portfolio.find((x) => x[0] === 'allTime') || [])[1];
+  ((at && at.accountValueHistory) || []).forEach(([t, v]) => { if (+v > 0) m.set(+t, +v); });
+  const e = equityNow(); if (isFinite(e)) m.set(Date.now(), e);
+  return [...m.entries()].sort((a, b) => a[0] - b[0]);
+}
+function pnlNums() {
+  const p = (S.bot && S.bot.pnl) || {}, e = equityNow(), b = baseline();
+  const ser = equitySeries();
+  const c7 = Date.now() - 7 * 864e5, r7 = ser.find((x) => x[0] >= c7);
+  return {
+    today: isFinite(num(p.today_usd)) ? num(p.today_usd) : num(S.bot?.daily_stop?.pnl_today),
+    todayPct: isFinite(num(p.today_pct)) ? num(p.today_pct) : num(S.bot?.day_pnl_pct),
+    d7: isFinite(num(p.d7_usd)) ? num(p.d7_usd) : (r7 ? e - r7[1] : NaN),
+    d7Pct: isFinite(num(p.d7_pct)) ? num(p.d7_pct) : (r7 ? (e - r7[1]) / r7[1] * 100 : NaN),
+    total: isFinite(num(p.total_usd)) ? num(p.total_usd) : e - b,
+    totalPct: isFinite(num(p.total_pct)) ? num(p.total_pct) : (e - b) / b * 100,
+  };
+}
+function isRunning() { return S.bot && S.bot.status === 'RUNNING'; }
+function publishedAge() { return S.bot ? (Date.now() - ms(S.bot.published_at || S.bot.updated_at)) / 1000 : Infinity; }
 
-function stats() {
-  const fills = fillsArr(), today = utcDate(Date.now());
-  let realizedToday = 0, feesToday = 0, fees = 0, vol = 0, gross = 0, wins = 0, closes = 0;
-  const winSeries = []; const chron = [...fills].reverse();
-  for (const f of chron) {
-    const pnl = +f.closedPnl, fee = +f.fee || 0; fees += fee; vol += f.px * f.sz; gross += pnl;
-    if (utcDate(f.time) === today) { realizedToday += pnl - fee; feesToday += fee; }
-    if (pnl !== 0) { closes++; if (pnl > 0) wins++; winSeries.push((wins / closes) * 100); }
-  }
-  const upnl = positions().reduce((a, p) => a + p.upnl, 0);
-  return { todayPnl: realizedToday + upnl, fees, feesToday, vol, gross, win: closes ? (wins / closes) * 100 : NaN, wins, closes, winSeries, n: fills.length };
+/* ---------- alerts ---------- */
+function buildAlerts() {
+  const A = [], b = S.bot; const now = new Date().toISOString();
+  if (!b) { A.push({ l: 'warn', t: 'Waiting for bot status file', d: 'data/bot.json could not be loaded yet.', ts: now }); return A; }
+  const ev = b.evolution || {};
+  if (b.status !== 'RUNNING') A.push({ l: 'danger', t: `Bot ${b.status === 'STALE' ? 'heartbeat stale' : b.status}`, d: b.halted ? `Halted: ${b.halted}` : 'The live bot is not reporting as running.', ts: b.updated_at });
+  if (b.kill_switch) A.push({ l: 'danger', t: 'Kill switch triggered', d: 'Equity fell 20% below baseline; bot flattened and halted.', ts: b.updated_at });
+  if (ev.warning) A.push({ l: 'danger', t: 'Backtest unprofitable', d: ev.warning, ts: ev.updated_utc });
+  const ds = b.daily_stop || {}, used = isFinite(num(ds.pnl_today)) && num(ds.limit_usd) ? clamp(-num(ds.pnl_today) / Math.abs(num(ds.limit_usd)) * 100, 0, 100) : 0;
+  if (ds.triggered) A.push({ l: 'danger', t: 'Daily stop hit (−3%)', d: 'No new entries until 00:00 UTC.', ts: b.updated_at });
+  else A.push({ l: used >= 50 ? 'warn' : 'ok', t: `Daily stop armed · ${fmt(used, 0)}% used`, d: `Limit ${fmt(ds.limit_pct ?? -3, 1)}% (${sgn(num(ds.limit_usd))} USDC) vs UTC-midnight equity; PnL today ${sgn(num(ds.pnl_today), 4)} USDC.`, ts: b.updated_at });
+  const e = equityNow(), k = killLevel(), buf = (e - k) / (baseline() - k) * 100;
+  if (!b.kill_switch && isFinite(buf)) A.push({ l: buf < 30 ? 'danger' : buf < 60 ? 'warn' : 'info', t: `Kill switch ${fmt(e - k, 2)} USDC away`, d: `Triggers at ${fmt(k, 2)} USDC (−20% vs ${fmt(baseline(), 2)} baseline). Buffer left ${fmt(buf, 0)}%.`, ts: b.updated_at });
+  const mu = num(b.margin_used), cap = num(b.margin_cap_pct || 10), muPct = e ? mu / e * 100 : NaN;
+  if (isFinite(muPct) && muPct > cap * 0.8) A.push({ l: 'warn', t: `Margin used ${fmt(muPct, 1)}% (cap ${cap}%)`, d: 'Close to the hard margin cap; new entries will be skipped.', ts: b.updated_at });
+  if (ev.round) A.push({ l: ev.promoted ? 'ok' : 'info', t: `Evolution round #${ev.round}: ${ev.promoted ? 'promoted ' + (ev.new_version || '') : 'kept ' + (ev.current_version || '')}`, d: `Tested ${ev.change_tested || '--'} — ${ev.result || ''}`, ts: ev.updated_utc });
+  const ses = b.session_utc || [7, 21], h = new Date().getUTCHours();
+  if (h < ses[0] || h >= ses[1]) A.push({ l: 'info', t: `Outside entry session (${pad(ses[0])}:00–${pad(ses[1])}:00 UTC)`, d: 'No new entries now; open positions are still managed.', ts: now });
+  if (publishedAge() > 5400) A.push({ l: 'warn', t: 'Status data is stale', d: `Last published ${ago(b.published_at)}.`, ts: b.published_at });
+  if (S.apiOk === false) A.push({ l: 'warn', t: 'Hyperliquid API unreachable', d: 'Live prices, orders and fills may be outdated.', ts: now });
+  const L = b.limits || {};
+  A.push({ l: 'ok', t: 'Hard limits in force', d: `Risk ${L.risk_per_trade_pct ?? 0.5}%/trade · open risk ≤ ${L.max_open_risk_pct ?? 3}% · margin ≤ ${b.margin_cap_pct ?? 10}% · stop-loss on every trade · leverage ${b.leverage || '20–40'}x`, ts: b.updated_at });
+  const rank = { danger: 0, warn: 1, info: 2, ok: 3 };
+  return A.sort((x, y) => rank[x.l] - rank[y.l] || (ms(y.ts) || 0) - (ms(x.ts) || 0));
+}
+function alertLi(a, k, big) {
+  return `<li class="${a.l}" style="--k:${k}" data-q="${esc((a.t + ' ' + a.d).toLowerCase())}"><b>${esc(a.t)}</b>${big ? `<p>${esc(a.d)}</p>` : ''}<small>${a.l.toUpperCase()} · ${utcFull(a.ts)}</small></li>`;
 }
 
-let lastPortRender = 0;
-function renderPortfolio(force) {
-  const now = Date.now(); if (!force && now - lastPortRender < 700) return; lastPortRender = now;
-  const eq = equityNow(); if (!isFinite(eq)) return;
-  const st = stats();
-  const used = S.perp ? +S.perp.marginSummary.totalMarginUsed || 0 : 0;
-  const free = eq - used, total = eq - CFG.BASELINE;
-  const el = $('equity');
-  if (S.lastEquity != null && Math.abs(eq - S.lastEquity) > 1e-7) {
-    el.classList.remove('flash-up', 'flash-down'); void el.offsetWidth; el.classList.add(eq > S.lastEquity ? 'flash-up' : 'flash-down');
-  }
-  S.lastEquity = eq;
-  el.textContent = fmt(eq, eq < 1000 ? 4 : 2);
-  el.classList.toggle('up', total > 0); el.classList.toggle('down', total < 0);
-  $('freeMargin').textContent = fmt(free, 2);
-  $('todayPnl').textContent = sgn(st.todayPnl, 4); $('todayPnl').className = cls(st.todayPnl);
-  $('totalPnl').textContent = sgn(total, 4) + ' (' + sgn((total / CFG.BASELINE) * 100, 2) + '%)'; $('totalPnl').className = cls(total);
-  $('winRate').textContent = isFinite(st.win) ? fmt(st.win, 1) + '% ' : '--'; $('winRate').title = st.wins + '/' + st.closes;
-  if (isFinite(st.win)) $('winRate').innerHTML = fmt(st.win, 1) + '% <small class="dim">' + st.wins + '/' + st.closes + '</small>';
-  const H = S.hist; push(H.eq, eq); push(H.free, free); push(H.today, st.todayPnl); push(H.total, total);
-  sparkline($('sparkEquity'), seedEq(), H.eq[H.eq.length - 1] >= CFG.BASELINE ? C.green : C.red);
-  sparkline($('sparkFree'), H.free, C.blue); sparkline($('sparkToday'), H.today); sparkline($('sparkTotal'), H.total);
-  sparkline($('sparkWin'), st.winSeries.slice(-60), C.orange);
-  renderBreakdown(eq);
-  // fees panel
-  $('feesTotal').textContent = '-' + fmt(st.fees, 4) + ' USDC'; $('feesToday').textContent = '-' + fmt(st.feesToday, 4);
-  $('fillsN').textContent = st.n; $('volume').textContent = '$' + fmt(st.vol, 2);
-  $('grossPnl').textContent = sgn(st.gross, 4); $('grossPnl').className = cls(st.gross);
-}
-function seedEq() { return curveData().map((p) => p[1]).slice(-120); }
-function renderBreakdown(eq) {
-  const ps = positions(), upnl = ps.reduce((a, p) => a + p.upnl, 0), ms = (S.perp && S.perp.marginSummary) || {};
-  const ntl = ps.reduce((a, p) => a + p.value, 0), used = +ms.totalMarginUsed || 0;
-  const day = S.portfolio && S.portfolio.find((x) => x[0] === 'day');
-  const rows = [['SPOT USDC', fmt(S.spotUsdc, 4)], ['PERP UPNL', sgn(upnl, 4), cls(upnl)], ['MARGIN USED', fmt(used, 4)],
-    ['OPEN NOTIONAL', '$' + fmt(ntl, 2)], ['EFFECTIVE LEVERAGE', eq > 0 ? fmt(ntl / eq, 2) + 'X' : '--'], ['PERP ACCT VALUE', fmt(+ms.accountValue, 4) + ' <span class="dim">(UNIFIED)</span>'],
-    ['24H VOLUME', day ? '$' + fmt(+day[1].vlm, 2) : '--'], ['BASELINE', fmt(CFG.BASELINE, 2)]];
-  $('breakdown').innerHTML = rows.map(([k, v, c]) => `<div class="kv"><span>${k}</span><b class="${c || ''}">${v}</b></div>`).join('');
+/* ---------- render: header / overview ---------- */
+function renderHeader() {
+  const b = S.bot || {}, run = isRunning(), ver = b.version || b.evolution?.current_version || '--';
+  const pill = $('statusPill'); pill.className = 'pill st-pill ' + (S.bot ? (run ? 'run' : 'stop') : '');
+  pill.querySelector('span').textContent = S.bot ? (run ? 'RUNNING' : 'STOPPED') : 'LOADING';
+  pill.title = S.bot ? `Bot status: ${b.status}${b.halted ? ' · ' + b.halted : ''}` : '';
+  setText('crVer', ver); setText('crMode', b.mode === 'LIVE' ? 'Live' : (b.mode || 'Live'));
+  setText('sbVer', ver); setText('sbUpd', b.updated_at ? `${utcHMS(ms(b.updated_at))} UTC (${ago(b.updated_at)})` : '--');
+  setText('sbPub', b.published_at ? `${utcHMS(ms(b.published_at))} UTC` : '--'); setText('sbStrat', b.strategy || '');
+  const fresh = publishedAge() < 5400, apiOk = S.apiOk !== false;
+  const st = !S.bot && S.apiOk == null ? ['', 'Connecting'] : run && fresh && apiOk ? ['on', 'System Online'] : (S.bot || S.apiOk) ? ['warn', 'Degraded'] : ['off', 'Offline'];
+  const dot = document.querySelector('#online .ldot'); dot.className = 'ldot ' + (st[0] === 'warn' ? '' : st[0]); dot.style.background = st[0] === 'warn' ? 'var(--amber)' : '';
+  setText('onlineTxt', st[1]);
+  setText('ovVer', ver); setText('ovAcct', shortAddr(USER));
+  const op = $('ovPill'); op.className = 'pill sm ' + (S.bot ? (run ? 'run' : 'stop') : ''); op.textContent = S.bot ? (run ? 'Running' : 'Stopped') : '--';
+  countTo($('ovEq'), equityNow());
+  setText('ovBal', isFinite(balance()) ? fmt(balance(), 2) : '--');
+  const u = S.ch ? upnl() : num(b.upnl); setText('ovUpnl', isFinite(u) ? sgn(u, 2) : '--', cls(u));
+  const ls = b.last_signal || {};
+  setText('sigMain', ls.coin ? `${ls.coin} · ${ls.side || '--'}${ls.price ? ' @ ' + pxFmt(ls.price) : ''} · ${ls.time ? utcHM(ms(ls.time)) + ' UTC' : ''}` : 'No signal yet');
+  setText('sigWhy', [ls.reason, b.confidence != null ? `confidence ${b.confidence}% (${b.confidence_basis || ''})` : ''].filter(Boolean).join(' · '));
+  // sidebar markets
+  const coins = b.coins && b.coins.length ? b.coins : ['BTC', 'ETH'];
+  $('markets').innerHTML = ['BTC', 'ETH'].map((c) => `<div class="mkt ${S.series === c ? 'on' : ''}" data-c="${c}" role="button" tabindex="0">${icon('i-coin')}<span>${c}-PERP</span><b class="mkt-px">${S.mids[c] ? pxFmt(S.mids[c]) : '--'}</b><i class="sdot ${run && coins.includes(c) ? 'on' : ''}" title="${run && coins.includes(c) ? 'Bot trading this market' : 'Not trading'}"></i></div>`).join('');
 }
 
-/* ---------- positions ---------- */
+function renderCards() {
+  const b = S.bot || {}, e = equityNow();
+  const apiPos = (S.ch && S.ch.assetPositions) || [], npos = S.ch ? apiPos.length : Object.keys(b.positions || {}).length;
+  const nord = S.apiOk ? S.orders.length : num(b.pending_orders || 0);
+  setText('rkPos', String(npos)); setText('rkOrd', String(nord)); setText('rkLev', (b.leverage || '20–40') + 'x');
+  const risk = num(b.open_risk_usd || 0), riskCap = e * num(b.limits?.max_open_risk_pct ?? 3) / 100;
+  setText('rkRisk', `${fmt(risk, 2)} USDC`);
+  const mu = S.ch ? num(S.ch.marginSummary?.totalMarginUsed || 0) || num(b.margin_used || 0) : num(b.margin_used || 0);
+  const cap = num(b.margin_cap_pct || 10), muPct = e ? mu / e * 100 : 0;
+  setText('rkMarginTxt', `${fmt(muPct, 1)}% / ${cap}%`); setBar($('rkMarginBar'), muPct / cap * 100, muPct / cap > .8 ? 'r' : muPct / cap > .5 ? 'a' : '');
+  const rp = riskCap ? risk / riskCap * 100 : 0;
+  setText('rkRiskTxt', `${fmt(e ? risk / e * 100 : 0, 2)}% / ${b.limits?.max_open_risk_pct ?? 3}%`); setBar($('rkRiskBar'), rp, rp > 80 ? 'r' : rp > 50 ? 'a' : '');
+  $('navPos').textContent = npos || ''; $('navOrd').textContent = nord || '';
+  // gauge
+  const ds = b.daily_stop || {}, used = num(ds.limit_usd) ? clamp(-num(ds.pnl_today || 0) / Math.abs(num(ds.limit_usd)) * 100, 0, 100) : 0;
+  const ring = $('ringVal'); const C = 2 * Math.PI * 50;
+  ring.style.stroke = used >= 80 ? 'var(--red)' : used >= 50 ? 'var(--amber)' : 'var(--blue)';
+  requestAnimationFrame(() => { ring.style.strokeDashoffset = C * (1 - Math.max(used, 0.5) / 100); });
+  countTo($('ringNum'), used, { d: 0, suf: '%' });
+  setText('gToday', isFinite(num(ds.pnl_today)) ? sgn(num(ds.pnl_today), 2) : '--', cls(num(ds.pnl_today))); setText('gLim', isFinite(num(ds.limit_usd)) ? sgn(num(ds.limit_usd), 2) : '--');
+  setText('gKill', fmt(killLevel(), 2));
+  const gs = b.kill_switch ? ['Kill switch', 'bad'] : ds.triggered ? ['Daily stop hit', 'bad'] : b.halted ? ['Halted', 'bad'] : S.bot ? ['Armed · OK', 'ok'] : ['--', ''];
+  setText('gStat', gs[0], gs[1]);
+  // pnl
+  const P = pnlNums();
+  [['pToday', P.today, P.todayPct], ['p7d', P.d7, P.d7Pct], ['pTot', P.total, P.totalPct]].forEach(([id, v, pc]) => {
+    const el = $(id); el.className = 'count ' + cls(v); countTo(el, v);
+    let s = el.nextElementSibling; if (!s) { s = document.createElement('small'); el.after(s); }
+    s.textContent = isFinite(pc) ? `${sgn(pc, 2)}%` : ''; s.className = cls(pc);
+  });
+  const k = killLevel(), buf = clamp((e - k) / (baseline() - k) * 100, 0, 100);
+  setText('pKillTxt', isFinite(buf) ? `${fmt(buf, 0)}%` : '--'); setBar($('pKillBar'), buf, buf < 30 ? 'r' : buf < 60 ? 'a' : 'g');
+  // sparkline (last 7d)
+  const ser = equitySeries().filter((x) => x[0] >= Date.now() - 7 * 864e5);
+  const sp = $('pnlSpark');
+  if (ser.length >= 2) {
+    const ys = ser.map((x) => x[1]); let mn = Math.min(...ys), mx = Math.max(...ys); if (mx - mn < mx * 0.002) { const m = (mx + mn) / 2; mn = m - m * 0.001; mx = m + m * 0.001; }
+    const t0 = ser[0][0], t1 = ser[ser.length - 1][0] || t0 + 1;
+    const pts = ser.map(([t, v]) => [(t - t0) / Math.max(t1 - t0, 1) * 300, 54 - (v - mn) / (mx - mn) * 48]);
+    const d = 'M' + pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join('L');
+    const neg = ys[ys.length - 1] < ys[0], col = neg ? '#E5484D' : '#22B07D';
+    const key = d;
+    if (sp._k !== key) {
+      sp.innerHTML = `<defs><linearGradient id="spg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".22"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${d}L300,60L0,60Z" fill="url(#spg)" class="c-area"/><path class="l ${neg ? 'neg' : ''}" d="${d}"/>`;
+      drawIn(sp.querySelector('path.l'), !sp._k); sp._k = key;
+    }
+  } else sp.innerHTML = '<line x1="0" y1="30" x2="300" y2="30" stroke="#E6ECF3" stroke-dasharray="4 4"/>';
+}
+function drawIn(path, first) {
+  if (!path || RM.matches || !path.getTotalLength) return;
+  const L = path.getTotalLength(); if (!L) return;
+  path.style.transition = 'none'; path.style.strokeDasharray = L; path.style.strokeDashoffset = L;
+  path.getBoundingClientRect();
+  path.style.transition = `stroke-dashoffset ${first ? 1.8 : 0.9}s cubic-bezier(.4,0,.2,1)`; path.style.strokeDashoffset = 0;
+  setTimeout(() => { path.style.strokeDasharray = ''; path.style.transition = ''; }, first ? 2000 : 1100);
+}
+
+function renderAlerts() {
+  const A = buildAlerts();
+  $('alertsMini').innerHTML = A.slice(0, 4).map((a, k) => alertLi(a, k, false)).join('');
+  $('alertsFull').innerHTML = A.map((a, k) => alertLi(a, k, true)).join('');
+  const bad = A.filter((a) => a.l === 'danger' || a.l === 'warn').length;
+  $('bellDot').classList.toggle('on', bad > 0); $('navAlerts').textContent = bad || ''; setText('alCnt', String(A.length), 'cnt');
+  applySearch();
+}
+
+/* ---------- chart ---------- */
+function chartData() {
+  const span = { '24h': 864e5, '7d': 7 * 864e5, all: Infinity }[S.tf], from = Date.now() - span;
+  if (S.series === 'equity') return { pts: equitySeries().filter((x) => x[0] >= from), unit: 'USDC', d: 2 };
+  const c = S.candles[S.series + S.tf] || []; return { pts: c.map((k) => [k.t, +k.c]).filter((x) => x[0] >= from), unit: 'USD', d: S.series === 'BTC' ? 0 : 1 };
+}
+function fillMarkers(t0, t1) {
+  const F = S.fills.filter((f) => f.time >= t0 && f.time <= t1 && (S.series === 'equity' || f.coin === S.series));
+  const T = ((S.bot && S.bot.trades) || []).flatMap((t) => [{ coin: t.coin, time: ms(t.opened_at), dir: 'Open ' + (t.side === 'LONG' ? 'Long' : 'Short'), px: t.entry }, { coin: t.coin, time: ms(t.closed_at), dir: 'Close · ' + sgn(num(t.R), 2) + 'R', px: null }])
+    .filter((f) => f.time >= t0 && f.time <= t1 && (S.series === 'equity' || f.coin === S.series));
+  const all = (F.length ? F : T).sort((a, b) => a.time - b.time);
+  const out = []; let last = -Infinity; const minGap = (t1 - t0) / 7;
+  for (let i = all.length - 1; i >= 0 && out.length < 5; i--) { if (last - all[i].time >= minGap || last === -Infinity) { out.push(all[i]); last = all[i].time; } }
+  return out;
+}
+function renderChart(force) {
+  const box = $('heroChart'), svg = $('chartSvg'), W = box.clientWidth, H = box.clientHeight; if (!W || !H) return;
+  const mob = window.innerWidth <= 640;
+  const pt = mob ? 24 : 140, pb = mob ? 30 : 92, pl = mob ? 10 : 24, pr = mob ? 52 : 70;
+  const { pts, unit, d } = chartData();
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const layer = $('chipsLayer');
+  if (pts.length < 2) { svg.innerHTML = `<text class="c-empty" x="${W / 2}" y="${H / 2 + 30}" text-anchor="middle">${S.series === 'equity' ? 'Not enough equity history yet' : 'Loading prices…'}</text>`; layer.innerHTML = ''; S.drawnKey = ''; return; }
+  const t0 = pts[0][0], t1 = pts[pts.length - 1][0];
+  const ys = pts.map((p) => p[1]); let mn = Math.min(...ys), mx = Math.max(...ys);
+  const isEq = S.series === 'equity', base = baseline();
+  if (isEq && isFinite(base)) { mn = Math.min(mn, base); mx = Math.max(mx, base); }
+  const minSpan = (mx + mn) / 2 * (isEq ? 0.006 : 0.004); if (mx - mn < minSpan) { const m = (mx + mn) / 2; mn = m - minSpan / 2; mx = m + minSpan / 2; }
+  const padY = (mx - mn) * 0.12; mn -= padY; mx += padY;
+  const X = (t) => pl + (t - t0) / Math.max(t1 - t0, 1) * (W - pl - pr), Y = (v) => pt + (1 - (v - mn) / (mx - mn)) * (H - pt - pb);
+  const line = pts.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)).join('');
+  const area = line + `L${X(t1).toFixed(1)},${H}L${X(t0).toFixed(1)},${H}Z`;
+  let g = '';
+  for (let i = 0; i <= 4; i++) { const v = mn + (mx - mn) * (i / 4), y = Y(v); g += `<line class="c-grid" x1="0" x2="${W}" y1="${y}" y2="${y}"/><text class="c-axis" x="${W - 8}" y="${y - 4}" text-anchor="end">${fmt(v, isEq ? 2 : d)}</text>`; }
+  const span = t1 - t0, nx = mob ? 3 : 6;
+  for (let i = 0; i <= nx; i++) { const t = t0 + span * i / nx, x = X(t); g += `<text class="c-axis" x="${x}" y="${H - 10}" text-anchor="${i === 0 ? 'start' : i === nx ? 'end' : 'middle'}">${span > 2 * 864e5 ? utcMD(t) : utcHM(t)}${i === nx ? ' UTC' : ''}</text>`; }
+  let ref = '';
+  if (isEq && isFinite(base)) { const y = Y(base); ref = `<line class="c-base" x1="0" x2="${W}" y1="${y}" y2="${y}"/><text class="c-lbl" fill="#8A97A8" x="${pl + 8}" y="${y + 15}">Baseline ${fmt(base, 2)}</text>`; }
+  const lx = X(t1), ly = Y(pts[pts.length - 1][1]);
+  const key = S.series + S.tf;
+  svg.innerHTML = `<defs><linearGradient id="hg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2F7BEA" stop-opacity=".28"/><stop offset=".7" stop-color="#5B9BF0" stop-opacity=".06"/><stop offset="1" stop-color="#5B9BF0" stop-opacity="0"/></linearGradient></defs>
+    ${g}${ref}<path class="c-area" d="${area}" fill="url(#hg)" ${S.drawnKey === key && !force ? 'style="opacity:1;animation:none"' : ''}/><path class="c-line" id="cLine" d="${line}"/>
+    <line class="c-hover" id="cHover" x1="0" x2="0" y1="${pt - 20}" y2="${H - pb + 10}"/>
+    <circle class="c-halo" cx="${lx}" cy="${ly}" r="6"/><circle class="c-now" cx="${lx}" cy="${ly}" r="5.5"/>`;
+  if (S.drawnKey !== key || force) drawIn($('cLine'), S.drawnKey === '');
+  // floating chips: entry/exit markers + "now"
+  const yAt = (t) => { let best = pts[0]; for (const p of pts) { if (Math.abs(p[0] - t) < Math.abs(best[0] - t)) best = p; } return Y(best[1]); };
+  const M = fillMarkers(t0, t1);
+  let chips = M.map((f, i) => { const x = clamp(X(f.time), 70, W - 90), y = Math.max(yAt(f.time) - 14, pt - 10); const buy = /long|buy|^b$/i.test(f.dir + (f.side || '')) && !/close/i.test(f.dir);
+    return `<div class="chip ${/close/i.test(f.dir) ? 'sell' : 'buy'}" style="left:${x}px;top:${y}px;--d:${0.9 + i * 0.12}s"><b><i></i>${esc(f.coin)} ${esc(f.dir)}</b><small>${f.px ? pxFmt(f.px) + ' · ' : ''}${utcMD(f.time)} ${utcHM(f.time)} UTC</small></div>`; }).join('');
+  const nowV = pts[pts.length - 1][1];
+  chips += `<div class="chip" style="left:${clamp(lx, 80, W - 70)}px;top:${ly - 16}px;--d:1.6s"><b><i></i>${isEq ? 'Equity now' : S.series + '-PERP'}</b><small>${fmt(nowV, isEq ? 2 : d)} ${unit}</small></div>`;
+  if (S.drawnKey !== key || force || layer._n !== M.length) layer.innerHTML = chips; else layer.innerHTML = chips.replace(/--d:[0-9.]+s/g, '--d:0s');
+  layer._n = M.length; S.drawnKey = key;
+  S.chart = { pts, X, Y, W, H, isEq, d, unit, pt, pb };
+}
+function chartHover(ev) {
+  const c = S.chart, tip = $('chartTip'), hv = $('cHover'); if (!c || !hv) return;
+  const r = $('heroChart').getBoundingClientRect(), x = ev.clientX - r.left;
+  let best = c.pts[0]; for (const p of c.pts) if (Math.abs(c.X(p[0]) - x) < Math.abs(c.X(best[0]) - x)) best = p;
+  const bx = c.X(best[0]), by = c.Y(best[1]);
+  hv.setAttribute('x1', bx); hv.setAttribute('x2', bx); hv.style.opacity = 1;
+  tip.innerHTML = `<b>${fmt(best[1], c.isEq ? 4 : c.d)} ${c.unit}</b> <span class="muted">${new Date(best[0]).toISOString().slice(0, 10)} ${utcHM(best[0])} UTC</span>`;
+  tip.style.left = clamp(bx + 12, 0, c.W - 220) + 'px'; tip.style.top = clamp(by - 40, 0, c.H - 40) + 'px'; tip.style.opacity = 1;
+}
+
+/* ---------- sections ---------- */
+const emptyBox = (ic, t, s) => `<div class="empty"><span class="e-ic">${icon(ic)}</span><b>${t}</b><span>${s}</span></div>`;
 function renderPositions() {
-  const ps = positions(); $('posCount').textContent = ps.length;
-  const box = $('positions');
-  if (!ps.length) { box.innerHTML = '<div class="empty">NO OPEN POSITIONS<br><span class="dim">// FLAT — WAITING FOR SIGNAL</span></div>'; return; }
-  const stopOf = (coin, long) => {
-    const os = S.orders.filter((o) => o.coin === coin && o.isTrigger);
-    const st = os.find((o) => /stop/i.test(o.orderType)); const tp = os.find((o) => /take profit/i.test(o.orderType));
-    return { stop: st ? +st.triggerPx : NaN, tp: tp ? +tp.triggerPx : NaN };
-  };
-  box.innerHTML = ps.map((p) => {
-    const long = p.szi > 0, so = stopOf(p.coin, long);
-    return `<div class="pos ${long ? 'long' : 'short'}"><div class="pos-h"><span>${esc(p.coin)} <span class="${long ? 'up' : 'down'}">${long ? 'LONG ▲' : 'SHORT ▼'}</span> <span class="dim">${p.lev ? p.lev.value + 'X' : ''}</span></span><span class="${cls(p.upnl)}">${sgn(p.upnl, 4)}</span></div>
-      <div class="pos-g"><div><label>SIZE</label><b>${Math.abs(p.szi)}</b></div><div><label>ENTRY</label><b>${pxFmt(p.entry)}</b></div><div><label>MARK</label><b>${pxFmt(p.mark)}</b></div><div><label>LIQ</label><b class="down">${isFinite(p.liq) ? pxFmt(p.liq) : '--'}</b></div>
-      <div><label>STOP</label><b class="down">${isFinite(so.stop) ? pxFmt(so.stop) : '--'}</b></div><div><label>TP</label><b class="up">${isFinite(so.tp) ? pxFmt(so.tp) : '--'}</b></div><div><label>VALUE</label><b>$${fmt(p.value, 2)}</b></div><div><label>MARGIN</label><b>$${fmt(p.margin, 2)}</b></div></div>
-      <canvas class="spark" data-coin="${esc(p.coin)}"></canvas></div>`;
+  const b = S.bot || {}, det = b.position_details || {}, apiPos = ((S.ch && S.ch.assetPositions) || []).map((x) => x.position);
+  let rows = apiPos.map((p) => ({ coin: p.coin, side: num(p.szi) > 0 ? 'LONG' : 'SHORT', size: Math.abs(num(p.szi)), entry: num(p.entryPx), value: num(p.positionValue), upnl: num(p.unrealizedPnl), lev: p.leverage?.value, liq: num(p.liquidationPx), d: det[p.coin] || {} }));
+  if (!S.ch) rows = Object.entries(b.positions || {}).map(([c, n]) => ({ coin: c, side: det[c]?.side || '--', size: det[c]?.qty, entry: det[c]?.entry, value: num(n), upnl: NaN, d: det[c] || {} }));
+  setText('posCnt', String(rows.length), 'cnt');
+  $('posBody').innerHTML = rows.length ? rows.map((p) => `<div class="pos-card" data-q="${esc((p.coin + ' ' + p.side).toLowerCase())}"><div class="h"><b>${esc(p.coin)}-PERP</b><span class="tag ${p.side === 'LONG' ? 'long' : 'short'}">${p.side}</span>${p.lev ? `<span class="muted sm">${p.lev}x</span>` : ''}<span class="${cls(p.upnl)}" style="margin-left:auto;font-weight:600">${isFinite(p.upnl) ? sgn(p.upnl, 4) + ' USDC' : ''}</span></div>
+      <div><small>Size</small>${fmt(p.size, 5)}</div><div><small>Entry</small>${pxFmt(p.entry)}</div><div><small>Value</small>${fmt(p.value, 2)}</div><div><small>Liq. price</small>${isFinite(p.liq) ? pxFmt(p.liq) : '--'}</div>
+      <div><small>Stop</small>${p.d.stop ? pxFmt(p.d.stop) : '--'}${p.d.breakeven ? ' <span class="tag long">BE</span>' : ''}</div><div><small>TP1 / TP2</small>${p.d.tp1 ? pxFmt(p.d.tp1) : '--'} / ${p.d.tp2 ? pxFmt(p.d.tp2) : '--'}</div><div><small>Risk</small>${p.d.risk_usd != null ? fmt(p.d.risk_usd, 3) + ' USDC' : '--'}</div><div><small>Opened</small>${p.d.opened_at ? utcFull(p.d.opened_at) : '--'}</div></div>`).join('')
+    : emptyBox('i-pos', 'No open positions', `The bot is flat. It enters BTC/ETH only on a 15m trend-pullback setup during ${pad((b.session_utc || [7])[0])}:00–${pad((b.session_utc || [7, 21])[1])}:00 UTC.`);
+}
+function renderOrders() {
+  const O = S.orders || []; setText('ordCnt', String(O.length), 'cnt');
+  $('ordBody').innerHTML = O.length ? `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Placed (UTC)</th><th>Coin</th><th>Side</th><th>Type</th><th>Price</th><th>Trigger</th><th>Size</th></tr></thead><tbody>${O.map((o) => `<tr data-q="${esc((o.coin + ' ' + o.orderType).toLowerCase())}"><td>${utcMD(o.timestamp)} ${utcHM(o.timestamp)}</td><td>${esc(o.coin)}</td><td><span class="tag ${o.side === 'B' ? 'long' : 'short'}">${o.side === 'B' ? 'BUY' : 'SELL'}</span></td><td>${esc(o.orderType || 'Limit')}${o.reduceOnly ? ' · reduce' : ''}</td><td>${pxFmt(o.limitPx)}</td><td>${o.isTrigger ? pxFmt(o.triggerPx) : '--'}</td><td>${fmt(num(o.sz), 5)}</td></tr>`).join('')}</tbody></table></div>`
+    : emptyBox('i-orders', 'No pending orders', S.apiOk === false ? 'Live order book unavailable (API unreachable).' : 'Entries are IOC with an attached stop; resting stop / take-profit orders appear here while a position is open.');
+}
+function renderHistory() {
+  const T = (S.bot && S.bot.trades) || [];
+  let html = '', n = 0;
+  if (T.length) {
+    n = T.length;
+    html += `<thead><tr><th>Closed (UTC)</th><th>Coin</th><th>Side</th><th>Entry</th><th>Stop</th><th>Size</th><th>R</th><th>PnL (USDC)</th><th>Version</th></tr></thead><tbody>${T.map((t) => `<tr data-q="${esc((t.coin + ' ' + t.side + ' ' + t.version).toLowerCase())}"><td>${utcFull(t.closed_at)}</td><td>${esc(t.coin)}</td><td><span class="tag ${t.side === 'LONG' ? 'long' : 'short'}">${esc(t.side)}</span></td><td>${pxFmt(t.entry)}</td><td>${pxFmt(t.stop0)}</td><td>${fmt(num(t.qty), 5)}</td><td class="${cls(num(t.R))}">${sgn(num(t.R), 2)}</td><td class="${cls(num(t.pnl))}">${sgn(num(t.pnl), 4)}</td><td>${esc(t.version || '')}</td></tr>`).join('')}</tbody>`;
+    setText('histNote', 'Closed round-trips from the bot journal (PnL after fees)', 'muted sm');
+  } else if (S.fills.length) {
+    const F = S.fills.slice(0, 40); n = S.fills.length;
+    html += `<thead><tr><th>Time (UTC)</th><th>Coin</th><th>Direction</th><th>Price</th><th>Size</th><th>Closed PnL</th><th>Fee</th></tr></thead><tbody>${F.map((f) => `<tr data-q="${esc((f.coin + ' ' + f.dir).toLowerCase())}"><td>${new Date(f.time).toISOString().slice(0, 10)} ${utcHMS(f.time)}</td><td>${esc(f.coin)}</td><td><span class="tag ${/long/i.test(f.dir) === /open/i.test(f.dir) ? 'long' : 'short'}">${esc(f.dir)}</span></td><td>${pxFmt(f.px)}</td><td>${fmt(num(f.sz), 5)}</td><td class="${cls(num(f.closedPnl))}">${sgn(num(f.closedPnl), 4)}</td><td>${fmt(num(f.fee), 4)}</td></tr>`).join('')}</tbody>`;
+    setText('histNote', 'No closed v1.0 trade yet — showing exchange fills (public API, incl. earlier bot versions)', 'muted sm');
+  } else { html = `<tbody><tr><td>${emptyBox('i-hist', 'No trades yet', 'Closed trades will appear here.')}</td></tr></tbody>`; setText('histNote', ''); }
+  $('histTbl').innerHTML = html; setText('histCnt', String(n), 'cnt');
+}
+function renderEvolution() {
+  const ev = (S.bot && S.bot.evolution) || null, el = $('evoBody');
+  if (!ev) { el.innerHTML = emptyBox('i-evo', 'No evolution round yet', 'Rounds run every 6 h or after 15 new live signals.'); return; }
+  const p = $('evoPill'); p.className = 'pill sm ' + (ev.promoted ? 'run' : 'info'); p.textContent = ev.promoted ? `Promoted ${ev.new_version || ''}` : 'Not promoted';
+  $('navEvo').classList.toggle('on', !!ev.round);
+  const c = ev.metrics?.current || {}, v = ev.metrics?.variant || {}, imp = ev.improvement_pct || {};
+  const rows = [['Profit factor', 'pf', 3, 1], ['Sharpe', 'sharpe', 2, 1], ['Expectancy (R)', 'expectancy', 4, 1], ['Win rate', 'win', 1, 1, 100, '%'], ['Max drawdown', 'max_dd_pct', 2, -1, 1, '%'], ['Max DD (R)', 'mdd_R', 2, -1], ['Trades', 'n', 0, 0], ['End equity', 'end_equity', 2, 0]];
+  const tr = rows.map(([lbl, k, d, dir, mul = 1, suf = '']) => {
+    const a = num(c[k]) * mul, b = num(v[k]) * mul; let dl = imp[k];
+    if (dl == null && dir && isFinite(a) && isFinite(b) && a) dl = (b - a) / Math.abs(a) * 100 * (dir < 0 ? -1 : 1);
+    const good = dl > 0 ? 'up' : dl < 0 ? 'down' : '';
+    return `<tr><td>${lbl}</td><td>${fmt(a, d)}${suf}</td><td>${fmt(b, d)}${suf}</td><td>${dir && dl != null ? `<span class="dl ${good}">${sgn(+dl, 1)}%</span>` : ''}</td></tr>`;
   }).join('');
-  box.querySelectorAll('canvas[data-coin]').forEach((cv) => sparkline(cv, S.posHist[cv.dataset.coin]));
+  el.className = '';
+  el.innerHTML = `<div class="evo-top"><div><small>Round</small><b>#${ev.round ?? '--'}</b></div><div><small>Current formula</small><b>${esc(ev.current_version || '--')}</b></div><div><small>Change tested</small><b>${esc(ev.change_tested || '--')}</b></div><div><small>Ran at</small><b>${utcFull(ev.updated_utc)}</b></div></div>
+    <div class="evo-res">${(() => { const r = String(ev.result || ''); const m = r.match(/^(kept|promoted)\s+(\S+)\s*[—-]\s*(.*)$/i); return m ? `<b>${esc(m[1][0].toUpperCase() + m[1].slice(1) + ' ' + m[2])}</b> — ${esc(m[3])}` : `<b>${ev.promoted ? 'Promoted' : 'Kept'}</b> — ${esc(r)}`; })()}</div>
+    <div class="tbl-wrap"><table class="mcmp"><thead><tr><th>Backtest metric (12 mo)</th><th>Current ${esc(ev.current_version || '')}</th><th>Variant</th><th>Δ (better +)</th></tr></thead><tbody>${tr}</tbody></table></div>
+    <div class="evo-foot">${ev.warning ? `<ul class="alerts"><li class="danger"><b>Backtest warning</b>${esc(ev.warning)}</li></ul>` : ''}<span>Next round: <b>${esc(ev.next_round || '--')}</b> · promotion needs ≥ 2 metrics improved ≥ 8%, max DD not worse, adequate sample.</span>
+    <span id="rollback"><b>Rollback:</b> every formula version is archived on the bot host; rollback is a manual owner action there (never from this read-only page). ${ev.current_version === 'v1.0' ? 'v1.0 is the first version, so there is nothing to roll back to.' : ''}</span></div>
+    ${ev.params ? `<details class="params"><summary>Current parameters (${Object.keys(ev.params).length})</summary><div class="pgrid">${Object.entries(ev.params).map(([k, x]) => `<span>${esc(k)}<b>${esc(x)}</b></span>`).join('')}</div></details>` : ''}`;
 }
-let lastPosSpark = 0;
-function updatePosSparks() {
-  const now = Date.now(); if (now - lastPosSpark < 1000) return; lastPosSpark = now;
-  const ps = positions();
-  for (const p of ps) { const h = S.posHist[p.coin] || (S.posHist[p.coin] = []); push(h, p.upnl, 150); }
-  // live update visible cards without rebuilding DOM
-  document.querySelectorAll('#positions .pos').forEach((card, i) => {
-    const p = ps[i]; if (!p) return; const cv = card.querySelector('canvas'); if (cv) sparkline(cv, S.posHist[p.coin]);
-    const h = card.querySelector('.pos-h > span:last-child'); if (h) { h.textContent = sgn(p.upnl, 4); h.className = cls(p.upnl); }
-    const mk = card.querySelectorAll('.pos-g b')[2]; if (mk) mk.textContent = pxFmt(p.mark);
-  });
+function renderLimits() {
+  const b = S.bot || {}, L = b.limits || {}, ses = b.session_utc || [7, 21];
+  const R = [['Risk per trade', `${L.risk_per_trade_pct ?? 0.5}%`], ['Max open risk', `${L.max_open_risk_pct ?? 3}%`], ['Margin cap', `${b.margin_cap_pct ?? 10}% of equity`], ['Leverage', `${b.leverage || '20–40'}x`],
+    ['Daily stop', `${L.day_stop_pct ?? -3}% vs 00:00 UTC equity`], ['Kill switch', `${L.kill_dd_pct ?? -20}% vs ${fmt(baseline(), 2)} → ${fmt(killLevel(), 2)} USDC`], ['Max trades / day', L.max_trades_day ?? 100], ['Entry session', `${pad(ses[0])}:00–${pad(ses[1])}:00 UTC`], ['Stop-loss', 'Always on, min 0.3% hard floor'], ['Coins', (b.coins || []).join(', ') || '--']];
+  $('limBody').innerHTML = `<div class="lim">${R.map(([k, v]) => `<div class="row"><span>${k}</span><b>${esc(v)}</b></div>`).join('')}</div>`;
 }
-
-/* ---------- trade logs ---------- */
-function fillLine(f, isNew) {
-  const buy = f.side === 'B', pnl = +f.closedPnl;
-  return `<div class="log ${isNew ? 'new' : ''}"><span class="t">[${utcTime(f.time)}]</span> <span class="side ${buy ? 'up' : 'down'}">${buy ? 'BUY ' : 'SELL'}</span> <span class="coin">${esc(f.coin)}</span> @ <b>${pxFmt(f.px)}</b> <span class="dim">SZ</span> ${f.sz} ${pnl !== 0 ? `<span class="${cls(pnl)}">PNL ${sgn(pnl, 4)}</span>` : ''} <span class="dir">${esc(f.dir || '')}</span></div>`;
-}
-function renderLogs(newTids) {
-  const arr = fillsArr().slice(0, 200); $('fillCount').textContent = S.fills.size + ' FILLS';
-  $('logs').innerHTML = arr.length ? arr.map((f) => fillLine(f, newTids && newTids.has(f.tid))).join('') : '<div class="empty">NO FILLS YET</div>';
-}
-function addFills(fills, isLive) {
-  const fresh = new Set(); const freshFills = [];
-  for (const f of fills || []) { if (!S.fills.has(f.tid)) { S.fills.set(f.tid, f); fresh.add(f.tid); freshFills.push(f); } }
-  if (!fresh.size) return;
-  renderLogs(isLive ? fresh : null); renderDaily(); renderPortfolio(true); updateTabs();
-  if (isLive) { const f = freshFills.sort((a, b) => b.time - a.time)[0]; orbEvent(f); setTimeout(refreshAccount, 800); }
-}
-
-/* ---------- orb (3D particle sphere, canvas 2D) ---------- */
-const orb = { cv: $('orb'), pts: [], mode: 'warm', until: 0, flash: 0, rings: [], palette: null };
-(function initOrb() {
-  const N = 1100, ga = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < N; i++) { const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = ga * i;
-    orb.pts.push({ x: Math.cos(th) * r, y, z: Math.sin(th) * r, s: Math.random(), ph: Math.random() * 6.28 }); }
-})();
-const PAL = {
-  warm: ['#f57c00', '#ff9800', '#ffb300', '#e65100', '#ffa726'],
-  cool: ['#1a73e8', '#00acc1', '#26c6da', '#3949ab', '#0f9d58'],
-  stop: ['#1a73e8', '#5c6bc0', '#d93025', '#00acc1', '#7e57c2'],
-};
-function orbEvent(f) {
-  let text, sub, color, pal = 'cool';
-  const pnl = f ? +f.closedPnl : 0;
-  if (f && /close/i.test(f.dir || '') && pnl > 0) { text = 'TP HIT ▲'; color = C.green; }
-  else if (f && /close/i.test(f.dir || '') && pnl < 0) { text = 'STOP ▼'; color = C.red; pal = 'stop'; }
-  else if (f && /close/i.test(f.dir || '')) { text = 'CLOSED ■'; color = C.blue; }
-  else if (f) { text = (f.side === 'B' ? 'BUY ' : 'SELL ') + f.coin + (f.side === 'B' ? ' ▲' : ' ▼'); color = f.side === 'B' ? C.green : C.red; }
-  else { text = 'POSITION CLOSED'; color = C.blue; }
-  if (f) sub = `${f.dir || ''} @ ${pxFmt(f.px)} · ${f.sz}${pnl ? ' · PNL ' + sgn(pnl, 4) : ''}`;
-  orb.mode = pal; orb.until = performance.now() + 5000; orb.flash = 1; orb.rings.push({ r: 0, a: 1, c: color }, { r: -40, a: 1, c: color });
-  S.lastEventAt = Date.now();
-  const t = $('orbText'); t.textContent = text; t.style.color = color; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
-  $('orbSub').textContent = sub || ''; $('orbState').textContent = 'EVENT // ' + utcTime(Date.now());
-  clearTimeout(orb.tt); orb.tt = setTimeout(() => { t.classList.remove('show'); $('orbState').textContent = 'IDLE'; }, 5000);
-}
-function drawOrb(t) {
-  const { ctx, w, h } = setupCanvas(orb.cv); const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.34;
-  if (orb.mode !== 'warm' && t > orb.until) orb.mode = 'warm';
-  const pal = PAL[orb.mode]; orb.flash *= 0.95;
-  // glow
-  const gg = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, R * 1.5);
-  gg.addColorStop(0, (orb.mode === 'warm' ? 'rgba(255,152,0,' : 'rgba(26,115,232,') + (0.16 + orb.flash * 0.35) + ')'); gg.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = gg; ctx.fillRect(0, 0, w, h);
-  const ry = t * 0.00025, rx = Math.sin(t * 0.0001) * 0.5, cyR = Math.cos(ry), syR = Math.sin(ry), cxR = Math.cos(rx), sxR = Math.sin(rx);
-  const pulse = 1 + Math.sin(t * 0.002) * 0.03 + orb.flash * 0.25;
-  const proj = [];
-  for (const p of orb.pts) {
-    const n = 1 + 0.08 * Math.sin(p.ph + t * 0.0015 + p.y * 4) + orb.flash * 0.3 * p.s;
-    let x = p.x * n, y = p.y * n, z = p.z * n;
-    let x1 = x * cyR - z * syR, z1 = x * syR + z * cyR; let y1 = y * cxR - z1 * sxR, z2 = y * sxR + z1 * cxR;
-    const f = 2.6 / (2.6 + z2); proj.push([cx + x1 * R * f * pulse, cy + y1 * R * f * pulse, z2, p]);
-  }
-  proj.sort((a, b) => b[2] - a[2]);
-  for (const [px, py, z, p] of proj) {
-    const depth = (1 - z) / 2; ctx.globalAlpha = 0.18 + depth * 0.8;
-    ctx.fillStyle = pal[(p.s * pal.length) | 0]; const sz = 0.6 + depth * 1.9 + p.s * 0.6;
-    ctx.fillRect(px - sz / 2, py - sz / 2, sz, sz);
-  }
-  ctx.globalAlpha = 1;
-  // orbit rings
-  ctx.strokeStyle = orb.mode === 'warm' ? 'rgba(245,124,0,.35)' : 'rgba(26,115,232,.45)'; ctx.lineWidth = 1;
-  for (let k = 0; k < 2; k++) { ctx.beginPath(); ctx.ellipse(cx, cy, R * (1.35 + k * 0.18), R * (0.32 + k * 0.06), t * 0.0002 * (k ? -1 : 1), 0, 7); ctx.setLineDash(k ? [2, 6] : []); ctx.stroke(); }
-  ctx.setLineDash([]);
-  // shock rings
-  orb.rings = orb.rings.filter((r) => r.a > 0.02);
-  for (const r of orb.rings) { r.r += 4; r.a *= 0.965; if (r.r > 0) { ctx.globalAlpha = r.a; ctx.strokeStyle = r.c; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cx, cy, R + r.r, 0, 7); ctx.stroke(); } }
-  ctx.globalAlpha = 1;
-  // HUD ticks
-  ctx.strokeStyle = 'rgba(29,35,48,.25)'; for (let i = 0; i < 60; i++) { const a = (i / 60) * 6.283 + t * 0.00005, r1 = R * 1.62, r2 = r1 + (i % 5 ? 4 : 9);
-    ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1); ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2); ctx.stroke(); }
-  const eq = equityNow(); ctx.fillStyle = C.ink; ctx.font = '600 11px JetBrains Mono, monospace'; ctx.textAlign = 'left';
-  ctx.fillText('EQ ' + (isFinite(eq) ? fmt(eq, 4) : '--'), 10, 18); ctx.fillStyle = C.dim; ctx.fillText('MODE ' + orb.mode.toUpperCase(), 10, 32);
-  ctx.textAlign = 'right'; ctx.fillText('POS ' + positions().length + ' · FILLS ' + S.fills.size, w - 10, 18);
-  requestAnimationFrame(drawOrb);
-}
-requestAnimationFrame(drawOrb);
-
-/* ---------- market: candles + book ---------- */
-let candleDirty = true;
-function drawCandles() {
-  const cv = $('candles'); const { ctx, w, h } = setupCanvas(cv);
-  const data = S.candles.slice(-Math.max(30, Math.floor(w / 7)));
-  if (!data.length) { ctx.fillStyle = C.dim; ctx.font = '12px JetBrains Mono, monospace'; ctx.fillText('LOADING CANDLES…', 12, 24); return; }
-  const padR = 62, padB = 18, cw = (w - padR) / data.length;
-  let hi = -Infinity, lo = Infinity, vmax = 0; for (const c of data) { hi = Math.max(hi, +c.h); lo = Math.min(lo, +c.l); vmax = Math.max(vmax, +c.v); }
-  const pad = (hi - lo) * 0.08 || hi * 0.001; hi += pad; lo -= pad;
-  const Y = (p) => 6 + (1 - (p - lo) / (hi - lo)) * (h - padB - 6 - 30);
-  // grid
-  ctx.font = '10px JetBrains Mono, monospace'; ctx.textAlign = 'left';
-  for (let i = 0; i <= 5; i++) { const p = lo + ((hi - lo) * i) / 5, y = Y(p); ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w - padR, y); ctx.stroke(); ctx.fillStyle = C.dim; ctx.fillText(pxFmt(p), w - padR + 4, y + 3); }
-  data.forEach((c, i) => {
-    const x = i * cw + cw / 2, o = +c.o, cl = +c.c, up = cl >= o, col = up ? C.green : C.red;
-    // volume
-    ctx.fillStyle = (up ? C.green : C.red) + '30'; const vh = (+c.v / (vmax || 1)) * 28; ctx.fillRect(x - cw * 0.35, h - padB - vh, cw * 0.7, vh);
-    ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(x, Y(+c.h)); ctx.lineTo(x, Y(+c.l)); ctx.stroke();
-    const y1 = Y(Math.max(o, cl)), y2 = Y(Math.min(o, cl)); ctx.fillStyle = col; ctx.fillRect(x - cw * 0.35, y1, Math.max(1, cw * 0.7), Math.max(1, y2 - y1));
-    if (i % Math.ceil(60 / cw) === 0) { ctx.fillStyle = C.dim; ctx.fillText(utcTime(c.t).slice(0, 5), x - 14, h - 4); }
-  });
-  // EMA20 overlay (orange)
-  const k = 2 / 21; let e = null; ctx.strokeStyle = C.orange; ctx.lineWidth = 1.3; ctx.beginPath();
-  S.candles.forEach((c, idx) => { e = e == null ? +c.c : +c.c * k + e * (1 - k); const i = idx - (S.candles.length - data.length); if (i >= 0) { const x = i * cw + cw / 2; i ? ctx.lineTo(x, Y(e)) : ctx.moveTo(x, Y(e)); } });
-  ctx.stroke();
-  // entry line for open position
-  const pos = positions().find((p) => p.coin === S.coin);
-  if (pos && pos.entry > lo && pos.entry < hi) { ctx.setLineDash([4, 4]); ctx.strokeStyle = C.blue; ctx.beginPath(); ctx.moveTo(0, Y(pos.entry)); ctx.lineTo(w - padR, Y(pos.entry)); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = C.blue; ctx.fillText('ENTRY', 4, Y(pos.entry) - 3); }
-  // last price tag
-  const last = +data[data.length - 1].c, ly = Y(last), up = last >= +data[data.length - 1].o;
-  ctx.setLineDash([2, 3]); ctx.strokeStyle = up ? C.green : C.red; ctx.beginPath(); ctx.moveTo(0, ly); ctx.lineTo(w - padR, ly); ctx.stroke(); ctx.setLineDash([]);
-  ctx.fillStyle = up ? C.green : C.red; ctx.fillRect(w - padR, ly - 8, padR, 16); ctx.fillStyle = '#fff'; ctx.fillText(pxFmt(last), w - padR + 4, ly + 4);
-  ctx.fillStyle = C.dim; ctx.fillText('EMA20', 6, 14);
-}
-function candleLoop() { if (candleDirty) { candleDirty = false; drawCandles(); } requestAnimationFrame(candleLoop); }
-requestAnimationFrame(candleLoop);
-function updateMarketHead() {
-  const last = S.candles.length ? +S.candles[S.candles.length - 1].c : num(S.mids[S.coin]);
-  $('mkCoin').textContent = S.coin + '-PERP'; $('mkPx').textContent = pxFmt(last);
-  const ctx = S.ctx[S.coin]; if (ctx && +ctx.prevDayPx) { const ch = (last / +ctx.prevDayPx - 1) * 100; $('mkChg').textContent = '24H ' + sgn(ch, 2) + '%'; $('mkChg').className = cls(ch); }
-}
-function renderBook() {
-  const b = S.book; if (!b) return; const [bids, asks] = b.levels; const N = window.innerWidth < 680 ? 7 : 10;
-  const A = asks.slice(0, N), B = bids.slice(0, N); let cum = 0;
-  const ac = A.map((l) => (cum += +l.sz)); cum = 0; const bc = B.map((l) => (cum += +l.sz));
-  const mx = Math.max(ac[ac.length - 1] || 1, bc[bc.length - 1] || 1);
-  const row = (l, c) => `<div class="lvl"><i style="width:${(c / mx) * 100}%"></i><span>${pxFmt(l.px)}</span><span>${(+l.sz).toFixed(4)}</span><span>${c.toFixed(3)}</span></div>`;
-  $('asks').innerHTML = A.map((l, i) => row(l, ac[i])).reverse().join('');
-  $('bids').innerHTML = B.map((l, i) => row(l, bc[i])).join('');
-  if (A[0] && B[0]) { const sp = +A[0].px - +B[0].px, mid = (+A[0].px + +B[0].px) / 2; const dd = (String(A[0].px).split('.')[1] || '').length; $('spread').textContent = 'SPREAD ' + fmt(sp, dd) + ' (' + fmt((sp / mid) * 100, 4) + '%)'; }
-}
-function updateTabs() {
-  const set = new Set([S.coin, 'BTC', 'ETH', 'SOL', 'HYPE']); positions().forEach((p) => set.add(p.coin));
-  fillsArr().slice(0, 50).forEach((f) => { if (!f.coin.startsWith('@') && !f.coin.includes('/')) set.add(f.coin); });
-  const coins = [...set].slice(0, 8); const el = $('coinTabs');
-  const key = coins.join(',') + '|' + S.coin; if (el.dataset.k === key) return; el.dataset.k = key;
-  el.innerHTML = coins.map((c) => `<button class="${c === S.coin ? 'on' : ''}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
-}
-$('coinTabs').addEventListener('click', (e) => { const c = e.target.dataset && e.target.dataset.c; if (c && c !== S.coin) selectCoin(c); });
-async function selectCoin(c) {
-  const old = S.coin; S.coin = c; S.candles = []; S.book = null; $('asks').innerHTML = ''; $('bids').innerHTML = ''; candleDirty = true; updateTabs(); updateMarketHead();
-  wsSend({ method: 'unsubscribe', subscription: { type: 'candle', coin: old, interval: '5m' } });
-  wsSend({ method: 'unsubscribe', subscription: { type: 'l2Book', coin: old } });
-  subscribeMarket(); await loadCandles();
-}
-async function loadCandles() {
-  const coin = S.coin, end = Date.now();
-  try { const cs = await info({ type: 'candleSnapshot', req: { coin, interval: '5m', startTime: end - 200 * 300000, endTime: end } });
-    if (coin !== S.coin) return; S.candles = cs; candleDirty = true; updateMarketHead(); } catch (e) { console.warn(e); }
-  try { const b = await info({ type: 'l2Book', coin }); if (coin === S.coin) { S.book = b; renderBook(); } } catch (e) {}
-}
-function onCandle(c) {
-  if (c.s !== S.coin) return; const arr = S.candles, last = arr[arr.length - 1];
-  if (last && last.t === c.t) arr[arr.length - 1] = c; else if (!last || c.t > last.t) { arr.push(c); if (arr.length > 400) arr.shift(); }
-  candleDirty = true; updateMarketHead();
-}
-
-/* ---------- ticker ---------- */
-async function loadTop() {
-  try { const [meta, ctxs] = await info({ type: 'metaAndAssetCtxs' });
-    const rows = meta.universe.map((u, i) => ({ name: u.name, vol: +ctxs[i].dayNtlVlm, ctx: ctxs[i], dl: u.isDelisted }));
-    rows.forEach((r) => (S.ctx[r.name] = r.ctx));
-    S.top = rows.filter((r) => !r.dl).sort((a, b) => b.vol - a.vol).slice(0, 10).map((r) => r.name);
-    renderTicker(true); updateMarketHead();
-  } catch (e) { console.warn(e); }
-}
-let lastTicker = 0;
-function renderTicker(force) {
-  const now = Date.now(); if (!force && now - lastTicker < 2000) return; lastTicker = now;
-  if (!S.top.length) return;
-  const items = S.top.map((c) => {
-    const m = num(S.mids[c]) || num(S.ctx[c] && S.ctx[c].markPx), prev = num(S.ctx[c] && S.ctx[c].prevDayPx), ch = prev ? (m / prev - 1) * 100 : NaN;
-    const pm = num(S.prevMids[c]); const fl = isFinite(pm) && m !== pm ? (m > pm ? 'flash-up' : 'flash-down') : '';
-    return `<span class="tk ${fl}">${esc(c)} <b>${pxFmt(m)}</b><span class="c ${cls(ch)}">${isFinite(ch) ? (ch >= 0 ? '▲' : '▼') + fmt(Math.abs(ch), 2) + '%' : ''}</span></span>`;
-  }).join('');
-  const tr = $('ticker'); if (!tr.dataset.init) { tr.dataset.init = 1; }
-  tr.innerHTML = items + items; S.top.forEach((c) => (S.prevMids[c] = S.mids[c]));
-}
-
-/* ---------- bottom charts ---------- */
-function curveData() {
-  const p = S.portfolio && S.portfolio.find((x) => x[0] === 'allTime');
-  let hist = p ? p[1].accountValueHistory.map(([t, v]) => [t, +v]) : [];
-  const first = hist.findIndex((x) => x[1] > 0); hist = first >= 0 ? hist.slice(first) : [];
-  const lastT = hist.length ? hist[hist.length - 1][0] : 0;
-  return hist.concat(S.curveLive.filter((x) => x[0] > lastT));
-}
-function renderCurve() {
-  const { ctx, w, h } = setupCanvas($('curve')); const d = curveData();
-  ctx.font = '10px JetBrains Mono, monospace';
-  if (d.length < 2) { ctx.fillStyle = C.dim; ctx.fillText('RECORDING EQUITY CURVE…', 12, 24); return; }
-  let mn = Math.min(...d.map((x) => x[1]), CFG.BASELINE), mx = Math.max(...d.map((x) => x[1]), CFG.BASELINE); const pad = (mx - mn) * 0.15 || 0.05; mn -= pad; mx += pad;
-  const t0 = d[0][0], t1 = d[d.length - 1][0], padR = 50;
-  const X = (t) => 4 + ((t - t0) / (t1 - t0 || 1)) * (w - padR - 8), Y = (v) => 8 + (1 - (v - mn) / (mx - mn)) * (h - 28);
-  for (let i = 0; i <= 4; i++) { const v = mn + ((mx - mn) * i) / 4; ctx.strokeStyle = C.line; ctx.beginPath(); ctx.moveTo(0, Y(v)); ctx.lineTo(w - padR, Y(v)); ctx.stroke(); ctx.fillStyle = C.dim; ctx.fillText(fmt(v, 3), w - padR + 3, Y(v) + 3); }
-  const g = ctx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(245,124,0,.35)'); g.addColorStop(1, 'rgba(245,124,0,0)');
-  ctx.beginPath(); d.forEach(([t, v], i) => (i ? ctx.lineTo(X(t), Y(v)) : ctx.moveTo(X(t), Y(v)))); ctx.lineTo(X(t1), h - 20); ctx.lineTo(X(t0), h - 20); ctx.fillStyle = g; ctx.fill();
-  ctx.beginPath(); d.forEach(([t, v], i) => (i ? ctx.lineTo(X(t), Y(v)) : ctx.moveTo(X(t), Y(v)))); ctx.strokeStyle = C.orange; ctx.lineWidth = 2; ctx.stroke();
-  ctx.setLineDash([4, 4]); ctx.strokeStyle = C.blue; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, Y(CFG.BASELINE)); ctx.lineTo(w - padR, Y(CFG.BASELINE)); ctx.stroke(); ctx.setLineDash([]);
-  ctx.fillStyle = C.blue; ctx.fillText('BASELINE ' + CFG.BASELINE, 6, Y(CFG.BASELINE) - 4);
-  const lv = d[d.length - 1]; ctx.fillStyle = C.orange; ctx.beginPath(); ctx.arc(X(lv[0]), Y(lv[1]), 3.5, 0, 7); ctx.fill();
-  ctx.fillStyle = C.dim; ctx.fillText(utcDate(t0).slice(5) + ' ' + utcTime(t0).slice(0, 5), 4, h - 6); ctx.textAlign = 'right'; ctx.fillText(utcTime(t1).slice(0, 5) + ' UTC', w - padR, h - 6); ctx.textAlign = 'left';
-}
-function renderDaily() {
-  const { ctx, w, h } = setupCanvas($('daily')); ctx.font = '10px JetBrains Mono, monospace';
-  const days = {}; for (const f of S.fills.values()) { const d = utcDate(f.time); days[d] = (days[d] || 0) + (+f.closedPnl) - (+f.fee || 0); }
-  const keys = []; for (let i = 13; i >= 0; i--) keys.push(utcDate(Date.now() - i * 86400000));
-  const vals = keys.map((k) => days[k] || 0); const m = Math.max(...vals.map(Math.abs), 1e-4);
-  const bw = (w - 10) / keys.length, mid = (h - 20) / 2 + 4;
-  ctx.strokeStyle = C.line; ctx.beginPath(); ctx.moveTo(0, mid); ctx.lineTo(w, mid); ctx.stroke();
-  keys.forEach((k, i) => { const v = vals[i], bh = (Math.abs(v) / m) * ((h - 30) / 2), x = 5 + i * bw;
-    ctx.fillStyle = v >= 0 ? C.green : C.red; if (v !== 0) ctx.fillRect(x + bw * 0.15, v >= 0 ? mid - bh : mid, bw * 0.7, Math.max(1, bh));
-    if (i % 2 === 1 || bw > 34) { ctx.fillStyle = C.dim; ctx.fillText(k.slice(8), x + bw * 0.25, h - 4); }
-    if (v !== 0 && bw > 30) { ctx.fillStyle = v >= 0 ? C.green : C.red; ctx.fillText(sgn(v, 3), x, v >= 0 ? mid - bh - 3 : mid + bh + 10); } });
-  ctx.fillStyle = C.dim; ctx.fillText('14 DAYS · NET (AFTER FEES)', 6, 12);
-}
-
-/* ---------- bot.json ---------- */
-async function loadBot() {
-  try {
-    const url = CFG.BOT_JSON_URL + (CFG.BOT_JSON_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
-    const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error(r.status);
-    const ct = r.headers.get('content-type') || ''; const txt = await r.text(); if (/text\/html/.test(ct) && txt.trim().startsWith('<')) throw new Error('html');
-    S.bot = JSON.parse(txt); renderBot();
-  } catch (e) { if (!S.bot) renderBotEmpty(); }
-}
-function renderBotEmpty() {
-  $('signal').innerHTML = '<div class="waiting">WAITING FOR BOT DATA<span class="blink">_</span><div class="dim" style="font-size:10px;margin-top:8px">./data/bot.json NOT FOUND — DASHBOARD STILL RUNS NORMALLY</div></div>';
-  $('lessons').innerHTML = '<span class="lesson"><b>BOT LESSONS //</b></span><span class="lesson">WAITING FOR BOT DATA — LESSONS WILL APPEAR HERE</span><span class="lesson">DISCIPLINE &gt; PREDICTION</span><span class="lesson">ALWAYS SET A STOP</span>';
-}
-function renderBot() {
-  const b = S.bot || {}; const ls = b.last_signal || {}; const ds = b.daily_stop || {};
-  const status = String(b.status || 'UNKNOWN').toUpperCase(); const okS = /RUN|ACTIVE|ON/.test(status);
-  const conf = Math.max(0, Math.min(100, +b.confidence || 0)); const side = String(ls.side || '').toUpperCase();
-  const kill = b.kill_switch === true || (b.kill_switch && b.kill_switch.active);
-  const stale = b.updated_at ? (Date.now() - Date.parse(b.updated_at)) / 60000 : NaN;
-  $('signal').innerHTML = `
-    <div class="kv"><span>BOT STATUS</span><b><span class="badge ${okS ? 'ok' : 'warn'}">${okS ? '● ' : ''}${esc(status)}</span></b></div>
-    <div class="kv"><span>STRATEGY</span><b>${esc(b.strategy || '--')}</b></div>
-    <div class="kv"><span>LEVERAGE</span><b>${b.leverage ? esc(b.leverage) + 'X' : '--'}</b></div>
-    <div class="sigbox"><div class="dim" style="font-size:9px">LAST SIGNAL ${ls.time ? '· ' + esc(utcTime(Date.parse(ls.time) || Date.now())) : ''}</div>
-      <div class="big ${/LONG|BUY/.test(side) ? 'up' : /SHORT|SELL/.test(side) ? 'down' : ''}">${esc(side || '--')} ${esc(ls.coin || '')} ${ls.price ? '@ ' + pxFmt(ls.price) : ''}</div>
-      ${ls.reason ? `<div class="reason">${esc(ls.reason)}</div>` : ''}</div>
-    <div class="kv"><span>CONFIDENCE</span><b>${conf}%</b></div><div class="conf"><i style="width:${conf}%"></i></div>
-    <div class="kv"><span>DAILY STOP ${ds.limit_usd != null ? '(' + esc(ds.limit_usd) + ')' : ''}</span><b><span class="badge ${ds.triggered ? 'bad' : 'ok'}">${ds.triggered ? 'TRIGGERED' : ds.enabled === false ? 'OFF' : 'SAFE'}</span></b></div>
-    <div class="kv"><span>KILL-SWITCH</span><b><span class="badge ${kill ? 'bad' : 'ok'}">${kill ? 'ON ■' : 'OFF'}</span></b></div>
-    <div class="kv"><span>UPDATED (UTC)</span><b class="${stale > 75 ? 'down' : ''}">${b.updated_at ? esc(utcTime(Date.parse(b.updated_at))) + (isFinite(stale) ? ' (' + Math.round(stale) + ' MIN AGO)' : '') : '--'}</b></div>`;
-  const L = Array.isArray(b.lessons) && b.lessons.length ? b.lessons : ['NO LESSONS YET'];
-  const html = '<span class="lesson"><b>BOT LESSONS //</b></span>' + L.map((l) => `<span class="lesson">${esc(typeof l === 'string' ? l : l.text || JSON.stringify(l))}</span>`).join('');
-  const el = $('lessons'); if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
-  renderJournal();
-}
-
-/* ---------- decision journal ---------- */
-let jType = 'all';
 function renderJournal() {
-  const J = (Array.isArray((S.bot || {}).journal) ? S.bot.journal : []).slice().sort((a, b) => String(b.ts_utc).localeCompare(String(a.ts_utc)));
-  const types = ['all', 'evolution', 'decision', 'trade', 'risk', 'system'];
-  const fh = types.map((t) => `<button class="${t === jType ? 'on' : ''}" data-t="${t}">${t}${t === 'all' ? '' : ' ' + J.filter((e) => e.type === t).length}</button>`).join('');
-  const f = $('jfilter'); if (f.dataset.h !== fh) { f.dataset.h = fh; f.innerHTML = fh; }
-  const R = J.filter((e) => jType === 'all' || e.type === jType);
-  $('journalCount').textContent = J.length;
-  const html = R.length ? R.map((e) => `<div class="jent jt-${esc(e.type)}"><div class="jhead"><span class="jtag">${esc(e.type)}</span><span class="jtime">${esc(String(e.ts_utc || '').replace('T', ' ').replace('Z', ' UTC'))}</span>${e.version ? `<span class="jver">${esc(e.version)}</span>` : ''}</div><div class="jtitle">${esc(e.title)}</div>${e.detail ? `<div class="jdetail">${esc(e.detail)}</div>` : ''}</div>`).join('') : '<div class="dim jempty">NO JOURNAL ENTRIES YET</div>';
-  const el = $('journal'); if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
+  const J = (S.bot && S.bot.journal) || [], types = ['all', ...new Set(J.map((e) => e.type))];
+  if (!types.includes(S.jType)) S.jType = 'all';
+  $('jfilter').innerHTML = types.map((t) => `<button data-t="${esc(t)}" class="${t === S.jType ? 'on' : ''}">${t === 'all' ? 'All' : esc(t[0].toUpperCase() + t.slice(1))}<span>${t === 'all' ? J.length : J.filter((e) => e.type === t).length}</span></button>`).join('');
+  const L = J.filter((e) => S.jType === 'all' || e.type === S.jType);
+  setText('jCnt', String(L.length), 'cnt');
+  $('jBody').innerHTML = L.length ? L.map((e, k) => `<div class="je" style="--k:${Math.min(k, 12)}" data-q="${esc((e.title + ' ' + e.detail + ' ' + e.type).toLowerCase())}"><time>${utcFull(e.ts_utc)}</time><div><div class="jt"><span class="jtype ${esc(e.type)}">${esc(e.type)}</span>${esc(e.title)}${e.version ? `<span class="muted sm">${esc(e.version)}</span>` : ''}</div><p>${esc(e.detail)}</p></div></div>`).join('')
+    : emptyBox('i-journal', 'No journal entries', 'Decisions, evolution rounds, trades and risk events are logged here.');
+  applySearch();
 }
-document.addEventListener('click', (ev) => { const b = ev.target.closest && ev.target.closest('#jfilter button'); if (b) { jType = b.dataset.t; renderJournal(); } });
+function applySearch() {
+  const q = S.q.trim().toLowerCase();
+  document.querySelectorAll('[data-q]').forEach((el) => { el.style.display = !q || el.dataset.q.includes(q) ? '' : 'none'; });
+}
+function renderAll() { renderHeader(); renderCards(); renderAlerts(); renderPositions(); renderOrders(); renderHistory(); renderEvolution(); renderLimits(); renderJournal(); renderChart(); }
 
-/* ---------- REST polling ---------- */
-async function refreshAccount() {
+/* ---------- data loading ---------- */
+async function loadBot() {
+  try { const r = await fetch(CFG.BOT_JSON_URL + (CFG.BOT_JSON_URL.includes('?') ? '&' : '?') + '_=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw 0;
+    const j = await r.json(); const changed = JSON.stringify(j) !== JSON.stringify(S.bot); S.bot = j; S.botOk = true; if (changed) renderAll(); else renderHeader();
+  } catch (e) { S.botOk = false; renderHeader(); renderAlerts(); }
+}
+async function loadState() {
   try {
-    const [spot, perp, orders] = await Promise.all([
-      info({ type: 'spotClearinghouseState', user: USER }),
-      info({ type: 'clearinghouseState', user: USER }),
-      info({ type: 'frontendOpenOrders', user: USER }).catch(() => []),
-    ]);
-    const usdc = (spot.balances || []).find((b) => b.coin === 'USDC'); S.spotUsdc = usdc ? +usdc.total : 0;
-    S.perp = perp; S.orders = orders || [];
-    const coins = positions().map((p) => p.coin).sort().join(',');
-    if (S.lastPosCoins != null && coins !== S.lastPosCoins) {
-      const closed = S.lastPosCoins.split(',').filter((c) => c && !coins.split(',').includes(c));
-      if (closed.length && Date.now() - S.lastEventAt > 6000) orbEvent(null);
-    }
-    S.lastPosCoins = coins;
-    const eq = equityNow(); if (isFinite(eq)) { S.curveLive.push([Date.now(), eq]); if (S.curveLive.length > 2000) S.curveLive.shift(); }
-    renderPortfolio(true); renderPositions(); renderCurve(); updateTabs();
-  } catch (e) { console.warn('account', e); }
+    const [spot, ch, oo, mids] = await Promise.all([info({ type: 'spotClearinghouseState', user: USER }), info({ type: 'clearinghouseState', user: USER }), info({ type: 'frontendOpenOrders', user: USER }).catch(() => []), info({ type: 'allMids' })]);
+    S.spot = spot; S.ch = ch; S.orders = oo || []; S.mids = mids || {}; S.apiOk = true; S.apiAt = Date.now();
+  } catch (e) { S.apiOk = false; }
+  renderHeader(); renderCards(); renderPositions(); renderOrders(); renderAlerts();
 }
-async function loadPortfolio() { try { S.portfolio = await info({ type: 'portfolio', user: USER }); renderCurve(); renderPortfolio(true); } catch (e) { console.warn(e); } }
-async function loadFills() { try { const f = await info({ type: 'userFills', user: USER, aggregateByTime: false }); addFills(f, false); renderLogs(); renderDaily(); } catch (e) { console.warn(e); } }
-
-/* ---------- websocket with reconnect ---------- */
-let ws = null, backoff = 1000, pingT = null;
-function wsSend(o) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); }
-function subscribeMarket() {
-  wsSend({ method: 'subscribe', subscription: { type: 'candle', coin: S.coin, interval: '5m' } });
-  wsSend({ method: 'subscribe', subscription: { type: 'l2Book', coin: S.coin } });
+async function loadSlow() {
+  try { S.portfolio = await info({ type: 'portfolio', user: USER }); } catch (e) {}
+  try { const f = await info({ type: 'userFills', user: USER, aggregateByTime: true }); S.fills = (f || []).sort((a, b) => b.time - a.time); } catch (e) {}
+  renderCards(); renderHistory(); renderChart();
 }
-function connect() {
-  try { ws = new WebSocket(CFG.WS_URL); } catch (e) { return scheduleReconnect(); }
-  ws.onopen = () => {
-    S.wsAlive = true; S.lastMsg = Date.now(); backoff = 1000; tickClock();
-    wsSend({ method: 'subscribe', subscription: { type: 'allMids' } });
-    wsSend({ method: 'subscribe', subscription: { type: 'userFills', user: USER } });
-    subscribeMarket();
-    clearInterval(pingT); pingT = setInterval(() => wsSend({ method: 'ping' }), 25000);
-  };
-  ws.onmessage = (ev) => {
-    S.lastMsg = Date.now(); let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
-    const d = m.data;
-    switch (m.channel) {
-      case 'allMids': Object.assign(S.mids, d.mids); renderTicker(); renderPortfolio(); updatePosSparks(); if (!S.candles.length) updateMarketHead(); break;
-      case 'userFills': addFills(d.fills, !d.isSnapshot); break;
-      case 'candle': onCandle(d); break;
-      case 'l2Book': if (d.coin === S.coin) { S.book = d; renderBook(); } break;
-    }
-  };
-  ws.onclose = () => { S.wsAlive = false; clearInterval(pingT); tickClock(); scheduleReconnect(); };
-  ws.onerror = () => { try { ws.close(); } catch (e) {} };
+async function loadCandles(coin, tf) {
+  const k = coin + tf, cfg = { '24h': ['15m', 864e5], '7d': ['1h', 7 * 864e5], all: ['1d', 120 * 864e5] }[tf], end = Date.now();
+  try { const c = await info({ type: 'candleSnapshot', req: { coin, interval: cfg[0], startTime: end - cfg[1], endTime: end } }); S.candles[k] = c; if (S.series === coin && S.tf === tf) renderChart(true); } catch (e) {}
 }
-let reconT = null;
-function scheduleReconnect() { clearTimeout(reconT); reconT = setTimeout(() => { connect(); loadFills(); loadCandles(); }, backoff); backoff = Math.min(backoff * 2, 15000); }
-// watchdog: no messages for 60s -> force reconnect
-setInterval(() => { if (ws && ws.readyState === 1 && Date.now() - S.lastMsg > 60000) { try { ws.close(); } catch (e) {} } }, 10000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { if (!ws || ws.readyState > 1) { clearTimeout(reconT); backoff = 1000; connect(); } refreshAccount(); loadFills(); } });
 
-/* ---------- resize ---------- */
-let rzT; window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(() => { candleDirty = true; renderCurve(); renderDaily(); renderPortfolio(true); renderPositions(); renderBook(); }, 150); });
+/* ---------- UI wiring ---------- */
+function setSeries(s) { S.series = s; document.querySelectorAll('#seriesSeg button').forEach((b) => b.classList.toggle('on', b.dataset.s === s)); if (s !== 'equity') loadCandles(s, S.tf); renderChart(true); renderHeader(); }
+$('seriesSeg').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) setSeries(b.dataset.s); });
+$('tfSeg').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; S.tf = b.dataset.tf; document.querySelectorAll('#tfSeg button').forEach((x) => x.classList.toggle('on', x === b)); if (S.series !== 'equity') loadCandles(S.series, S.tf); renderChart(true); });
+$('markets').addEventListener('click', (e) => { const m = e.target.closest('.mkt'); if (m) { setSeries(m.dataset.c); closeMenu(); $('overview').scrollIntoView(); } });
+$('jfilter').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) { S.jType = b.dataset.t; renderJournal(); } });
+$('search').addEventListener('input', (e) => { S.q = e.target.value; applySearch(); });
+$('search').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('journal').scrollIntoView(); });
+$('heroChart').addEventListener('mousemove', chartHover);
+$('heroChart').addEventListener('mouseleave', () => { $('chartTip').style.opacity = 0; const h = $('cHover'); if (h) h.style.opacity = 0; });
+$('qaHL').href = 'https://app.hyperliquid.xyz/explorer/address/' + USER;
+$('qaExport').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify((S.bot && S.bot.journal) || [], null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `tony-alpha-journal-${new Date().toISOString().slice(0, 10)}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+});
+$('qaRollback').addEventListener('click', () => setTimeout(() => { const r = $('rollback'); if (r) { r.classList.remove('flash'); void r.offsetWidth; r.classList.add('flash'); } }, 500));
+const openMenu = () => document.body.classList.add('menu-open'), closeMenu = () => document.body.classList.remove('menu-open');
+$('openMenu').addEventListener('click', openMenu); $('closeMenu').addEventListener('click', closeMenu); $('scrim').addEventListener('click', closeMenu);
+document.querySelectorAll('#nav a, .qa a[href^="#"]').forEach((a) => a.addEventListener('click', closeMenu));
+// scroll spy + reveal
+const navA = [...document.querySelectorAll('#nav a')];
+const spy = new IntersectionObserver((es) => { es.forEach((e) => { if (e.isIntersecting) navA.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); }); }, { rootMargin: '-35% 0px -60% 0px' });
+['overview', 'positions', 'orders', 'history', 'evolution', 'journal', 'alerts'].forEach((id) => spy.observe($(id)));
+const rev = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rev.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach((el) => rev.observe(el));
+let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => renderChart(false), 120); }).observe($('heroChart'));
+function tick() { const d = new Date(); setText('clock', `${d.toUTCString().slice(0, 16)} · ${utcHMS(d)} UTC`); }
+setInterval(tick, 1000); tick();
 
-/* ---------- boot ---------- */
-renderBotEmpty(); updateTabs(); renderLogs(); renderDaily();
-connect();
-refreshAccount(); loadPortfolio(); loadFills(); loadCandles(); loadTop(); loadBot();
-setInterval(refreshAccount, CFG.STATE_POLL_MS || 5000);
-setInterval(loadPortfolio, 120000);
-setInterval(loadTop, 300000);
-setInterval(loadBot, CFG.BOT_POLL_MS || 30000);
-window.__HYPER = S; window.__HYPER_orbEvent = orbEvent; // debug
+renderAll();
+loadBot(); loadState(); loadSlow(); if (S.series !== 'equity') setSeries(S.series);
+setInterval(loadBot, CFG.BOT_POLL_MS); setInterval(loadState, Math.max(CFG.STATE_POLL_MS, 10000)); setInterval(loadSlow, 60000);
+setInterval(() => { if (S.series !== 'equity') loadCandles(S.series, S.tf); }, 60000);
+setInterval(() => { renderHeader(); renderAlerts(); }, 30000);
 })();
