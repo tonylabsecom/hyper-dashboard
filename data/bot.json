@@ -1,17 +1,71 @@
 {
- "updated_at": "2026-10-18T16:24:01Z",
- "published_at": "2026-10-18T16:24:10Z",
+ "updated_at": "2026-10-18T16:39:12Z",
+ "published_at": "2026-10-18T16:39:44Z",
  "status": "RUNNING",
  "mode": "LIVE",
- "strategy": "1H DONCHIAN-RETEST/EMA-PULLBACK · SELF-RETUNED DAILY",
+ "strategy": "15M TREND-PULLBACK v1.0 · BTC/ETH · SELF-EVOLVING",
+ "evolution": {
+  "updated_utc": "2026-10-18T16:32:58+00:00",
+  "round": 1,
+  "current_version": "v1.0",
+  "params": {
+   "rsi_lo": 40,
+   "rsi_hi": 60,
+   "min_conf": 4,
+   "vol_mult": 1.0,
+   "wick_min": 0.4,
+   "close_pos": 0.7,
+   "sl_mode": "swing",
+   "swing_n": 5,
+   "atr_mult": 1.5,
+   "min_stop": 0.005,
+   "tp1_r": 1.5,
+   "tp2_r": 3.0,
+   "be_r": 1.0,
+   "single_tp_r": 2.0,
+   "gap_min": 0.002,
+   "atrp_min": 0.002,
+   "slope_n": 3,
+   "hold_bars": 96
+  },
+  "change_tested": "min_conf: 4 -> 5",
+  "promoted": false,
+  "new_version": null,
+  "result": "kept v1.0 — 1 metrics improved >= 8% (sharpe); max DD not worse; sample too small",
+  "metrics": {
+   "current": {
+    "n": 932,
+    "pf": 0.88,
+    "sharpe": -1.4,
+    "expectancy": -0.0716,
+    "win": 0.367,
+    "mdd_R": 80.54,
+    "max_dd_pct": 34.62,
+    "end_equity": 3487.83
+   },
+   "variant": {
+    "n": 141,
+    "pf": 0.803,
+    "sharpe": -1.07,
+    "expectancy": -0.1247,
+    "win": 0.355,
+    "mdd_R": 19.99,
+    "max_dd_pct": 9.81,
+    "end_equity": 4563.34
+   }
+  },
+  "improvement_pct": {
+   "pf": -8.7,
+   "sharpe": 23.6,
+   "expectancy": -74.2
+  },
+  "warning": "Current version v1.0 has NEGATIVE expectancy (-0.072R, PF 0.88) on the last 365 days — it loses money in backtest.",
+  "next_round": "every 6h, or sooner after 15 new live signals"
+ },
  "leverage": "20–40",
  "coins": [
-  "ETH",
-  "HYPE",
-  "ZEC",
-  "NEAR",
-  "PUMP",
-  "WLD"
+  "BTC",
+  "ETH"
  ],
  "equity": 37.8894,
  "day_pnl_pct": 0.0,
@@ -22,14 +76,14 @@
  "positions": {},
  "pending_orders": 0,
  "last_signal": {
-  "coin": "XMR",
+  "coin": "ETH",
   "side": "NO SIGNAL",
-  "price": 582.36,
-  "time": "2026-10-18T16:01:03Z",
-  "reason": "vwap_fade on 1h bar 15:00: close 582.36 vs VWAP 588.857, RSI 53.8 — no setup"
+  "price": 2363.6,
+  "time": "2026-10-18T16:35:28Z",
+  "reason": "None on 15m bar 16:15: close 2363.6 vs VWAP --, RSI 22.4 — no setup"
  },
- "confidence": 57,
- "confidence_basis": "OOS win rate of vwap_fade on XMR",
+ "confidence": 36,
+ "confidence_basis": "OOS win rate of donchian_retest on ETH",
  "daily_stop": {
   "enabled": true,
   "limit_pct": -3.0,
@@ -40,7 +94,7 @@
  "kill_switch": false,
  "halted": null,
  "limits": {
-  "risk_per_trade_pct": 1.0,
+  "risk_per_trade_pct": 0.5,
   "max_open_risk_pct": 3.0,
   "max_trades_day": 100,
   "day_stop_pct": -3.0,
@@ -74,7 +128,7 @@
    },
    "ETH": {
     "family": "donchian_retest",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "stop": 1.5,
      "tp": 5.0,
@@ -91,7 +145,7 @@
    },
    "HYPE": {
     "family": "donchian_retest",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "stop": 2.5,
      "tp": 3.0,
@@ -108,7 +162,7 @@
    },
    "ZEC": {
     "family": "donchian_retest",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "stop": 1.5,
      "tp": 5.0,
@@ -125,7 +179,7 @@
    },
    "NEAR": {
     "family": "donchian_retest",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "stop": 1.5,
      "tp": 5.0,
@@ -159,7 +213,7 @@
    },
    "PUMP": {
     "family": "ema_pullback",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "stop": 1.5,
      "tp": 3.0,
@@ -211,7 +265,7 @@
    },
    "WLD": {
     "family": "donchian_retest",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "stop": 2.5,
      "tp": 3.0,
@@ -229,7 +283,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-18T16:24:09Z",
+  "updated_at": "2026-10-18T16:39:40Z",
   "equity": 5000.01,
   "pnl": 0.01,
   "sleeves": 3,
@@ -270,25 +324,29 @@
    [
     "2026-10-18T16:19:22Z",
     5000.01
+   ],
+   [
+    "2026-10-18T16:24:25Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:29:26Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:34:28Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:39:29Z",
+    5000.01
    ]
   ]
  },
  "lessons": [
-  "Daily self-review 2026-10-18 (walk-forward, after fees)",
-  "No live trade has closed yet — nothing to learn from real trades so far",
-  "Promotion rule: ≥20 OOS trades, t ≥ 2.0, avgR above the running strategy; OOS window from 2026-02-01",
-  "BTC: not trading — donchian_retest OOS n=265, avgR -0.014, t -0.21, win 46%",
-  "ETH: ENABLED — donchian_retest OOS n=213, avgR +0.099, t 0.88, win 36%",
-  "HYPE: ENABLED — donchian_retest OOS n=333, avgR +0.018, t 0.28, win 45%",
-  "ZEC: ENABLED — donchian_retest OOS n=247, avgR +0.179, t 1.73, win 38%",
-  "NEAR: ENABLED — donchian_retest OOS n=271, avgR +0.084, t 1.02, win 43%",
-  "SOL: not trading — donchian_retest OOS n=258, avgR -0.010, t -0.11, win 38%",
-  "PUMP: ENABLED — ema_pullback OOS n=900, avgR +0.002, t 0.05, win 48%",
-  "XRP: not trading — ema_pullback OOS n=851, avgR -0.048, t -1.61, win 51%",
-  "XMR: not trading — vwap_fade OOS n=160, avgR -0.008, t -0.13, win 57%",
-  "WLD: ENABLED — donchian_retest OOS n=273, avgR +0.118, t 1.26, win 39%",
-  "Trading live: ETH, HYPE, ZEC, NEAR, PUMP, WLD",
-  "Hard limits (never auto-changed): stop-loss on every trade · 1% risk/trade · open risk ≤ 3% · ≤ 100 trades/day · daily stop −3% · kill switch −20% from 37.93 USDC · no withdrawals/transfers",
-  "Note: few OOS trades per coin, results may be luck; past performance does not guarantee future results"
+  "Evolution round 1: current v1.0; tested min_conf 4 -> 5; kept v1.0 — 1 metrics improved >= 8% (sharpe); max DD not worse; sample too small",
+  "PF 0.88 -> 0.803; Sharpe -1.4 -> -1.07; expectancy -0.0716R -> -0.1247R; max DD 34.62% -> 9.81%; trades 932 -> 141",
+  "WARNING: Current version v1.0 has NEGATIVE expectancy (-0.072R, PF 0.88) on the last 365 days — it loses money in backtest.",
+  "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ]
 }
