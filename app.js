@@ -424,7 +424,7 @@ function renderBot() {
     <div class="kv"><span>CONFIDENCE</span><b>${conf}%</b></div><div class="conf"><i style="width:${conf}%"></i></div>
     <div class="kv"><span>DAILY STOP ${ds.limit_usd != null ? '(' + esc(ds.limit_usd) + ')' : ''}</span><b><span class="badge ${ds.triggered ? 'bad' : 'ok'}">${ds.triggered ? 'TRIGGERED' : ds.enabled === false ? 'OFF' : 'SAFE'}</span></b></div>
     <div class="kv"><span>KILL-SWITCH</span><b><span class="badge ${kill ? 'bad' : 'ok'}">${kill ? 'ON ■' : 'OFF'}</span></b></div>
-    <div class="kv"><span>UPDATED (UTC+7)</span><b class="${stale > 15 ? 'down' : ''}">${b.updated_at ? esc(vnTime(Date.parse(b.updated_at))) + (isFinite(stale) ? ' (' + Math.round(stale) + ' MIN AGO)' : '') : '--'}</b></div>`;
+    <div class="kv"><span>UPDATED (UTC+7)</span><b class="${stale > 75 ? 'down' : ''}">${b.updated_at ? esc(vnTime(Date.parse(b.updated_at))) + (isFinite(stale) ? ' (' + Math.round(stale) + ' MIN AGO)' : '') : '--'}</b></div>`;
   const L = Array.isArray(b.lessons) && b.lessons.length ? b.lessons : ['NO LESSONS YET'];
   const html = '<span class="lesson"><b>BOT LESSONS //</b></span>' + L.map((l) => `<span class="lesson">${esc(typeof l === 'string' ? l : l.text || JSON.stringify(l))}</span>`).join('');
   const el = $('lessons'); if (el.dataset.h !== html) { el.dataset.h = html; el.innerHTML = html; }
