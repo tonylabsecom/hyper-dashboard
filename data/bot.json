@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-18T16:41:17Z",
- "published_at": "2026-10-18T16:41:44Z",
+ "updated_at": "2026-10-18T16:57:12Z",
+ "published_at": "2026-10-18T16:57:36Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.0 · BTC/ETH · SELF-EVOLVING",
@@ -78,9 +78,9 @@
  "last_signal": {
   "coin": "ETH",
   "side": "NO SIGNAL",
-  "price": 2363.6,
-  "time": "2026-10-18T16:35:28Z",
-  "reason": "None on 15m bar 16:15: close 2363.6 vs VWAP --, RSI 22.4 — no setup"
+  "price": 2364.3,
+  "time": "2026-10-18T16:45:14Z",
+  "reason": "None on 15m bar 16:30: close 2364.3 vs VWAP --, RSI 23.5 — no setup"
  },
  "confidence": 36,
  "confidence_basis": "OOS win rate of donchian_retest on ETH",
@@ -283,7 +283,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-18T16:41:42Z",
+  "updated_at": "2026-10-18T16:57:33Z",
   "equity": 5000.01,
   "pnl": 0.01,
   "sleeves": 3,
@@ -340,6 +340,18 @@
    [
     "2026-10-18T16:39:29Z",
     5000.01
+   ],
+   [
+    "2026-10-18T16:44:30Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:49:32Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:54:33Z",
+    5000.01
    ]
   ]
  },
@@ -392,5 +404,104 @@
    "detail": "Owner's range was 0.3-0.5%. 0.3% was backtested and performed worse (more noise stop-outs), so v1.0 uses 0.5% (top of range). A hard floor of 0.3% is enforced in the live bot regardless of evolved parameters.",
    "version": "v1.0"
   }
+ ],
+ "version": "v1.0",
+ "margin_used": 0,
+ "upnl": 0.0,
+ "margin_cap_pct": 10.0,
+ "session_utc": [
+  7,
+  21
+ ],
+ "kill_level_usd": 30.344,
+ "position_details": {},
+ "pnl": {
+  "today_usd": 0.0,
+  "today_pct": 0.0,
+  "d7_usd": -0.0381,
+  "d7_pct": -0.1,
+  "d7_since": "2026-10-18T13:49:19Z",
+  "total_usd": -0.0406,
+  "total_pct": -0.11,
+  "trades_today": 0,
+  "trades_7d": 0,
+  "wins_7d": 0,
+  "closed_total": 0,
+  "wins_total": 0
+ },
+ "trades": [],
+ "equity_history": [
+  [
+   "2026-10-18T13:49:19Z",
+   37.9275
+  ],
+  [
+   "2026-10-18T13:50:05Z",
+   37.9275
+  ],
+  [
+   "2026-10-18T13:51:51Z",
+   37.9164
+  ],
+  [
+   "2026-10-18T15:42:15Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T15:48:01Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T15:57:15Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:01:01Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:06:01Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:11:01Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:16:01Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:21:01Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:25:22Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:30:12Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:35:12Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:35:26Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:41:17Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:45:12Z",
+   37.8894
+  ],
+  [
+   "2026-10-18T16:57:12Z",
+   37.8894
+  ]
  ]
 }
