@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-18T23:02:01+07:00",
- "published_at": "2026-10-18T23:02:57+07:00",
+ "updated_at": "2026-10-18T16:08:01Z",
+ "published_at": "2026-10-18T16:08:08Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "1H VWAP-FADE · SELF-RETUNED DAILY",
@@ -24,8 +24,8 @@
   "coin": "XMR",
   "side": "NO SIGNAL",
   "price": 582.36,
-  "time": "2026-10-18T23:01:03+07:00",
-  "reason": "vwap_fade on 1h bar 22:00: close 582.36 vs VWAP 588.857, RSI 53.8 — no setup"
+  "time": "2026-10-18T16:01:03Z",
+  "reason": "vwap_fade on 1h bar 15:00: close 582.36 vs VWAP 588.857, RSI 53.8 — no setup"
  },
  "confidence": 75,
  "confidence_basis": "OOS win rate of vwap_fade on XMR",
@@ -46,7 +46,7 @@
   "kill_dd_pct": -20.0
  },
  "selfimprove": {
-  "generated_at": "2026-10-18T22:37:59+07:00",
+  "generated_at": "2026-10-18T15:37:59Z",
   "oos_from": "2026-02-01",
   "rules": {
    "MIN_N": 20,
@@ -237,7 +237,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-18T23:02:57+07:00",
+  "updated_at": "2026-10-18T16:08:08Z",
   "equity": 5000.01,
   "pnl": 0.01,
   "sleeves": 3,
@@ -245,22 +245,26 @@
   "ws_connected": true,
   "fees": 0.0,
   "funding": 0.0,
-  "started_at": "2026-10-18T22:42:33+07:00",
+  "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
    [
-    "2026-10-18T22:42:34+07:00",
+    "2026-10-18T15:42:34Z",
     5000.01
    ],
    [
-    "2026-10-18T22:47:35+07:00",
+    "2026-10-18T15:47:35Z",
     5000.01
    ],
    [
-    "2026-10-18T22:54:08+07:00",
+    "2026-10-18T15:54:08Z",
     5000.01
    ],
    [
-    "2026-10-18T22:59:12+07:00",
+    "2026-10-18T15:59:12Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:04:13Z",
     5000.01
    ]
   ]
