@@ -1,16 +1,17 @@
 {
- "updated_at": "2026-10-18T16:08:01Z",
- "published_at": "2026-10-18T16:08:08Z",
+ "updated_at": "2026-10-18T16:24:01Z",
+ "published_at": "2026-10-18T16:24:10Z",
  "status": "RUNNING",
  "mode": "LIVE",
- "strategy": "1H VWAP-FADE · SELF-RETUNED DAILY",
+ "strategy": "1H DONCHIAN-RETEST/EMA-PULLBACK · SELF-RETUNED DAILY",
  "leverage": "20–40",
  "coins": [
-  "BTC",
+  "ETH",
+  "HYPE",
+  "ZEC",
   "NEAR",
   "PUMP",
-  "XRP",
-  "XMR"
+  "WLD"
  ],
  "equity": 37.8894,
  "day_pnl_pct": 0.0,
@@ -27,7 +28,7 @@
   "time": "2026-10-18T16:01:03Z",
   "reason": "vwap_fade on 1h bar 15:00: close 582.36 vs VWAP 588.857, RSI 53.8 — no setup"
  },
- "confidence": 75,
+ "confidence": 57,
  "confidence_basis": "OOS win rate of vwap_fade on XMR",
  "daily_stop": {
   "enabled": true,
@@ -46,7 +47,7 @@
   "kill_dd_pct": -20.0
  },
  "selfimprove": {
-  "generated_at": "2026-10-18T15:37:59Z",
+  "generated_at": "2026-10-18T16:22:31Z",
   "oos_from": "2026-02-01",
   "rules": {
    "MIN_N": 20,
@@ -55,152 +56,144 @@
   },
   "coins": {
    "BTC": {
-    "family": "vwap_fade",
-    "enabled": true,
+    "family": "donchian_retest",
+    "enabled": false,
     "params": {
-     "k": 2.5,
-     "stop": 3.0,
-     "rsi": 35,
-     "H": 24
+     "stop": 2.5,
+     "tp": 3.0,
+     "H": 48
     },
     "oos": {
-     "n": 16,
-     "avgR": 0.1868,
-     "t": 1.37,
-     "win": 0.812,
-     "sumR": 2.99,
-     "months_pos": "7/8"
+     "n": 265,
+     "avgR": -0.0141,
+     "t": -0.21,
+     "win": 0.464,
+     "sumR": -3.73,
+     "months_pos": "4/9"
     }
    },
    "ETH": {
-    "family": "vwap_fade",
-    "enabled": false,
+    "family": "donchian_retest",
+    "enabled": true,
     "params": {
-     "k": 2.5,
-     "stop": 3.0,
-     "rsi": 35,
-     "H": 24
+     "stop": 1.5,
+     "tp": 5.0,
+     "H": 48
     },
     "oos": {
-     "n": 12,
-     "avgR": -0.0702,
-     "t": -0.33,
-     "win": 0.667,
-     "sumR": -0.84,
-     "months_pos": "4/6"
+     "n": 213,
+     "avgR": 0.0989,
+     "t": 0.88,
+     "win": 0.362,
+     "sumR": 21.06,
+     "months_pos": "6/9"
     }
    },
    "HYPE": {
-    "family": "vwap_fade",
-    "enabled": false,
+    "family": "donchian_retest",
+    "enabled": true,
     "params": {
-     "k": 2.5,
-     "stop": 4.5,
-     "rsi": 35,
-     "H": 24
+     "stop": 2.5,
+     "tp": 3.0,
+     "H": 48
     },
     "oos": {
-     "n": 7,
-     "avgR": -0.1308,
-     "t": -0.67,
-     "win": 0.571,
-     "sumR": -0.92,
-     "months_pos": "3/5"
+     "n": 333,
+     "avgR": 0.0177,
+     "t": 0.28,
+     "win": 0.45,
+     "sumR": 5.91,
+     "months_pos": "4/9"
     }
    },
    "ZEC": {
-    "family": "vwap_fade",
-    "enabled": false,
+    "family": "donchian_retest",
+    "enabled": true,
     "params": {
-     "k": 2.5,
-     "stop": 4.5,
-     "rsi": 35,
-     "H": 24
+     "stop": 1.5,
+     "tp": 5.0,
+     "H": 48
     },
     "oos": {
-     "n": 14,
-     "avgR": -0.12,
-     "t": -0.7,
-     "win": 0.643,
-     "sumR": -1.68,
-     "months_pos": "3/7"
+     "n": 247,
+     "avgR": 0.1794,
+     "t": 1.73,
+     "win": 0.385,
+     "sumR": 44.31,
+     "months_pos": "7/9"
     }
    },
    "NEAR": {
-    "family": "vwap_fade",
+    "family": "donchian_retest",
     "enabled": true,
     "params": {
-     "k": 2.5,
-     "stop": 4.5,
-     "rsi": 35,
-     "H": 24
+     "stop": 1.5,
+     "tp": 5.0,
+     "H": 48
     },
     "oos": {
-     "n": 4,
-     "avgR": 0.2196,
-     "t": 431.35,
-     "win": 1.0,
-     "sumR": 0.88,
-     "months_pos": "2/2"
+     "n": 271,
+     "avgR": 0.0838,
+     "t": 1.02,
+     "win": 0.432,
+     "sumR": 22.72,
+     "months_pos": "4/9"
     }
    },
    "SOL": {
-    "family": "vwap_fade",
+    "family": "donchian_retest",
     "enabled": false,
     "params": {
-     "k": 2.5,
-     "stop": 3.0,
-     "rsi": 35,
-     "H": 24
+     "stop": 2.5,
+     "tp": 5.0,
+     "H": 48
     },
     "oos": {
-     "n": 16,
-     "avgR": -0.0406,
-     "t": -0.26,
-     "win": 0.562,
-     "sumR": -0.65,
-     "months_pos": "4/8"
+     "n": 258,
+     "avgR": -0.0102,
+     "t": -0.11,
+     "win": 0.384,
+     "sumR": -2.63,
+     "months_pos": "4/9"
     }
    },
    "PUMP": {
-    "family": "vwap_fade",
+    "family": "ema_pullback",
     "enabled": true,
     "params": {
-     "k": 2.5,
-     "stop": 3.0,
-     "rsi": 35,
+     "stop": 1.5,
+     "tp": 3.0,
      "H": 24
     },
     "oos": {
-     "n": 10,
-     "avgR": 0.1587,
-     "t": 1.14,
-     "win": 0.8,
-     "sumR": 1.59,
-     "months_pos": "5/6"
+     "n": 900,
+     "avgR": 0.0018,
+     "t": 0.05,
+     "win": 0.478,
+     "sumR": 1.63,
+     "months_pos": "3/9"
     }
    },
    "XRP": {
-    "family": "vwap_fade",
-    "enabled": true,
+    "family": "ema_pullback",
+    "enabled": false,
     "params": {
-     "k": 2.5,
-     "stop": 3.0,
-     "rsi": 35,
+     "stop": 2.5,
+     "tp": 3.0,
      "H": 24
     },
     "oos": {
-     "n": 21,
-     "avgR": 0.1161,
-     "t": 0.76,
-     "win": 0.762,
-     "sumR": 2.44,
-     "months_pos": "5/8"
+     "n": 851,
+     "avgR": -0.0484,
+     "t": -1.61,
+     "win": 0.508,
+     "sumR": -41.19,
+     "months_pos": "4/9"
     }
    },
    "XMR": {
     "family": "vwap_fade",
-    "enabled": true,
+    "enabled": false,
     "params": {
      "k": 2.5,
      "stop": 3.0,
@@ -208,36 +201,35 @@
      "H": 24
     },
     "oos": {
-     "n": 16,
-     "avgR": 0.1291,
-     "t": 0.83,
-     "win": 0.75,
-     "sumR": 2.07,
-     "months_pos": "5/7"
+     "n": 160,
+     "avgR": -0.0083,
+     "t": -0.13,
+     "win": 0.575,
+     "sumR": -1.32,
+     "months_pos": "6/9"
     }
    },
    "WLD": {
-    "family": "vwap_fade",
-    "enabled": false,
+    "family": "donchian_retest",
+    "enabled": true,
     "params": {
-     "k": 2.5,
-     "stop": 4.5,
-     "rsi": 35,
-     "H": 24
+     "stop": 2.5,
+     "tp": 3.0,
+     "H": 48
     },
     "oos": {
-     "n": 12,
-     "avgR": -0.1345,
-     "t": -0.7,
-     "win": 0.583,
-     "sumR": -1.61,
-     "months_pos": "3/7"
+     "n": 273,
+     "avgR": 0.1176,
+     "t": 1.26,
+     "win": 0.392,
+     "sumR": 32.11,
+     "months_pos": "5/9"
     }
    }
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-18T16:08:08Z",
+  "updated_at": "2026-10-18T16:24:09Z",
   "equity": 5000.01,
   "pnl": 0.01,
   "sleeves": 3,
@@ -266,6 +258,18 @@
    [
     "2026-10-18T16:04:13Z",
     5000.01
+   ],
+   [
+    "2026-10-18T16:09:18Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:14:22Z",
+    5000.01
+   ],
+   [
+    "2026-10-18T16:19:22Z",
+    5000.01
    ]
   ]
  },
@@ -273,17 +277,17 @@
   "Daily self-review 2026-10-18 (walk-forward, after fees)",
   "No live trade has closed yet — nothing to learn from real trades so far",
   "Promotion rule: ≥20 OOS trades, t ≥ 2.0, avgR above the running strategy; OOS window from 2026-02-01",
-  "BTC: ENABLED — vwap_fade OOS n=16, avgR +0.187, t 1.37, win 81%",
-  "ETH: not trading — vwap_fade OOS n=12, avgR -0.070, t -0.33, win 67%",
-  "HYPE: not trading — vwap_fade OOS n=7, avgR -0.131, t -0.67, win 57%",
-  "ZEC: not trading — vwap_fade OOS n=14, avgR -0.120, t -0.7, win 64%",
-  "NEAR: ENABLED — vwap_fade OOS n=4, avgR +0.220, t 431.35, win 100%",
-  "SOL: not trading — vwap_fade OOS n=16, avgR -0.041, t -0.26, win 56%",
-  "PUMP: ENABLED — vwap_fade OOS n=10, avgR +0.159, t 1.14, win 80%",
-  "XRP: ENABLED — vwap_fade OOS n=21, avgR +0.116, t 0.76, win 76%",
-  "XMR: ENABLED — vwap_fade OOS n=16, avgR +0.129, t 0.83, win 75%",
-  "WLD: not trading — vwap_fade OOS n=12, avgR -0.135, t -0.7, win 58%",
-  "Trading live: BTC, NEAR, PUMP, XRP, XMR",
+  "BTC: not trading — donchian_retest OOS n=265, avgR -0.014, t -0.21, win 46%",
+  "ETH: ENABLED — donchian_retest OOS n=213, avgR +0.099, t 0.88, win 36%",
+  "HYPE: ENABLED — donchian_retest OOS n=333, avgR +0.018, t 0.28, win 45%",
+  "ZEC: ENABLED — donchian_retest OOS n=247, avgR +0.179, t 1.73, win 38%",
+  "NEAR: ENABLED — donchian_retest OOS n=271, avgR +0.084, t 1.02, win 43%",
+  "SOL: not trading — donchian_retest OOS n=258, avgR -0.010, t -0.11, win 38%",
+  "PUMP: ENABLED — ema_pullback OOS n=900, avgR +0.002, t 0.05, win 48%",
+  "XRP: not trading — ema_pullback OOS n=851, avgR -0.048, t -1.61, win 51%",
+  "XMR: not trading — vwap_fade OOS n=160, avgR -0.008, t -0.13, win 57%",
+  "WLD: ENABLED — donchian_retest OOS n=273, avgR +0.118, t 1.26, win 39%",
+  "Trading live: ETH, HYPE, ZEC, NEAR, PUMP, WLD",
   "Hard limits (never auto-changed): stop-loss on every trade · 1% risk/trade · open risk ≤ 3% · ≤ 100 trades/day · daily stop −3% · kill switch −20% from 37.93 USDC · no withdrawals/transfers",
   "Note: few OOS trades per coin, results may be luck; past performance does not guarantee future results"
  ]
