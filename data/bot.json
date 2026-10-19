@@ -1,12 +1,12 @@
 {
- "updated_at": "2026-10-19T06:36:12Z",
- "published_at": "2026-10-19T06:36:53Z",
+ "updated_at": "2026-10-19T06:52:12Z",
+ "published_at": "2026-10-19T06:52:14Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
-  "updated_utc": "2026-10-19T04:46:29+00:00",
-  "round": 4,
+  "updated_utc": "2026-10-19T06:48:30+00:00",
+  "round": 5,
   "current_version": "v1.1-swing",
   "params": {
    "rsi_lo": 40,
@@ -39,36 +39,36 @@
    "ZEC",
    "BNB"
   ],
-  "change_tested": "vol_mult: 1.0 -> 1.1",
+  "change_tested": "atr_mult: 1.5 -> 1.75",
   "promoted": false,
   "new_version": null,
   "result": "kept v1.1-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
   "metrics": {
    "current": {
-    "n": 2556,
+    "n": 2555,
     "pf": 0.782,
     "sharpe": -3.64,
-    "expectancy": -0.1337,
+    "expectancy": -0.1336,
     "win": 0.34,
-    "mdd_R": 346.48,
-    "max_dd_pct": 74.4,
-    "end_equity": 1303.23
+    "mdd_R": 345.53,
+    "max_dd_pct": 74.32,
+    "end_equity": 1304.43
    },
    "variant": {
-    "n": 2489,
-    "pf": 0.759,
-    "sharpe": -3.86,
-    "expectancy": -0.1513,
-    "win": 0.335,
-    "mdd_R": 380.62,
-    "max_dd_pct": 78.61,
-    "end_equity": 1086.59
+    "n": 2536,
+    "pf": 0.77,
+    "sharpe": -3.92,
+    "expectancy": -0.1407,
+    "win": 0.337,
+    "mdd_R": 360.86,
+    "max_dd_pct": 76.4,
+    "end_equity": 1198.66
    }
   },
   "improvement_pct": {
-   "pf": -2.9,
-   "sharpe": -6.0,
-   "expectancy": -13.2
+   "pf": -1.5,
+   "sharpe": -7.7,
+   "expectancy": -5.3
   },
   "warning": "Current version v1.1-swing has NEGATIVE expectancy (-0.134R, PF 0.782) on the last 365 days — it loses money in backtest.",
   "next_round": "every 2h, or sooner after 15 new live signals",
@@ -337,12 +337,12 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T06:36:50Z",
+  "updated_at": "2026-10-19T06:52:13Z",
   "equity": 4999.65,
   "pnl": -0.35,
   "sleeves": 3,
   "open_positions": 0,
-  "ws_connected": false,
+  "ws_connected": true,
   "fees": 0.14,
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
@@ -658,16 +658,38 @@
    [
     "2026-10-19T06:34:12Z",
     4999.65
+   ],
+   [
+    "2026-10-19T06:45:05Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T06:50:07Z",
+    4999.65
    ]
   ]
  },
  "lessons": [
-  "Evolution round 4: current v1.1-swing; tested vol_mult 1.0 -> 1.1; kept v1.1-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
-  "PF 0.782 -> 0.759; Sharpe -3.64 -> -3.86; expectancy -0.1337R -> -0.1513R; max DD 74.4% -> 78.61%; trades 2556 -> 2489",
+  "Evolution round 5: current v1.1-swing; tested atr_mult 1.5 -> 1.75; kept v1.1-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
+  "PF 0.782 -> 0.77; Sharpe -3.64 -> -3.92; expectancy -0.1336R -> -0.1407R; max DD 74.32% -> 76.4%; trades 2555 -> 2536",
   "WARNING: Current version v1.1-swing has NEGATIVE expectancy (-0.134R, PF 0.782) on the last 365 days — it loses money in backtest.",
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T06:48:30Z",
+   "type": "evolution",
+   "title": "Round #5: atr_mult 1.5 -> 1.75 — NOT promoted",
+   "detail": "Trigger: schedule 2h. PF 0.782 -> 0.77; Sharpe -3.64 -> -3.92; expectancy -0.1336R -> -0.1407R; max DD 74.32% -> 76.4%; trades 2555 -> 2536 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T06:45:18Z",
+   "type": "system",
+   "title": "Live bot started (v1.1-swing)",
+   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T06:04:08Z",
    "type": "system",
@@ -1126,7 +1148,11 @@
    37.8955
   ],
   [
-   "2026-10-19T06:36:12Z",
+   "2026-10-19T06:46:13Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T06:52:12Z",
    37.8955
   ]
  ]
