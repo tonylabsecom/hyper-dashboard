@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T15:43:13Z",
- "published_at": "2026-10-19T15:43:16Z",
+ "updated_at": "2026-10-19T15:58:12Z",
+ "published_at": "2026-10-19T15:58:17Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,32 +121,31 @@
    "szDecimals": 3
   }
  },
- "equity": 37.6506,
- "day_pnl_pct": -0.65,
- "total_pct_vs_baseline": -0.74,
+ "equity": 37.614,
+ "day_pnl_pct": -0.74,
+ "total_pct_vs_baseline": -0.83,
  "baseline": 37.93,
  "trades_today": 5,
- "open_risk_usd": 0.4661,
+ "open_risk_usd": 0.292,
  "positions": {
-  "BTC": 26.28,
-  "ETH": 26.18,
-  "kPEPE": 11.43
+  "BTC": 26.22,
+  "ETH": 26.09
  },
  "pending_orders": 0,
  "last_signal": {
-  "coin": "ETH",
-  "side": "--",
-  "price": 2407.9,
-  "time": "2026-10-19T15:00:18Z",
-  "reason": "entry filled"
+  "coin": "kPEPE",
+  "side": "LONG",
+  "price": 0.004116,
+  "time": "2026-10-19T15:53:13Z",
+  "reason": "trade closed (None, -0.0429R)"
  },
- "confidence": 36,
- "confidence_basis": "OOS win rate of donchian_retest on ETH",
+ "confidence": null,
+ "confidence_basis": null,
  "daily_stop": {
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.2449,
+  "pnl_today": -0.2815,
   "triggered": false
  },
  "kill_switch": false,
@@ -341,9 +340,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T15:43:12Z",
-  "equity": 5000.85,
-  "pnl": 0.85,
+  "updated_at": "2026-10-19T15:58:15Z",
+  "equity": 5000.4,
+  "pnl": 0.4,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -351,18 +350,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T05:45:42Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T05:50:45Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T05:55:45Z",
-    4999.65
-   ],
    [
     "2026-10-19T06:04:02Z",
     4999.65
@@ -734,6 +721,18 @@
    [
     "2026-10-19T15:41:10Z",
     5000.67
+   ],
+   [
+    "2026-10-19T15:46:13Z",
+    5000.52
+   ],
+   [
+    "2026-10-19T15:51:15Z",
+    5000.64
+   ],
+   [
+    "2026-10-19T15:56:18Z",
+    5000.53
    ]
   ]
  },
@@ -744,6 +743,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T15:53:13Z",
+   "type": "trade",
+   "title": "Closed kPEPE LONG: -0.0429R",
+   "detail": "PnL -0.007472 USDC (after fees); entry 0.004116, initial stop 0.004053, TP1 hit False, breakeven True.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T15:31:48Z",
    "type": "decision",
@@ -1159,8 +1165,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 2.8473,
- "upnl": 0.0971,
+ "margin_used": 1.6993,
+ "upnl": 0.0629,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1183,23 +1189,7 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-19T14:15:17Z",
-   "notional": 26.28,
-   "version": "v1.1-swing"
-  },
-  "kPEPE": {
-   "side": "LONG",
-   "entry": 0.004116,
-   "stop": 0.004116,
-   "stop0": 0.004053,
-   "tp1": null,
-   "tp2": 0.004241999999999999,
-   "qty": 2763.0,
-   "risk_usd": 0.1741,
-   "breakeven": true,
-   "tp1_done": false,
-   "mode": "single",
-   "opened_at": "2026-10-19T14:15:25Z",
-   "notional": 11.43,
+   "notional": 26.22,
    "version": "v1.1-swing"
   },
   "ETH": {
@@ -1215,25 +1205,40 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-19T15:00:18Z",
-   "notional": 26.18,
+   "notional": 26.09,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.2449,
-  "today_pct": -0.65,
-  "d7_usd": -0.2769,
-  "d7_pct": -0.73,
+  "today_usd": -0.2815,
+  "today_pct": -0.74,
+  "d7_usd": -0.3135,
+  "d7_pct": -0.83,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.2794,
-  "total_pct": -0.74,
-  "trades_today": 3,
-  "trades_7d": 3,
+  "total_usd": -0.316,
+  "total_pct": -0.83,
+  "trades_today": 4,
+  "trades_7d": 4,
   "wins_7d": 1,
-  "closed_total": 3,
+  "closed_total": 4,
   "wins_total": 1
  },
  "trades": [
+  {
+   "coin": "kPEPE",
+   "side": "LONG",
+   "entry": 0.004116,
+   "stop0": 0.004053,
+   "qty": 2763.0,
+   "risk_usd": 0.17406899999999914,
+   "pnl": -0.007472,
+   "R": -0.0429,
+   "tp1_done": false,
+   "be": true,
+   "opened_at": "2026-10-19T14:15:25Z",
+   "closed_at": "2026-10-19T15:53:13Z",
+   "version": "v1.1-swing"
+  },
   {
    "coin": "BTC",
    "side": "LONG",
@@ -1564,22 +1569,25 @@
   [
    "2026-10-19T15:43:13Z",
    37.6506
+  ],
+  [
+   "2026-10-19T15:58:12Z",
+   37.614
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
-  "equity": 37.6506,
-  "day_pnl_pct": -0.65,
-  "total_pct_vs_baseline": -0.74,
-  "realized": -0.3396,
+  "equity": 37.614,
+  "day_pnl_pct": -0.74,
+  "total_pct_vs_baseline": -0.83,
+  "realized": -0.3419,
   "funding": -0.00245,
-  "upnl": 0.0971,
-  "fills": 7,
-  "margin_used": 2.8473,
+  "upnl": 0.0629,
+  "fills": 8,
+  "margin_used": 1.6993,
   "positions": {
-   "BTC": 26.28,
-   "ETH": 26.18,
-   "kPEPE": 11.43
+   "BTC": 26.22,
+   "ETH": 26.09
   },
   "coins": [
    "BTC",
@@ -1592,11 +1600,11 @@
   ]
  },
  "account": {
-  "equity": 37.6506,
-  "total_pct_vs_baseline": -0.74,
-  "free_equity": 37.6506,
-  "sizing_equity": 37.6506,
-  "margin_used_total": 2.8473,
+  "equity": 37.614,
+  "total_pct_vs_baseline": -0.83,
+  "free_equity": 37.614,
+  "sizing_equity": 37.614,
+  "margin_used_total": 1.6993,
   "external_margin_used": 0,
   "shared_with": "HST (other coins, isolated margin, cloid 0x485354)"
  },
