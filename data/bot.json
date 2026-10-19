@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T07:52:12Z",
- "published_at": "2026-10-19T07:52:16Z",
+ "updated_at": "2026-10-19T08:30:12Z",
+ "published_at": "2026-10-19T08:30:18Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -130,14 +130,14 @@
  "positions": {},
  "pending_orders": 0,
  "last_signal": {
-  "coin": "SOL",
-  "side": "SHORT",
-  "price": 102.27,
-  "time": "2026-10-19T00:44:08Z",
-  "reason": "trade closed (None, 0.0363R)"
+  "coin": "BTC",
+  "side": "--",
+  "price": 82758.0,
+  "time": "2026-10-19T08:30:17Z",
+  "reason": "entry filled"
  },
- "confidence": 38,
- "confidence_basis": "OOS win rate of donchian_retest on SOL",
+ "confidence": 46,
+ "confidence_basis": "OOS win rate of donchian_retest on BTC",
  "daily_stop": {
   "enabled": true,
   "limit_pct": -3.0,
@@ -337,7 +337,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T07:52:14Z",
+  "updated_at": "2026-10-19T08:30:13Z",
   "equity": 4999.65,
   "pnl": -0.35,
   "sleeves": 3,
@@ -347,18 +347,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-18T15:42:34Z",
-    5000.01
-   ],
-   [
-    "2026-10-18T15:47:35Z",
-    5000.01
-   ],
-   [
-    "2026-10-18T15:54:08Z",
-    5000.01
-   ],
    [
     "2026-10-18T15:59:12Z",
     5000.01
@@ -714,6 +702,34 @@
    [
     "2026-10-19T07:50:33Z",
     4999.65
+   ],
+   [
+    "2026-10-19T07:55:35Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T08:00:38Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T08:05:39Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T08:10:42Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T08:15:45Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T08:20:46Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T08:25:49Z",
+    4999.65
    ]
   ]
  },
@@ -724,6 +740,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T08:30:17Z",
+   "type": "trade",
+   "title": "Opened BTC",
+   "detail": "Entry 82758.0, qty 0.00032, stop 82337.245, risk $0.1346, exit mode partial.",
+   "version": null
+  },
   {
    "ts_utc": "2026-10-19T06:48:30Z",
    "type": "evolution",
@@ -1216,7 +1239,15 @@
    37.8955
   ],
   [
-   "2026-10-19T07:52:12Z",
+   "2026-10-19T08:02:12Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T08:17:12Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T08:30:12Z",
    37.8955
   ]
  ]
