@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T14:53:28Z",
- "published_at": "2026-10-19T14:53:55Z",
+ "updated_at": "2026-10-19T15:03:12Z",
+ "published_at": "2026-10-19T15:12:42Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,31 +121,32 @@
    "szDecimals": 3
   }
  },
- "equity": 37.608,
- "day_pnl_pct": -0.76,
- "total_pct_vs_baseline": -0.85,
+ "equity": 37.6242,
+ "day_pnl_pct": -0.72,
+ "total_pct_vs_baseline": -0.81,
  "baseline": 37.93,
- "trades_today": 4,
- "open_risk_usd": 0.3015,
+ "trades_today": 5,
+ "open_risk_usd": 0.4661,
  "positions": {
-  "BTC": 26.3,
-  "kPEPE": 11.4
+  "BTC": 26.32,
+  "ETH": 26.27,
+  "kPEPE": 11.42
  },
  "pending_orders": 0,
  "last_signal": {
-  "coin": "kPEPE",
+  "coin": "ETH",
   "side": "--",
-  "price": 0.004116,
-  "time": "2026-10-19T14:15:25Z",
+  "price": 2407.9,
+  "time": "2026-10-19T15:00:18Z",
   "reason": "entry filled"
  },
- "confidence": null,
- "confidence_basis": null,
+ "confidence": 36,
+ "confidence_basis": "OOS win rate of donchian_retest on ETH",
  "daily_stop": {
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.2875,
+  "pnl_today": -0.2713,
   "triggered": false
  },
  "kill_switch": false,
@@ -340,9 +341,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T14:53:51Z",
-  "equity": 5000.47,
-  "pnl": 0.47,
+  "updated_at": "2026-10-19T15:03:30Z",
+  "equity": 5000.75,
+  "pnl": 0.75,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -350,14 +351,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T05:04:55Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T05:09:56Z",
-    4999.65
-   ],
    [
     "2026-10-19T05:14:57Z",
     4999.65
@@ -733,6 +726,14 @@
    [
     "2026-10-19T14:53:18Z",
     5000.42
+   ],
+   [
+    "2026-10-19T14:58:18Z",
+    5000.55
+   ],
+   [
+    "2026-10-19T15:03:19Z",
+    5000.6
    ]
   ]
  },
@@ -743,6 +744,20 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T15:00:22Z",
+   "type": "decision",
+   "title": "Skipped ZEC signal",
+   "detail": "Valid signal not taken: notional 0.00 < $10.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T15:00:18Z",
+   "type": "trade",
+   "title": "Opened ETH",
+   "detail": "Entry 2407.9, qty 0.0109, stop 2423.0, risk $0.1646, exit mode partial.",
+   "version": null
+  },
   {
    "ts_utc": "2026-10-19T14:38:03Z",
    "type": "system",
@@ -1102,8 +1117,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 1.7978,
- "upnl": 0.0211,
+ "margin_used": 2.8504,
+ "upnl": 0.0353,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1126,7 +1141,7 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-19T14:15:17Z",
-   "notional": 26.3,
+   "notional": 26.32,
    "version": "v1.1-swing"
   },
   "kPEPE": {
@@ -1142,18 +1157,34 @@
    "tp1_done": false,
    "mode": "single",
    "opened_at": "2026-10-19T14:15:25Z",
-   "notional": 11.4,
+   "notional": 11.42,
+   "version": "v1.1-swing"
+  },
+  "ETH": {
+   "side": "SHORT",
+   "entry": 2407.9,
+   "stop": 2423.0,
+   "stop0": 2423.0,
+   "tp1": 2385.25,
+   "tp2": 2362.6000000000004,
+   "qty": 0.0109,
+   "risk_usd": 0.1646,
+   "breakeven": false,
+   "tp1_done": false,
+   "mode": "partial",
+   "opened_at": "2026-10-19T15:00:18Z",
+   "notional": 26.27,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.2875,
-  "today_pct": -0.76,
-  "d7_usd": -0.3195,
-  "d7_pct": -0.84,
+  "today_usd": -0.2713,
+  "today_pct": -0.72,
+  "d7_usd": -0.3033,
+  "d7_pct": -0.8,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.322,
-  "total_pct": -0.85,
+  "total_usd": -0.3058,
+  "total_pct": -0.81,
   "trades_today": 3,
   "trades_7d": 3,
   "wins_7d": 1,
@@ -1479,6 +1510,10 @@
   [
    "2026-10-19T14:53:28Z",
    37.608
+  ],
+  [
+   "2026-10-19T15:03:12Z",
+   37.6242
   ]
  ]
 }
