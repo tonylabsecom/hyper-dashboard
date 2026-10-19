@@ -1,12 +1,12 @@
 {
- "updated_at": "2026-10-19T02:34:12Z",
- "published_at": "2026-10-19T02:39:24Z",
+ "updated_at": "2026-10-19T02:55:12Z",
+ "published_at": "2026-10-19T02:55:18Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
-  "updated_utc": "2026-10-19T00:44:24+00:00",
-  "round": 2,
+  "updated_utc": "2026-10-19T02:44:52+00:00",
+  "round": 3,
   "current_version": "v1.1-swing",
   "params": {
    "rsi_lo": 40,
@@ -39,39 +39,40 @@
    "ZEC",
    "BNB"
   ],
-  "change_tested": "rsi_lo: 40 -> 42",
+  "change_tested": "rsi_hi: 60 -> 62",
   "promoted": false,
   "new_version": null,
-  "result": "kept v1.1-swing — 1 metrics improved >= 8% (sharpe); max DD not worse; sample ok",
+  "result": "kept v1.1-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
   "metrics": {
    "current": {
-    "n": 1618,
-    "pf": 0.816,
-    "sharpe": -2.65,
-    "expectancy": -0.1126,
-    "win": 0.339,
-    "mdd_R": 189.99,
-    "max_dd_pct": 63.31,
-    "end_equity": 1882.71
+    "n": 1934,
+    "pf": 0.881,
+    "sharpe": -1.64,
+    "expectancy": -0.0714,
+    "win": 0.359,
+    "mdd_R": 160.24,
+    "max_dd_pct": 46.36,
+    "end_equity": 2873.27
    },
    "variant": {
-    "n": 1580,
-    "pf": 0.829,
-    "sharpe": -2.41,
-    "expectancy": -0.1043,
-    "win": 0.341,
-    "mdd_R": 173.16,
-    "max_dd_pct": 60.0,
-    "end_equity": 2058.2
+    "n": 1962,
+    "pf": 0.879,
+    "sharpe": -1.61,
+    "expectancy": -0.0728,
+    "win": 0.357,
+    "mdd_R": 165.52,
+    "max_dd_pct": 47.52,
+    "end_equity": 2828.85
    }
   },
   "improvement_pct": {
-   "pf": 1.6,
-   "sharpe": 9.1,
-   "expectancy": 7.4
+   "pf": -0.2,
+   "sharpe": 1.8,
+   "expectancy": -2.0
   },
-  "warning": "Current version v1.1-swing has NEGATIVE expectancy (-0.113R, PF 0.816) on the last 365 days — it loses money in backtest.",
-  "next_round": "every 6h, or sooner after 15 new live signals"
+  "warning": "Current version v1.1-swing has NEGATIVE expectancy (-0.071R, PF 0.881) on the last 365 days — it loses money in backtest.",
+  "next_round": "every 2h, or sooner after 15 new live signals",
+  "guards": null
  },
  "leverage": "20–40",
  "coins": [
@@ -336,9 +337,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T02:39:20Z",
-  "equity": 5000.19,
-  "pnl": 0.19,
+  "updated_at": "2026-10-19T02:55:15Z",
+  "equity": 4999.62,
+  "pnl": -0.38,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -477,16 +478,63 @@
    [
     "2026-10-19T02:39:15Z",
     5000.2
+   ],
+   [
+    "2026-10-19T02:44:19Z",
+    4999.97
+   ],
+   [
+    "2026-10-19T02:49:20Z",
+    4999.72
+   ],
+   [
+    "2026-10-19T02:54:22Z",
+    4999.65
    ]
   ]
  },
  "lessons": [
-  "Evolution round 2: current v1.1-swing; tested rsi_lo 40 -> 42; kept v1.1-swing — 1 metrics improved >= 8% (sharpe); max DD not worse; sample ok",
-  "PF 0.816 -> 0.829; Sharpe -2.65 -> -2.41; expectancy -0.1126R -> -0.1043R; max DD 63.31% -> 60.0%; trades 1618 -> 1580",
-  "WARNING: Current version v1.1-swing has NEGATIVE expectancy (-0.113R, PF 0.816) on the last 365 days — it loses money in backtest.",
+  "Evolution round 3: current v1.1-swing; tested rsi_hi 60 -> 62; kept v1.1-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
+  "PF 0.881 -> 0.879; Sharpe -1.64 -> -1.61; expectancy -0.0714R -> -0.0728R; max DD 46.36% -> 47.52%; trades 1934 -> 1962",
+  "WARNING: Current version v1.1-swing has NEGATIVE expectancy (-0.071R, PF 0.881) on the last 365 days — it loses money in backtest.",
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T02:50:06Z",
+   "type": "decision",
+   "title": "OWNER OVERRIDE: entries allowed 24h (07-21 UTC session limit removed)",
+   "detail": "Owner Tony explicitly instructed: trade all hours. This is an owner override, NOT an automatic loosening. Session is a fixed setting (tp_strategy.SESSION = 0-24 UTC), not an evolvable parameter: Evolution cannot re-add or remove it, and every backtest/Evolution round now uses 24h, same as live. Recorded in versions/current.json as owner_overrides. All other hard limits unchanged (news filter still active). Applied 02:41 UTC with the account flat.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T02:50:06Z",
+   "type": "decision",
+   "title": "Backtest v1.1-swing: 24h vs 07-21 UTC session (7 coins, 12 months)",
+   "detail": "Fees, Hyperliquid funding and worst-fill sizing included, 5000 USD start. Session 07-21 UTC: 1934 trades (5.3/day), PF 0.881, Sharpe -1.64, exp -0.071R, max DD 46.36%, return -42.5%. 24h: 2556 trades (7.0/day), PF 0.782, Sharpe -3.64, exp -0.133R, max DD 74.28%, return -73.9%. At live equity 37.89 USD: session 1761 trades (4.82/day), PF 0.858, Sharpe -1.4, exp -0.090R, max DD 56.95%, return -49.6%; 24h 1863 trades (5.1/day), PF 0.804, Sharpe -2.29, exp -0.129R, max DD 65.08%, return -63.1%.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T02:50:06Z",
+   "type": "risk",
+   "title": "Warning: 24h trading is WORSE than session-limited in backtest",
+   "detail": "24h adds about 1.7 trades/day but lowers PF (0.881 to 0.782) and expectancy (-0.071R to -0.133R), and raises max DD (46% to 74%). Applied anyway per owner override.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T02:50:06Z",
+   "type": "evolution",
+   "title": "Round 3 ran with the old 07-21 session",
+   "detail": "Round 3 (02:44 UTC, rsi_hi 60 to 62, not promoted) was scored before the daemon reloaded the 24h setting. The variant is un-marked as tested so it can be re-scored with 24h; the daemon was restarted at 02:51 UTC. Next round due 04:44 UTC.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T02:44:52Z",
+   "type": "evolution",
+   "title": "Round #3: rsi_hi 60 -> 62 — NOT promoted",
+   "detail": "Trigger: schedule 2h. PF 0.881 -> 0.879; Sharpe -1.64 -> -1.61; expectancy -0.0714R -> -0.0728R; max DD 46.36% -> 47.52%; trades 1934 -> 1962 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T02:24:25Z",
    "type": "system",
@@ -689,9 +737,11 @@
  "upnl": 0.0,
  "margin_cap_pct": 10.0,
  "session_utc": [
-  7,
-  21
+  0,
+  24
  ],
+ "session_label": "24h (owner override)",
+ "session_note": "owner override 2026-10-19: 24h (was 07-21 UTC)",
  "kill_level_usd": 30.344,
  "position_details": {},
  "pnl": {
@@ -823,7 +873,11 @@
    37.8955
   ],
   [
-   "2026-10-19T02:34:12Z",
+   "2026-10-19T02:40:12Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T02:55:12Z",
    37.8955
   ]
  ]
