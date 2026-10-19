@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T13:46:12Z",
- "published_at": "2026-10-19T13:46:15Z",
+ "updated_at": "2026-10-19T14:01:12Z",
+ "published_at": "2026-10-19T14:01:16Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,22 +121,20 @@
    "szDecimals": 3
   }
  },
- "equity": 37.6736,
- "day_pnl_pct": -0.59,
- "total_pct_vs_baseline": -0.68,
+ "equity": 37.5827,
+ "day_pnl_pct": -0.83,
+ "total_pct_vs_baseline": -0.92,
  "baseline": 37.93,
  "trades_today": 2,
- "open_risk_usd": 0.1209,
- "positions": {
-  "BTC": 26.32
- },
+ "open_risk_usd": 0,
+ "positions": {},
  "pending_orders": 0,
  "last_signal": {
   "coin": "BTC",
-  "side": "--",
+  "side": "LONG",
   "price": 82339.0,
-  "time": "2026-10-19T10:45:16Z",
-  "reason": "entry filled"
+  "time": "2026-10-19T14:01:12Z",
+  "reason": "trade closed (None, -1.2542R)"
  },
  "confidence": 46,
  "confidence_basis": "OOS win rate of donchian_retest on BTC",
@@ -144,7 +142,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.2219,
+  "pnl_today": -0.3128,
   "triggered": false
  },
  "kill_switch": false,
@@ -339,7 +337,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T13:46:12Z",
+  "updated_at": "2026-10-19T14:01:14Z",
   "equity": 4999.65,
   "pnl": -0.35,
   "sleeves": 3,
@@ -349,18 +347,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T04:19:34Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T04:24:36Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T04:29:39Z",
-    4999.65
-   ],
    [
     "2026-10-19T04:34:40Z",
     4999.65
@@ -732,6 +718,18 @@
    [
     "2026-10-19T13:45:55Z",
     4999.65
+   ],
+   [
+    "2026-10-19T13:50:58Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T13:56:01Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T14:01:03Z",
+    4999.65
    ]
   ]
  },
@@ -742,6 +740,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T14:01:12Z",
+   "type": "trade",
+   "title": "Closed BTC LONG: -1.2542R",
+   "detail": "PnL -0.151655 USDC (after fees); entry 82339.0, initial stop 81961.135, TP1 hit False, breakeven False.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T13:13:56Z",
    "type": "evolution",
@@ -1073,8 +1078,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 0.6581,
- "upnl": -0.0246,
+ "margin_used": 0,
+ "upnl": 0.0,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1083,39 +1088,37 @@
  "session_label": "24h (owner override)",
  "session_note": "owner override 2026-10-19: 24h (was 07-21 UTC)",
  "kill_level_usd": 30.344,
- "position_details": {
-  "BTC": {
-   "side": "LONG",
-   "entry": 82339.0,
-   "stop": 81961.135,
-   "stop0": 81961.135,
-   "tp1": 82905.79750000002,
-   "tp2": 83472.59500000002,
-   "qty": 0.00032,
-   "risk_usd": 0.1209,
-   "breakeven": false,
-   "tp1_done": false,
-   "mode": "partial",
-   "opened_at": "2026-10-19T10:45:16Z",
-   "notional": 26.32,
-   "version": "v1.1-swing"
-  }
- },
+ "position_details": {},
  "pnl": {
-  "today_usd": -0.2219,
-  "today_pct": -0.59,
-  "d7_usd": -0.2539,
-  "d7_pct": -0.67,
+  "today_usd": -0.3128,
+  "today_pct": -0.83,
+  "d7_usd": -0.3448,
+  "d7_pct": -0.91,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.2564,
-  "total_pct": -0.68,
-  "trades_today": 2,
-  "trades_7d": 2,
+  "total_usd": -0.3473,
+  "total_pct": -0.92,
+  "trades_today": 3,
+  "trades_7d": 3,
   "wins_7d": 1,
-  "closed_total": 2,
+  "closed_total": 3,
   "wins_total": 1
  },
  "trades": [
+  {
+   "coin": "BTC",
+   "side": "LONG",
+   "entry": 82339.0,
+   "stop0": 81961.135,
+   "qty": 0.00032,
+   "risk_usd": 0.12091680000000168,
+   "pnl": -0.151655,
+   "R": -1.2542,
+   "tp1_done": false,
+   "be": false,
+   "opened_at": "2026-10-19T10:45:16Z",
+   "closed_at": "2026-10-19T14:01:12Z",
+   "version": "v1.1-swing"
+  },
   {
    "coin": "BTC",
    "side": "LONG",
@@ -1403,6 +1406,10 @@
   [
    "2026-10-19T13:46:12Z",
    37.6736
+  ],
+  [
+   "2026-10-19T14:01:12Z",
+   37.5827
   ]
  ]
 }
