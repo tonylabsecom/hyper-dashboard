@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-18T17:19:12Z",
- "published_at": "2026-10-18T17:19:14Z",
+ "updated_at": "2026-10-19T00:44:08Z",
+ "published_at": "2026-10-19T00:44:10Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -120,22 +120,20 @@
    "szDecimals": 3
   }
  },
- "equity": 37.865,
- "day_pnl_pct": -0.06,
- "total_pct_vs_baseline": -0.17,
+ "equity": 37.8955,
+ "day_pnl_pct": 0.0,
+ "total_pct_vs_baseline": -0.09,
  "baseline": 37.93,
- "trades_today": 1,
- "open_risk_usd": 0.1966,
- "positions": {
-  "SOL": 37.84
- },
+ "trades_today": 0,
+ "open_risk_usd": 0,
+ "positions": {},
  "pending_orders": 0,
  "last_signal": {
   "coin": "SOL",
-  "side": "--",
+  "side": "SHORT",
   "price": 102.27,
-  "time": "2026-10-18T17:18:05Z",
-  "reason": "entry filled"
+  "time": "2026-10-19T00:44:08Z",
+  "reason": "trade closed (None, 0.0363R)"
  },
  "confidence": 38,
  "confidence_basis": "OOS win rate of donchian_retest on SOL",
@@ -143,7 +141,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.0244,
+  "pnl_today": 0.0061,
   "triggered": false
  },
  "kill_switch": false,
@@ -338,13 +336,13 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-18T17:19:13Z",
-  "equity": 5000.01,
-  "pnl": 0.01,
+  "updated_at": "2026-10-19T00:44:10Z",
+  "equity": 4999.96,
+  "pnl": -0.04,
   "sleeves": 3,
-  "open_positions": 0,
+  "open_positions": 1,
   "ws_connected": true,
-  "fees": 0.0,
+  "fees": 0.02,
   "funding": 0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
@@ -411,6 +409,14 @@
    [
     "2026-10-18T17:18:15Z",
     5000.01
+   ],
+   [
+    "2026-10-18T17:23:16Z",
+    5000.01
+   ],
+   [
+    "2026-10-19T00:43:49Z",
+    4999.97
    ]
   ]
  },
@@ -421,6 +427,41 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T00:44:08Z",
+   "type": "trade",
+   "title": "Closed SOL SHORT: 0.0363R",
+   "detail": "PnL 0.007142 USDC (after fees); entry 102.27, initial stop 102.80145, TP1 hit False, breakeven False.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T00:44:07Z",
+   "type": "system",
+   "title": "Live bot started (v1.1-swing)",
+   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-18T17:23:08Z",
+   "type": "decision",
+   "title": "Sizing now uses worst allowed fill (0.5% risk is a hard cap incl. slippage)",
+   "detail": "Owner decision: position size = 0.5% of equity / |IOC limit price - stop|, so even a fill at the 0.2% slippage limit risks at most 0.5%. Min-stop trades get smaller (e.g. SOL at a 0.5% stop: about 0.26 SOL / 26.6 USD instead of 0.37 / 37.9; still above the 10 USD minimum). New entries only. The open SOL short (0.52% actual risk) is accepted as-is: its stop, TP1 and trailing logic are untouched. Backtest sizing updated to match.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-18T17:19:17Z",
+   "type": "system",
+   "title": "Live bot restarted: 7 coins, v1.1-swing",
+   "detail": "Box rebooted around 17:06 UTC (all bot processes down, Python venv lost; rebuilt with hyperliquid-python-sdk 0.24.0). Account verified flat (no positions, no orders) before restart at 17:17 UTC. Watching BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB. Watchdog, evolution daemon, publisher and paper bot running.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-18T17:19:17Z",
+   "type": "risk",
+   "title": "Note: first SOL fill risk 0.52% vs 0.5% target",
+   "detail": "Size is computed from the bar close; the IOC fill (102.27 vs 102.29 close) widened the stop distance, so actual risk is 0.1966 USDC (0.52% of equity). Flagged for owner review; sizing rule unchanged for now.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-18T17:18:05Z",
    "type": "trade",
@@ -549,8 +590,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 1.8922,
- "upnl": -0.0037,
+ "margin_used": 0,
+ "upnl": 0.0,
  "margin_cap_pct": 10.0,
  "session_utc": [
   7,
@@ -571,25 +612,41 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-18T17:18:05Z",
-   "notional": 37.84,
+   "notional": null,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.0244,
-  "today_pct": -0.06,
-  "d7_usd": -0.0625,
-  "d7_pct": -0.16,
+  "today_usd": 0.0061,
+  "today_pct": 0.02,
+  "d7_usd": -0.032,
+  "d7_pct": -0.08,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.065,
-  "total_pct": -0.17,
-  "trades_today": 0,
-  "trades_7d": 0,
-  "wins_7d": 0,
-  "closed_total": 0,
-  "wins_total": 0
+  "total_usd": -0.0345,
+  "total_pct": -0.09,
+  "trades_today": 1,
+  "trades_7d": 1,
+  "wins_7d": 1,
+  "closed_total": 1,
+  "wins_total": 1
  },
- "trades": [],
+ "trades": [
+  {
+   "coin": "SOL",
+   "side": "SHORT",
+   "entry": 102.27,
+   "stop0": 102.80145,
+   "qty": 0.37,
+   "risk_usd": 0.19663650000000246,
+   "pnl": 0.007142,
+   "R": 0.0363,
+   "tp1_done": false,
+   "be": false,
+   "opened_at": "2026-10-18T17:18:05Z",
+   "closed_at": "2026-10-19T00:44:08Z",
+   "version": "v1.1-swing"
+  }
+ ],
  "equity_history": [
   [
    "2026-10-18T13:49:19Z",
@@ -664,8 +721,8 @@
    37.8894
   ],
   [
-   "2026-10-18T17:19:12Z",
-   37.865
+   "2026-10-19T00:44:08Z",
+   37.8955
   ]
  ]
 }
