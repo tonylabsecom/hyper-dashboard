@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T10:30:12Z",
- "published_at": "2026-10-19T10:31:05Z",
+ "updated_at": "2026-10-19T10:45:12Z",
+ "published_at": "2026-10-19T10:46:07Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -131,10 +131,10 @@
  "pending_orders": 0,
  "last_signal": {
   "coin": "BTC",
-  "side": "LONG",
-  "price": 82758.0,
-  "time": "2026-10-19T10:28:12Z",
-  "reason": "trade closed (None, -1.1819R)"
+  "side": "--",
+  "price": 82339.0,
+  "time": "2026-10-19T10:45:16Z",
+  "reason": "entry filled"
  },
  "confidence": 46,
  "confidence_basis": "OOS win rate of donchian_retest on BTC",
@@ -337,7 +337,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T10:31:04Z",
+  "updated_at": "2026-10-19T10:46:06Z",
   "equity": 4999.65,
   "pnl": -0.35,
   "sleeves": 3,
@@ -347,18 +347,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T01:44:22Z",
-    5000.23
-   ],
-   [
-    "2026-10-19T01:49:27Z",
-    5000.17
-   ],
-   [
-    "2026-10-19T01:54:27Z",
-    5000.24
-   ],
    [
     "2026-10-19T01:59:32Z",
     5000.18
@@ -730,6 +718,18 @@
    [
     "2026-10-19T10:26:20Z",
     4999.65
+   ],
+   [
+    "2026-10-19T10:31:25Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T10:36:26Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T10:41:30Z",
+    4999.65
    ]
   ]
  },
@@ -740,6 +740,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T10:45:16Z",
+   "type": "trade",
+   "title": "Opened BTC",
+   "detail": "Entry 82339.0, qty 0.00032, stop 81961.135, risk $0.1209, exit mode partial.",
+   "version": null
+  },
   {
    "ts_utc": "2026-10-19T10:28:12Z",
    "type": "trade",
@@ -1046,7 +1053,24 @@
  "session_label": "24h (owner override)",
  "session_note": "owner override 2026-10-19: 24h (was 07-21 UTC)",
  "kill_level_usd": 30.344,
- "position_details": {},
+ "position_details": {
+  "BTC": {
+   "side": "LONG",
+   "entry": 82339.0,
+   "stop": 81961.135,
+   "stop0": 81961.135,
+   "tp1": 82905.79750000002,
+   "tp2": 83472.59500000002,
+   "qty": 0.00032,
+   "risk_usd": 0.1209,
+   "breakeven": false,
+   "tp1_done": false,
+   "mode": "partial",
+   "opened_at": "2026-10-19T10:45:16Z",
+   "notional": null,
+   "version": "v1.1-swing"
+  }
+ },
  "pnl": {
   "today_usd": -0.1598,
   "today_pct": -0.42,
@@ -1311,7 +1335,11 @@
    37.817
   ],
   [
-   "2026-10-19T10:30:12Z",
+   "2026-10-19T10:31:12Z",
+   37.7357
+  ],
+  [
+   "2026-10-19T10:45:12Z",
    37.7357
   ]
  ]
