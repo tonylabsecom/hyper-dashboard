@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T14:16:12Z",
- "published_at": "2026-10-19T14:16:18Z",
+ "updated_at": "2026-10-19T14:38:04Z",
+ "published_at": "2026-10-19T14:38:24Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,15 +121,15 @@
    "szDecimals": 3
   }
  },
- "equity": 37.5181,
- "day_pnl_pct": -1.0,
- "total_pct_vs_baseline": -1.09,
+ "equity": 37.2265,
+ "day_pnl_pct": -1.77,
+ "total_pct_vs_baseline": -1.85,
  "baseline": 37.93,
  "trades_today": 4,
  "open_risk_usd": 0.3015,
  "positions": {
-  "BTC": 26.31,
-  "kPEPE": 11.35
+  "BTC": 26.22,
+  "kPEPE": 11.3
  },
  "pending_orders": 0,
  "last_signal": {
@@ -145,7 +145,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.3774,
+  "pnl_today": -0.669,
   "triggered": false
  },
  "kill_switch": false,
@@ -340,9 +340,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T14:16:14Z",
-  "equity": 5000.21,
-  "pnl": 0.21,
+  "updated_at": "2026-10-19T14:38:22Z",
+  "equity": 5000.03,
+  "pnl": 0.03,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -350,14 +350,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T04:49:47Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T04:54:50Z",
-    4999.65
-   ],
    [
     "2026-10-19T04:59:52Z",
     4999.65
@@ -733,6 +725,14 @@
    [
     "2026-10-19T14:16:09Z",
     5000.25
+   ],
+   [
+    "2026-10-19T14:21:12Z",
+    5000.32
+   ],
+   [
+    "2026-10-19T14:37:55Z",
+    5000.03
    ]
   ]
  },
@@ -743,6 +743,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T14:38:03Z",
+   "type": "system",
+   "title": "Live bot started (v1.1-swing)",
+   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T14:15:25Z",
    "type": "trade",
@@ -1095,8 +1102,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 1.793,
- "upnl": -0.0238,
+ "margin_used": 1.7852,
+ "upnl": -0.1696,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1119,7 +1126,7 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-19T14:15:17Z",
-   "notional": 26.31,
+   "notional": 26.22,
    "version": "v1.1-swing"
   },
   "kPEPE": {
@@ -1135,18 +1142,18 @@
    "tp1_done": false,
    "mode": "single",
    "opened_at": "2026-10-19T14:15:25Z",
-   "notional": 11.35,
+   "notional": 11.3,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.3774,
-  "today_pct": -1.0,
-  "d7_usd": -0.4094,
-  "d7_pct": -1.08,
+  "today_usd": -0.669,
+  "today_pct": -1.77,
+  "d7_usd": -0.701,
+  "d7_pct": -1.85,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.4119,
-  "total_pct": -1.09,
+  "total_usd": -0.7035,
+  "total_pct": -1.85,
   "trades_today": 3,
   "trades_7d": 3,
   "wins_7d": 1,
@@ -1464,6 +1471,10 @@
   [
    "2026-10-19T14:16:12Z",
    37.5181
+  ],
+  [
+   "2026-10-19T14:38:04Z",
+   37.2265
   ]
  ]
 }
