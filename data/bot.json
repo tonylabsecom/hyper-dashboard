@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T11:46:12Z",
- "published_at": "2026-10-19T11:46:13Z",
+ "updated_at": "2026-10-19T12:01:12Z",
+ "published_at": "2026-10-19T12:01:15Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,14 +121,14 @@
    "szDecimals": 3
   }
  },
- "equity": 37.6544,
- "day_pnl_pct": -0.64,
- "total_pct_vs_baseline": -0.73,
+ "equity": 37.7219,
+ "day_pnl_pct": -0.46,
+ "total_pct_vs_baseline": -0.55,
  "baseline": 37.93,
  "trades_today": 2,
  "open_risk_usd": 0.1209,
  "positions": {
-  "BTC": 26.31
+  "BTC": 26.35
  },
  "pending_orders": 0,
  "last_signal": {
@@ -144,7 +144,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.2411,
+  "pnl_today": -0.1736,
   "triggered": false
  },
  "kill_switch": false,
@@ -339,7 +339,7 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T11:46:10Z",
+  "updated_at": "2026-10-19T12:01:13Z",
   "equity": 4999.65,
   "pnl": -0.35,
   "sleeves": 3,
@@ -349,18 +349,6 @@
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T03:14:28Z",
-    4999.71
-   ],
-   [
-    "2026-10-19T03:20:02Z",
-    4999.88
-   ],
-   [
-    "2026-10-19T03:25:02Z",
-    4999.87
-   ],
    [
     "2026-10-19T03:34:14Z",
     4999.65
@@ -732,6 +720,18 @@
    [
     "2026-10-19T11:41:56Z",
     4999.65
+   ],
+   [
+    "2026-10-19T11:46:57Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T11:51:59Z",
+    4999.65
+   ],
+   [
+    "2026-10-19T11:57:02Z",
+    4999.65
    ]
   ]
  },
@@ -1059,8 +1059,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 0.6578,
- "upnl": -0.0346,
+ "margin_used": 0.6587,
+ "upnl": -0.0006,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1083,18 +1083,18 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-19T10:45:16Z",
-   "notional": 26.31,
+   "notional": 26.35,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.2411,
-  "today_pct": -0.64,
-  "d7_usd": -0.2731,
-  "d7_pct": -0.72,
+  "today_usd": -0.1736,
+  "today_pct": -0.46,
+  "d7_usd": -0.2056,
+  "d7_pct": -0.54,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.2756,
-  "total_pct": -0.73,
+  "total_usd": -0.2081,
+  "total_pct": -0.55,
   "trades_today": 2,
   "trades_7d": 2,
   "wins_7d": 1,
@@ -1371,8 +1371,12 @@
    37.5846
   ],
   [
-   "2026-10-19T11:46:12Z",
-   37.6544
+   "2026-10-19T11:47:12Z",
+   37.6921
+  ],
+  [
+   "2026-10-19T12:01:12Z",
+   37.7219
   ]
  ]
 }
