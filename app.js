@@ -347,11 +347,92 @@ function renderJournal() {
     : emptyBox('i-journal', 'No journal entries', 'Decisions, evolution rounds, trades and risk events are logged here.');
   applySearch();
 }
+/* ---------- total estimated valuation (master + subaccounts, public info API) ---------- */
+// Unified / portfolio-margin accounts: every balance (incl. perp collateral AND perp uPnL) lives in the spot
+// clearinghouse state, so Total = Σ spot balances × mark. Adding perp account value or uPnL again would double count.
+// Standard ("disabled"/"default"/dexAbstraction) accounts: Total = perp account value (incl. uPnL) + Σ spot × mark.
+// Each account is cross-checked against Hyperliquid's own `portfolio` account value.
+const VC = { modes: {}, modesAt: 0, px: null, pxAt: 0 };
+const UNIFIED = ['unifiedAccount', 'portfolioMargin'];
+const STABLE_USDC = 0; // token index of USDC
+async function spotPrices(force) {
+  if (VC.px && !force && Date.now() - VC.pxAt < 30000) return VC.px;
+  const [meta, ctxs] = await info({ type: 'spotMetaAndAssetCtxs' });
+  const byCoin = {}; (ctxs || []).forEach((c) => { byCoin[c.coin] = c; });
+  const pairPx = (u) => { const c = byCoin[u.name] || (ctxs || [])[u.index] || {}; const m = num(c.markPx), d = num(c.midPx), a = num(S.mids[u.name]); return m > 0 ? m : d > 0 ? d : a > 0 ? a : NaN; };
+  const px = { [STABLE_USDC]: 1 }, alt = {};
+  (meta.universe || []).forEach((u) => { const [b, q] = u.tokens || []; if (q === STABLE_USDC) { const v = pairPx(u); if (v > 0 && !(b in px && u.isCanonical === false && px[b] > 0)) px[b] = v; } else (alt[b] = alt[b] || []).push([q, u]); });
+  Object.entries(alt).forEach(([b, L]) => { if (b in px) return; for (const [q, u] of L) { const v = pairPx(u); if (px[q] > 0 && v > 0) { px[b] = v * px[q]; break; } } });
+  const names = {}; (meta.tokens || []).forEach((t) => { names[t.index] = t.name; });
+  VC.px = { px, names }; VC.pxAt = Date.now(); return VC.px;
+}
+async function loadValuation() {
+  try {
+    const subsRaw = await info({ type: 'subAccounts', user: USER }).then((r) => ({ ok: true, r }), () => ({ ok: false, r: null }));
+    const subs = Array.isArray(subsRaw.r) ? subsRaw.r : [];
+    const [mch, msp] = await Promise.all([info({ type: 'clearinghouseState', user: USER }), info({ type: 'spotClearinghouseState', user: USER })]);
+    const accts = [{ addr: USER, name: 'Master', master: true, ch: mch, spot: msp },
+      ...subs.map((x) => ({ addr: x.subAccountUser, name: x.name || 'Subaccount', master: false, ch: x.clearinghouseState, spot: x.spotState }))];
+    const needModes = Date.now() - VC.modesAt > 300000 || accts.some((a) => !(a.addr.toLowerCase() in VC.modes));
+    const [pfs] = await Promise.all([
+      Promise.all(accts.map((a) => info({ type: 'portfolio', user: a.addr }).catch(() => null))),
+      needModes ? Promise.all(accts.map((a) => info({ type: 'userAbstraction', user: a.addr }).then((m) => { VC.modes[a.addr.toLowerCase()] = m; }).catch(() => {}))).then(() => { VC.modesAt = Date.now(); }) : null,
+    ]);
+    const needPx = accts.some((a) => ((a.spot && a.spot.balances) || []).some((b) => b.token !== STABLE_USDC && num(b.total) !== 0));
+    const P = needPx ? await spotPrices() : { px: { [STABLE_USDC]: 1 }, names: {} };
+    let unpriced = [];
+    const rows = accts.map((a, k) => {
+      const mode = VC.modes[a.addr.toLowerCase()] || 'unknown', unified = UNIFIED.includes(mode);
+      const ms_ = (a.ch && a.ch.marginSummary) || {}, perp = num(ms_.accountValue || 0);
+      const up = ((a.ch && a.ch.assetPositions) || []).reduce((s, p) => s + num(p.position.unrealizedPnl || 0), 0);
+      let spot = 0; const toks = [];
+      ((a.spot && a.spot.balances) || []).forEach((b) => { const q = num(b.total); if (!q) return; const p = P.px[b.token]; if (!(p > 0)) { unpriced.push(b.coin); return; } spot += q * p; toks.push(b.coin); });
+      const total = unified ? spot : perp + spot;
+      const pf = pfs[k] && (pfs[k].find((x) => x[0] === 'day') || [])[1], hist = (pf && pf.accountValueHistory) || [], last = hist[hist.length - 1];
+      const hl = last ? num(last[1]) : NaN;
+      return { addr: a.addr, name: a.name, master: a.master, mode, unified, perp, upnl: up, spot, total, hl, diff: total - hl, tokens: toks, npos: ((a.ch && a.ch.assetPositions) || []).length };
+    });
+    const total = rows.reduce((s, r) => s + r.total, 0), hlTot = rows.reduce((s, r) => s + r.hl, 0);
+    S.val = { at: Date.now(), total, hlTotal: hlTot, upnl: rows.reduce((s, r) => s + r.upnl, 0), rows, subsOk: subsRaw.ok, nSubs: subs.length, unpriced: [...new Set(unpriced)],
+      verified: rows.every((r) => isFinite(r.hl) && Math.abs(r.diff) <= Math.max(0.05, Math.abs(r.hl) * 0.001)) };
+    window.__valuation = S.val;
+  } catch (e) { if (S.val) S.val.err = String(e && e.message || e); else S.val = { err: String(e && e.message || e) }; }
+  renderValuation();
+}
+function renderValuation() {
+  const V = S.val, pill = $('valPill'); if (!pill) return;
+  if (!V || !V.rows) {
+    pill.className = 'pill sm ' + (V && V.err ? 'stop' : ''); pill.textContent = V && V.err ? 'API unavailable' : 'Loading';
+    if (!$('valTbl').innerHTML) $('valTbl').innerHTML = `<tbody><tr class="note"><td>Loading accounts from api.hyperliquid.xyz…</td></tr></tbody>`; return;
+  }
+  pill.className = 'pill sm ' + (V.err ? 'warnp' : V.verified ? 'run' : 'warnp');
+  pill.textContent = V.err ? 'Stale · retrying' : V.verified ? 'Matches Hyperliquid ✓' : 'Check vs Hyperliquid';
+  pill.title = `Σ our math ${fmt(V.total, 4)} vs Σ Hyperliquid portfolio ${fmt(V.hlTotal, 4)} USDC`;
+  setText('valCnt', `${V.rows.length} acct${V.rows.length > 1 ? 's' : ''}`, 'cnt');
+  countTo($('valTotal'), V.total, { d: 2 });
+  setText('valUpnl', isFinite(V.upnl) ? sgn(V.upnl, 4) : '--', cls(V.upnl));
+  setText('valHL', isFinite(V.hlTotal) ? `${fmt(V.hlTotal, 2)} (Δ ${sgn(V.total - V.hlTotal, 4)})` : '--');
+  setText('valUpd', `${utcHMS(V.at)} UTC`);
+  const anyU = V.rows.some((r) => r.unified), anyS = V.rows.some((r) => !r.unified);
+  $('valNote').textContent = [anyU ? 'Unified account: spot USDC already holds the perp collateral and uPnL, so Total = spot balances × mark (perp value shown for reference, not added).' : '',
+    anyS ? 'Standard accounts: Total = perp account value (incl. uPnL) + spot × mark.' : '', 'Spot priced at spot mark (spotMetaAndAssetCtxs).',
+    V.unpriced.length ? `No price for: ${V.unpriced.join(', ')} (excluded).` : ''].filter(Boolean).join(' ');
+  const mx = Math.max(...V.rows.map((r) => Math.abs(r.total)), 1e-9);
+  const modeLbl = (m) => ({ unifiedAccount: 'Unified', portfolioMargin: 'Portfolio margin', disabled: 'Standard', default: 'Standard', dexAbstraction: 'DEX abstr.' }[m] || m);
+  const body = V.rows.map((r) => `<tr data-q="${esc((r.name + ' ' + r.addr).toLowerCase())}"><td class="addr" title="${esc(r.addr)}"><a href="https://app.hyperliquid.xyz/explorer/address/${esc(r.addr)}" target="_blank" rel="noopener">${shortAddr(r.addr)}</a></td><td><b>${esc(r.name)}</b> <span class="tag mode">${esc(modeLbl(r.mode))}</span></td>
+    <td class="num" title="${r.unified ? 'Perp collateral portion inside spot USDC — not added to total' : 'Perp account value incl. uPnL'}">${r.unified ? `<span class="muted">${fmt(r.perp, 2)}</span>` : fmt(r.perp, 2)}</td><td class="num ${cls(r.upnl)}">${sgn(r.upnl, 4)}</td>
+    <td class="num" title="${esc(r.tokens.join(', '))}">${fmt(r.spot, 2)}</td><td class="num"><b>${fmt(r.total, 2)}</b><span class="share"><i style="width:${clamp(Math.abs(r.total) / mx * 100, 0, 100).toFixed(1)}%"></i></span></td>
+    <td class="num ${isFinite(r.hl) && Math.abs(r.diff) <= Math.max(0.05, Math.abs(r.hl) * 0.001) ? 'up' : 'warn'}" title="Hyperliquid portfolio account value">${isFinite(r.hl) ? fmt(r.hl, 2) : '--'}</td></tr>`).join('');
+  const note = !V.subsOk ? 'Subaccount list unavailable right now — showing master only; will retry.' : V.nSubs === 0 ? 'No subaccounts yet — master only. New subaccounts appear here automatically.' : `${V.nSubs} subaccount${V.nSubs > 1 ? 's' : ''} discovered via the public info API (auto-updates).`;
+  $('valTbl').innerHTML = `<thead><tr><th>Account</th><th>Name</th><th class="num">Perp (incl. uPnL)</th><th class="num">uPnL</th><th class="num">Spot @ mark</th><th class="num">Total</th><th class="num">HL value</th></tr></thead><tbody>${body}
+    ${V.rows.length > 1 ? `<tr class="tot"><td colspan="5">Grand total</td><td class="num">${fmt(V.total, 2)}</td><td class="num">${fmt(V.hlTotal, 2)}</td></tr>` : ''}<tr class="note"><td colspan="7">${esc(note)}</td></tr></tbody>`;
+  applySearch();
+}
 function applySearch() {
   const q = S.q.trim().toLowerCase();
   document.querySelectorAll('[data-q]').forEach((el) => { el.style.display = !q || el.dataset.q.includes(q) ? '' : 'none'; });
 }
-function renderAll() { renderHeader(); renderCards(); renderAlerts(); renderPositions(); renderOrders(); renderHistory(); renderEvolution(); renderLimits(); renderJournal(); renderChart(); }
+function renderAll() { renderHeader(); renderCards(); renderAlerts(); renderPositions(); renderOrders(); renderHistory(); renderEvolution(); renderLimits(); renderJournal(); renderValuation(); renderChart(); }
 
 /* ---------- data loading ---------- */
 async function loadBot() {
@@ -398,7 +479,7 @@ document.querySelectorAll('#nav a, .qa a[href^="#"]').forEach((a) => a.addEventL
 // scroll spy + reveal
 const navA = [...document.querySelectorAll('#nav a')];
 const spy = new IntersectionObserver((es) => { es.forEach((e) => { if (e.isIntersecting) navA.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); }); }, { rootMargin: '-35% 0px -60% 0px' });
-['overview', 'positions', 'orders', 'history', 'evolution', 'journal', 'alerts'].forEach((id) => spy.observe($(id)));
+['overview', 'valuation', 'positions', 'orders', 'history', 'evolution', 'journal', 'alerts'].forEach((id) => spy.observe($(id)));
 const rev = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rev.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
 document.querySelectorAll('.reveal').forEach((el) => rev.observe(el));
 let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(() => renderChart(false), 120); }).observe($('heroChart'));
@@ -406,8 +487,8 @@ function tick() { const d = new Date(); setText('clock', `${d.toUTCString().slic
 setInterval(tick, 1000); tick();
 
 renderAll();
-loadBot(); loadState(); loadSlow(); if (S.series !== 'equity') setSeries(S.series);
-setInterval(loadBot, CFG.BOT_POLL_MS); setInterval(loadState, Math.max(CFG.STATE_POLL_MS, 10000)); setInterval(loadSlow, 60000);
+loadBot(); loadState(); loadSlow(); loadValuation(); if (S.series !== 'equity') setSeries(S.series);
+setInterval(loadBot, CFG.BOT_POLL_MS); setInterval(loadState, Math.max(CFG.STATE_POLL_MS, 10000)); setInterval(loadSlow, 60000); setInterval(loadValuation, Math.max(CFG.VAL_POLL_MS || 20000, 10000));
 setInterval(() => { if (S.series !== 'equity') loadCandles(S.series, S.tf); }, 60000);
 setInterval(() => { renderHeader(); renderAlerts(); }, 30000);
 })();

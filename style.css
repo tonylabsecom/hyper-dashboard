@@ -237,6 +237,30 @@ mark{background:#FFF1B8;border-radius:3px;padding:0 1px}
 .reveal.in{opacity:1;transform:none}
 .flash{animation:flash 1.2s ease}
 
+/* ---------- total estimated valuation ---------- */
+.val{padding:18px 20px}
+.val header .pill{margin-left:4px}
+.val-grid{display:grid;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:20px;align-items:start}
+.val-hero{background:linear-gradient(180deg,#F4F8FE 0%,#E6F0FC 100%);border-radius:var(--r2);padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.val-hero>small{color:var(--mut);font-size:11.5px}
+.val-num{display:flex;align-items:baseline;gap:8px}
+.val-num b{font-size:34px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink);border-radius:8px}
+.val-num span{color:var(--mut);font-size:13px;font-weight:500}
+.val-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;margin-top:4px}
+.val-kv small{display:block;color:var(--mut);font-size:11px}
+.val-kv b{font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.val-note{margin:4px 0 0;font-size:11.5px;line-height:1.45}
+.val-tbl td.num,.val-tbl th.num{text-align:right}
+.val-tbl td b{font-weight:600}
+.val-tbl .addr{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.val-tbl tr.tot td{border-top:1px solid var(--line);font-weight:600;background:#FAFCFE}
+.val-tbl tr.note td{color:var(--mut);font-size:12px;white-space:normal}
+.share{display:inline-block;vertical-align:middle;width:56px;height:6px;border-radius:6px;background:var(--soft2);margin-left:8px;overflow:hidden}
+.share i{display:block;height:100%;width:0;border-radius:6px;background:linear-gradient(90deg,var(--blue2),var(--blue));transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.tag.mode{background:var(--blueL);color:var(--blue)}
+@media (max-width:1180px){.val-grid{grid-template-columns:1fr}}
+@media (max-width:640px){.val{padding:14px}.val-num b{font-size:28px}.share{display:none}}
+
 /* ---------- responsive ---------- */
 @media (max-width:1320px){.search{width:170px}.mini header .ic{display:none}}
 @media (max-width:1180px){.cards4{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2.wide-l{grid-template-columns:1fr}}

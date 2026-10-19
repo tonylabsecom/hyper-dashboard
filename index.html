@@ -42,6 +42,7 @@
       <button class="icon-btn close-menu" id="closeMenu" aria-label="Close menu">✕</button></div>
     <nav class="nav" id="nav">
       <a href="#overview" class="active"><svg><use href="#i-home"/></svg>Overview</a>
+      <a href="#valuation"><svg><use href="#i-coin"/></svg>Valuation</a>
       <a href="#positions"><svg><use href="#i-pos"/></svg>Positions<span class="nav-badge" id="navPos"></span></a>
       <a href="#orders"><svg><use href="#i-orders"/></svg>Orders<span class="nav-badge" id="navOrd"></span></a>
       <a href="#history"><svg><use href="#i-hist"/></svg>History</a>
@@ -102,9 +103,27 @@
       <div class="sig-card" id="sigCard"><svg><use href="#i-gauge"/></svg><div><small>Last signal</small><b id="sigMain">--</b><span id="sigWhy" class="muted"></span></div></div>
     </section>
 
+    <!-- TOTAL ESTIMATED VALUATION -->
+    <section class="card val anim" id="valuation" style="--i:1">
+      <header><span class="ic"><svg><use href="#i-coin"/></svg></span><h3>Total Estimated Valuation</h3><span class="pill sm" id="valPill">Loading</span><span class="cnt" id="valCnt" title="Accounts">--</span></header>
+      <div class="val-grid">
+        <div class="val-hero">
+          <small>All accounts · master + subaccounts</small>
+          <div class="val-num"><b id="valTotal" class="count" data-d="2">--</b><span>USDC</span></div>
+          <div class="val-kv">
+            <div><small>Perp uPnL</small><b id="valUpnl">--</b></div>
+            <div><small>HL portfolio value</small><b id="valHL">--</b></div>
+            <div><small>Updated</small><b id="valUpd">--</b></div>
+          </div>
+          <p class="val-note muted" id="valNote"></p>
+        </div>
+        <div class="tbl-wrap val-tbl"><table class="tbl" id="valTbl"></table></div>
+      </div>
+    </section>
+
     <!-- INFO CARDS -->
     <section class="cards4">
-      <article class="card mini anim" style="--i:1">
+      <article class="card mini anim" style="--i:5">
         <header><span class="ic"><svg><use href="#i-shield"/></svg></span><h3>Position &amp; Risk</h3><a href="#positions" class="vd">View details →</a></header>
         <div class="kv2"><div><small>Open positions</small><b id="rkPos">--</b></div><div><small>Pending orders</small><b id="rkOrd">--</b></div></div>
         <div class="kv2"><div><small>Open risk</small><b id="rkRisk">--</b></div><div><small>Leverage</small><b id="rkLev">--</b></div></div>
