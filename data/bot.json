@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T14:01:12Z",
- "published_at": "2026-10-19T14:01:16Z",
+ "updated_at": "2026-10-19T14:16:12Z",
+ "published_at": "2026-10-19T14:16:18Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,28 +121,31 @@
    "szDecimals": 3
   }
  },
- "equity": 37.5827,
- "day_pnl_pct": -0.83,
- "total_pct_vs_baseline": -0.92,
+ "equity": 37.5181,
+ "day_pnl_pct": -1.0,
+ "total_pct_vs_baseline": -1.09,
  "baseline": 37.93,
- "trades_today": 2,
- "open_risk_usd": 0,
- "positions": {},
+ "trades_today": 4,
+ "open_risk_usd": 0.3015,
+ "positions": {
+  "BTC": 26.31,
+  "kPEPE": 11.35
+ },
  "pending_orders": 0,
  "last_signal": {
-  "coin": "BTC",
-  "side": "LONG",
-  "price": 82339.0,
-  "time": "2026-10-19T14:01:12Z",
-  "reason": "trade closed (None, -1.2542R)"
+  "coin": "kPEPE",
+  "side": "--",
+  "price": 0.004116,
+  "time": "2026-10-19T14:15:25Z",
+  "reason": "entry filled"
  },
- "confidence": 46,
- "confidence_basis": "OOS win rate of donchian_retest on BTC",
+ "confidence": null,
+ "confidence_basis": null,
  "daily_stop": {
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.14,
-  "pnl_today": -0.3128,
+  "pnl_today": -0.3774,
   "triggered": false
  },
  "kill_switch": false,
@@ -337,28 +340,16 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T14:01:14Z",
-  "equity": 4999.65,
-  "pnl": -0.35,
+  "updated_at": "2026-10-19T14:16:14Z",
+  "equity": 5000.21,
+  "pnl": 0.21,
   "sleeves": 3,
-  "open_positions": 0,
+  "open_positions": 1,
   "ws_connected": true,
-  "fees": 0.14,
+  "fees": 0.19,
   "funding": -0.0,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T04:34:40Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T04:39:44Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T04:44:45Z",
-    4999.65
-   ],
    [
     "2026-10-19T04:49:47Z",
     4999.65
@@ -730,6 +721,18 @@
    [
     "2026-10-19T14:01:03Z",
     4999.65
+   ],
+   [
+    "2026-10-19T14:06:06Z",
+    4999.87
+   ],
+   [
+    "2026-10-19T14:11:08Z",
+    4999.93
+   ],
+   [
+    "2026-10-19T14:16:09Z",
+    5000.25
    ]
   ]
  },
@@ -740,6 +743,20 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T14:15:25Z",
+   "type": "trade",
+   "title": "Opened kPEPE",
+   "detail": "Entry 0.004116, qty 2763.0, stop 0.004053, risk $0.1741, exit mode single.",
+   "version": null
+  },
+  {
+   "ts_utc": "2026-10-19T14:15:17Z",
+   "type": "trade",
+   "title": "Opened BTC",
+   "detail": "Entry 82222.0, qty 0.00032, stop 81823.825, risk $0.1274, exit mode partial.",
+   "version": null
+  },
   {
    "ts_utc": "2026-10-19T14:01:12Z",
    "type": "trade",
@@ -1078,8 +1095,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 0,
- "upnl": 0.0,
+ "margin_used": 1.793,
+ "upnl": -0.0238,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1088,15 +1105,48 @@
  "session_label": "24h (owner override)",
  "session_note": "owner override 2026-10-19: 24h (was 07-21 UTC)",
  "kill_level_usd": 30.344,
- "position_details": {},
+ "position_details": {
+  "BTC": {
+   "side": "LONG",
+   "entry": 82222.0,
+   "stop": 81823.825,
+   "stop0": 81823.825,
+   "tp1": 82819.26250000001,
+   "tp2": 83416.52500000001,
+   "qty": 0.00032,
+   "risk_usd": 0.1274,
+   "breakeven": false,
+   "tp1_done": false,
+   "mode": "partial",
+   "opened_at": "2026-10-19T14:15:17Z",
+   "notional": 26.31,
+   "version": "v1.1-swing"
+  },
+  "kPEPE": {
+   "side": "LONG",
+   "entry": 0.004116,
+   "stop": 0.004053,
+   "stop0": 0.004053,
+   "tp1": null,
+   "tp2": 0.004241999999999999,
+   "qty": 2763.0,
+   "risk_usd": 0.1741,
+   "breakeven": false,
+   "tp1_done": false,
+   "mode": "single",
+   "opened_at": "2026-10-19T14:15:25Z",
+   "notional": 11.35,
+   "version": "v1.1-swing"
+  }
+ },
  "pnl": {
-  "today_usd": -0.3128,
-  "today_pct": -0.83,
-  "d7_usd": -0.3448,
-  "d7_pct": -0.91,
+  "today_usd": -0.3774,
+  "today_pct": -1.0,
+  "d7_usd": -0.4094,
+  "d7_pct": -1.08,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.3473,
-  "total_pct": -0.92,
+  "total_usd": -0.4119,
+  "total_pct": -1.09,
   "trades_today": 3,
   "trades_7d": 3,
   "wins_7d": 1,
@@ -1410,6 +1460,10 @@
   [
    "2026-10-19T14:01:12Z",
    37.5827
+  ],
+  [
+   "2026-10-19T14:16:12Z",
+   37.5181
   ]
  ]
 }
