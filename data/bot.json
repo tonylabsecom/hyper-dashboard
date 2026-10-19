@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T01:20:47Z",
- "published_at": "2026-10-19T01:21:11Z",
+ "updated_at": "2026-10-19T01:44:46Z",
+ "published_at": "2026-10-19T01:44:46Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -336,9 +336,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T01:21:07Z",
-  "equity": 5000.16,
-  "pnl": 0.16,
+  "updated_at": "2026-10-19T01:44:44Z",
+  "equity": 5000.23,
+  "pnl": 0.23,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -433,6 +433,18 @@
    [
     "2026-10-19T01:20:35Z",
     5000.16
+   ],
+   [
+    "2026-10-19T01:25:37Z",
+    5000.12
+   ],
+   [
+    "2026-10-19T01:30:42Z",
+    5000.15
+   ],
+   [
+    "2026-10-19T01:44:22Z",
+    5000.23
    ]
   ]
  },
@@ -443,6 +455,20 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T01:23:07Z",
+   "type": "decision",
+   "title": "Evolution cadence: every 2h (or after 15 new live signals)",
+   "detail": "Owner decision: rounds every 2h instead of 6h; a burst of 15 new live signals can trigger a round sooner (at least 30 min apart). Still one parameter per round, same promotion rules, hard limits untouched. New anti-overfitting guards: (1) held-out slice: on the last 90 days the variant must match or beat the current version on PF and expectancy, with at least 20 trades; (2) walk-forward: 12 months split into 4 quarters; the variant must match or beat current expectancy in 3 of 4; (3) identical variants (same full parameter set) are never re-tested; (4) live re-check: after 15 closed live trades on a promoted version, if live mean R is more than 0.25R below its backtest expectancy, auto-rollback to the parent version. Next round due 02:44 UTC.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-19T01:23:07Z",
+   "type": "risk",
+   "title": "Ops: bot frozen while SOL trade ran; runner stopped at the original stop",
+   "detail": "The box was frozen or suspended from about 17:27 UTC to 00:43 UTC (watchdog saw a 26208 s stale heartbeat). The exchange stop and TP1 stayed active: TP1 filled at 101.47 (19:30 UTC), but breakeven and trailing could not run, so the runner closed at the original stop 102.84 (22:00 UTC). Net result +0.007 USDC (+0.04R). Since then, more short freezes of 8-14 min have triggered watchdog restarts.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T01:20:46Z",
    "type": "system",
@@ -743,6 +769,10 @@
   ],
   [
    "2026-10-19T01:20:47Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T01:44:46Z",
    37.8955
   ]
  ]
