@@ -1,7 +1,7 @@
 {
- "updated_at": "2026-10-19T02:05:12Z",
- "published_at": "2026-10-19T02:24:03Z",
- "status": "STALE",
+ "updated_at": "2026-10-19T02:34:12Z",
+ "published_at": "2026-10-19T02:39:24Z",
+ "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
@@ -336,9 +336,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T02:05:43Z",
-  "equity": 5000.13,
-  "pnl": 0.13,
+  "updated_at": "2026-10-19T02:39:20Z",
+  "equity": 5000.19,
+  "pnl": 0.19,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -461,6 +461,22 @@
    [
     "2026-10-19T02:04:35Z",
     5000.15
+   ],
+   [
+    "2026-10-19T02:24:04Z",
+    5000.26
+   ],
+   [
+    "2026-10-19T02:29:07Z",
+    5000.28
+   ],
+   [
+    "2026-10-19T02:34:13Z",
+    5000.21
+   ],
+   [
+    "2026-10-19T02:39:15Z",
+    5000.2
    ]
   ]
  },
@@ -471,6 +487,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-19T02:24:25Z",
+   "type": "system",
+   "title": "Live bot started (v1.1-swing)",
+   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-19T01:23:07Z",
    "type": "decision",
@@ -796,7 +819,11 @@
    37.8955
   ],
   [
-   "2026-10-19T02:05:12Z",
+   "2026-10-19T02:24:26Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T02:34:12Z",
    37.8955
   ]
  ]
