@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-19T03:10:12Z",
- "published_at": "2026-10-19T03:10:19Z",
+ "updated_at": "2026-10-19T03:25:12Z",
+ "published_at": "2026-10-19T03:26:01Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -337,9 +337,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-19T03:10:15Z",
-  "equity": 4999.8,
-  "pnl": -0.2,
+  "updated_at": "2026-10-19T03:25:57Z",
+  "equity": 4999.93,
+  "pnl": -0.07,
   "sleeves": 3,
   "open_positions": 1,
   "ws_connected": true,
@@ -502,6 +502,18 @@
    [
     "2026-10-19T03:09:27Z",
     4999.78
+   ],
+   [
+    "2026-10-19T03:14:28Z",
+    4999.71
+   ],
+   [
+    "2026-10-19T03:20:02Z",
+    4999.88
+   ],
+   [
+    "2026-10-19T03:25:02Z",
+    4999.87
    ]
   ]
  },
@@ -894,6 +906,10 @@
   ],
   [
    "2026-10-19T03:10:12Z",
+   37.8955
+  ],
+  [
+   "2026-10-19T03:25:12Z",
    37.8955
   ]
  ]
