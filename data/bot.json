@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-20T07:38:23Z",
- "published_at": "2026-10-20T07:39:12Z",
+ "updated_at": "2026-10-20T07:54:13Z",
+ "published_at": "2026-10-20T07:54:34Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.1-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,15 +121,15 @@
    "szDecimals": 3
   }
  },
- "equity": 37.2621,
- "day_pnl_pct": -0.37,
- "total_pct_vs_baseline": -1.76,
+ "equity": 37.2865,
+ "day_pnl_pct": -0.3,
+ "total_pct_vs_baseline": -1.7,
  "baseline": 37.93,
  "trades_today": 4,
  "open_risk_usd": 0.2386,
  "positions": {
-  "BTC": 26.09,
-  "ZEC": 11.33
+  "BTC": 26.08,
+  "ZEC": 11.32
  },
  "pending_orders": 0,
  "last_signal": {
@@ -145,14 +145,15 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.12,
-  "pnl_today": -0.1369,
+  "pnl_today": -0.1125,
   "triggered": false
  },
  "kill_switch": false,
  "halted": null,
  "limits": {
-  "risk_per_trade_pct": 0.5,
-  "max_open_risk_pct": 3.0,
+  "risk_per_trade_pct": 5.0,
+  "margin_cap_max_pct": 60.0,
+  "max_open_risk_pct": 5.0,
   "max_trades_day": 100,
   "day_stop_pct": -3.0,
   "kill_dd_pct": -20.0
@@ -340,9 +341,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-20T07:39:12Z",
-  "equity": 4988.71,
-  "pnl": -11.29,
+  "updated_at": "2026-10-20T07:54:30Z",
+  "equity": 4991.96,
+  "pnl": -8.04,
   "sleeves": 3,
   "open_positions": 3,
   "ws_connected": true,
@@ -350,18 +351,6 @@
   "funding": -0.64,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T09:20:40Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T09:25:41Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T09:30:43Z",
-    4999.65
-   ],
    [
     "2026-10-19T09:35:49Z",
     4999.65
@@ -733,6 +722,18 @@
    [
     "2026-10-20T07:38:39Z",
     4993.23
+   ],
+   [
+    "2026-10-20T07:43:45Z",
+    4985.34
+   ],
+   [
+    "2026-10-20T07:45:35Z",
+    4990.75
+   ],
+   [
+    "2026-10-20T07:50:40Z",
+    4991.01
    ]
   ]
  },
@@ -743,6 +744,41 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-20T07:46:18Z",
+   "type": "system",
+   "title": "Trading stack moved to the Frankfurt VPS",
+   "detail": "Cutover 07:44 UTC with no overlap: the box watchdog was disabled and the box live bot, evolution loop, paper bot and publisher were stopped, then the latest state was copied and the VPS bot started (user alphalab, /opt/alphalab, systemd units alphalab-live, -evolve, -paper, -publish with Restart=always, plus a 60 s heartbeat watchdog timer). The API key is in a root-only 600 systemd env file, loaded only by the live bot. Open BTC and ZEC shorts reloaded; their stop orders (BTC 580129649958, ZEC 580094122778) and the BTC TP1 were unchanged. The publisher pushes bot.json with a deploy key scoped to the hyper-dashboard repo only. The box can no longer run the live bot (guard file LIVE_DISABLED_HERE).",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-20T07:40:17Z",
+   "type": "decision",
+   "title": "OWNER OVERRIDE: risk per trade raised to 5% (was 0.5%)",
+   "detail": "Tony chose this explicitly after being warned. Sizing still uses the worst allowed fill (IOC limit vs stop). Total open-risk cap raised to 5% (was 3%), so effectively one full-risk position at a time. Margin cap: 10% base, raised per trade only as needed (max 60% of account equity); if a 5% trade needs more margin (10x coins at a tight stop), its size is reduced to fit, so actual risk is then below 5%. Unchanged: leverage max 40x and each coin max, stop on every trade, liquidation >= 1.5x stop distance, -3% day stop, -20% kill switch vs 37.93, min notional 10 USD. Evolution evaluates every variant at 5% and can never raise it (risk is not an evolvable parameter).",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-20T07:40:17Z",
+   "type": "risk",
+   "title": "Warning: at 5% risk the -3% day stop halts after about one full loss per day",
+   "detail": "A single full stop-out (about -5% incl. fees) trips the -3% day stop, so new entries stop for the rest of the UTC day. Kept as a safety. The -20% kill switch is about 4 to 5 consecutive full losses away.",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-20T07:40:17Z",
+   "type": "risk",
+   "title": "Backtest: 5% risk vs 0.5% (v1.1-swing, 7 coins, 12 months, 37.93 USD start)",
+   "detail": "0.5% risk: 1849 trades, PF 0.80, exp -0.131R, max DD 64.7%, return -63.1%, kill level (-20%) first reached 2025-12-18. 5% risk: 710 trades (day stop and open-risk cap skip many), PF 0.89, exp -0.070R, max DD 97.5%, return -95.8%; the -20% kill switch level is reached on 2025-10-24, within the first week, and -50% by 2026-03-08 if trading had continued. Live, the kill switch would halt the bot at -20% (about 7.6 USDC lost).",
+   "version": "v1.1-swing"
+  },
+  {
+   "ts_utc": "2026-10-20T07:40:17Z",
+   "type": "system",
+   "title": "Live bot restarted with 5% risk; open BTC and ZEC shorts kept",
+   "detail": "Restarted 07:39 UTC. Exchange orders and positions identical before and after (BTC stop 580129649958 + TP1, ZEC stop 580094122778). Heartbeat shows risk_per_trade 0.05, margin_cap_max 0.6, max_open_risk 0.05.",
+   "version": "v1.1-swing"
+  },
   {
    "ts_utc": "2026-10-20T07:30:17Z",
    "type": "trade",
@@ -1298,8 +1334,8 @@
   }
  ],
  "version": "v1.1-swing",
- "margin_used": 1.7853,
- "upnl": 0.092,
+ "margin_used": 1.7841,
+ "upnl": 0.1164,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1322,7 +1358,7 @@
    "tp1_done": false,
    "mode": "single",
    "opened_at": "2026-10-20T06:33:45Z",
-   "notional": 11.33,
+   "notional": 11.32,
    "version": "v1.1-swing"
   },
   "BTC": {
@@ -1338,18 +1374,18 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-20T07:30:17Z",
-   "notional": 26.09,
+   "notional": 26.08,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.1369,
-  "today_pct": -0.37,
-  "d7_usd": -0.6654,
-  "d7_pct": -1.75,
+  "today_usd": -0.1125,
+  "today_pct": -0.3,
+  "d7_usd": -0.641,
+  "d7_pct": -1.69,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.6679,
-  "total_pct": -1.76,
+  "total_usd": -0.6435,
+  "total_pct": -1.7,
   "trades_today": 4,
   "trades_7d": 8,
   "wins_7d": 2,
@@ -1824,23 +1860,27 @@
    37.2228
   ],
   [
-   "2026-10-20T07:38:23Z",
-   37.2621
+   "2026-10-20T07:40:12Z",
+   37.2514
+  ],
+  [
+   "2026-10-20T07:54:13Z",
+   37.2865
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
-  "equity": 37.2621,
-  "day_pnl_pct": -0.37,
-  "total_pct_vs_baseline": -1.76,
+  "equity": 37.2865,
+  "day_pnl_pct": -0.3,
+  "total_pct_vs_baseline": -1.7,
   "realized": -0.7249,
   "funding": -0.00052,
-  "upnl": 0.092,
+  "upnl": 0.1164,
   "fills": 18,
-  "margin_used": 1.7853,
+  "margin_used": 1.7841,
   "positions": {
-   "BTC": 26.09,
-   "ZEC": 11.33
+   "BTC": 26.08,
+   "ZEC": 11.32
   },
   "coins": [
    "BTC",
@@ -1853,11 +1893,11 @@
   ]
  },
  "account": {
-  "equity": 37.2622,
-  "total_pct_vs_baseline": -1.76,
-  "free_equity": 37.2622,
-  "sizing_equity": 37.2621,
-  "margin_used_total": 1.7853,
+  "equity": 37.2865,
+  "total_pct_vs_baseline": -1.7,
+  "free_equity": 37.2865,
+  "sizing_equity": 37.2865,
+  "margin_used_total": 1.7841,
   "external_margin_used": 0,
   "shared_with": "HST (other coins, isolated margin, cloid 0x485354)"
  },
