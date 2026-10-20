@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-20T11:10:13Z",
- "published_at": "2026-10-20T11:10:19Z",
+ "updated_at": "2026-10-20T11:25:13Z",
+ "published_at": "2026-10-20T11:25:22Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -175,14 +175,14 @@
    "szDecimals": 3
   }
  },
- "equity": 37.1743,
- "day_pnl_pct": -0.6,
- "total_pct_vs_baseline": -1.99,
+ "equity": 37.1992,
+ "day_pnl_pct": -0.53,
+ "total_pct_vs_baseline": -1.93,
  "baseline": 37.93,
  "trades_today": 4,
  "open_risk_usd": 0.1306,
  "positions": {
-  "BTC": 26.11
+  "BTC": 26.08
  },
  "pending_orders": 0,
  "last_signal": {
@@ -198,7 +198,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.12,
-  "pnl_today": -0.2247,
+  "pnl_today": -0.1998,
   "triggered": false
  },
  "kill_switch": false,
@@ -394,9 +394,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-20T11:10:16Z",
-  "equity": 4986.73,
-  "pnl": -13.27,
+  "updated_at": "2026-10-20T11:25:18Z",
+  "equity": 4996.06,
+  "pnl": -3.94,
   "sleeves": 3,
   "open_positions": 3,
   "ws_connected": true,
@@ -404,18 +404,6 @@
   "funding": -0.99,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T13:56:01Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T14:01:03Z",
-    4999.65
-   ],
-   [
-    "2026-10-19T14:06:06Z",
-    4999.87
-   ],
    [
     "2026-10-19T14:11:08Z",
     4999.93
@@ -787,6 +775,18 @@
    [
     "2026-10-20T11:07:06Z",
     4997.98
+   ],
+   [
+    "2026-10-20T11:12:07Z",
+    4988.82
+   ],
+   [
+    "2026-10-20T11:17:09Z",
+    4994.24
+   ],
+   [
+    "2026-10-20T11:22:10Z",
+    5002.37
    ]
   ]
  },
@@ -797,6 +797,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-20T11:15:18Z",
+   "type": "decision",
+   "title": "Skipped HYPE signal",
+   "detail": "Valid signal not taken: total account margin would exceed 60% of account equity (22.35 > 22.30; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-20T10:55:13Z",
    "type": "trade",
@@ -1436,8 +1443,8 @@
   }
  ],
  "version": "v1.2-swing",
- "margin_used": 0.6527,
- "upnl": 0.0086,
+ "margin_used": 0.6521,
+ "upnl": 0.0336,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1460,18 +1467,18 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-20T07:30:17Z",
-   "notional": 26.11,
+   "notional": 26.08,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.2247,
-  "today_pct": -0.6,
-  "d7_usd": -0.7532,
-  "d7_pct": -1.99,
+  "today_usd": -0.1998,
+  "today_pct": -0.53,
+  "d7_usd": -0.7283,
+  "d7_pct": -1.92,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.7557,
-  "total_pct": -1.99,
+  "total_usd": -0.7308,
+  "total_pct": -1.93,
   "trades_today": 5,
   "trades_7d": 9,
   "wins_7d": 2,
@@ -2017,22 +2024,26 @@
    37.2027
   ],
   [
-   "2026-10-20T11:10:13Z",
-   37.1743
+   "2026-10-20T11:11:13Z",
+   37.1644
+  ],
+  [
+   "2026-10-20T11:25:13Z",
+   37.1992
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
-  "equity": 37.1743,
-  "day_pnl_pct": -0.6,
-  "total_pct_vs_baseline": -1.99,
+  "equity": 37.1992,
+  "day_pnl_pct": -0.53,
+  "total_pct_vs_baseline": -1.93,
   "realized": -0.731,
   "funding": 0.00115,
-  "upnl": 0.0086,
+  "upnl": 0.0336,
   "fills": 19,
-  "margin_used": 0.6527,
+  "margin_used": 0.6521,
   "positions": {
-   "BTC": 26.11
+   "BTC": 26.08
   },
   "coins": [
    "BTC",
@@ -2045,11 +2056,11 @@
   ]
  },
  "account": {
-  "equity": 37.1743,
-  "total_pct_vs_baseline": -1.99,
-  "free_equity": 37.1743,
-  "sizing_equity": 37.1743,
-  "margin_used_total": 0.6527,
+  "equity": 37.1993,
+  "total_pct_vs_baseline": -1.93,
+  "free_equity": 37.1993,
+  "sizing_equity": 37.1992,
+  "margin_used_total": 0.6521,
   "external_margin_used": 0,
   "shared_with": "HST (other coins, isolated margin, cloid 0x485354)"
  },
