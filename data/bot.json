@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-20T11:55:13Z",
- "published_at": "2026-10-20T11:55:29Z",
+ "updated_at": "2026-10-20T12:10:13Z",
+ "published_at": "2026-10-20T12:10:33Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,14 +121,14 @@
    "szDecimals": 3
   }
  },
- "equity": 37.2079,
- "day_pnl_pct": -0.51,
- "total_pct_vs_baseline": -1.9,
+ "equity": 37.2533,
+ "day_pnl_pct": -0.39,
+ "total_pct_vs_baseline": -1.78,
  "baseline": 37.93,
  "trades_today": 4,
  "open_risk_usd": 0.1306,
  "positions": {
-  "BTC": 26.07
+  "BTC": 26.03
  },
  "pending_orders": 0,
  "last_signal": {
@@ -144,7 +144,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -1.12,
-  "pnl_today": -0.1911,
+  "pnl_today": -0.1457,
   "triggered": false
  },
  "kill_switch": false,
@@ -340,28 +340,16 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-20T11:55:27Z",
-  "equity": 4999.84,
-  "pnl": -0.16,
+  "updated_at": "2026-10-20T12:10:28Z",
+  "equity": 5011.99,
+  "pnl": 11.99,
   "sleeves": 3,
   "open_positions": 3,
   "ws_connected": true,
   "fees": 29.35,
-  "funding": -0.99,
+  "funding": -1.08,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-19T15:03:19Z",
-    5000.6
-   ],
-   [
-    "2026-10-19T15:12:43Z",
-    5000.73
-   ],
-   [
-    "2026-10-19T15:20:54Z",
-    5001.08
-   ],
    [
     "2026-10-19T15:25:55Z",
     5001.38
@@ -733,6 +721,18 @@
    [
     "2026-10-20T11:52:24Z",
     5002.36
+   ],
+   [
+    "2026-10-20T11:57:24Z",
+    5002.26
+   ],
+   [
+    "2026-10-20T12:02:27Z",
+    4996.79
+   ],
+   [
+    "2026-10-20T12:07:29Z",
+    4995.16
    ]
   ]
  },
@@ -743,6 +743,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-20T12:00:17Z",
+   "type": "decision",
+   "title": "Skipped ETH signal",
+   "detail": "Valid signal not taken: total open risk > 5%.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-20T11:26:46Z",
    "type": "evolution",
@@ -1396,8 +1403,8 @@
   }
  ],
  "version": "v1.2-swing",
- "margin_used": 0.6518,
- "upnl": 0.0422,
+ "margin_used": 0.6507,
+ "upnl": 0.0874,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1420,18 +1427,18 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-20T07:30:17Z",
-   "notional": 26.07,
+   "notional": 26.03,
    "version": "v1.1-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.1911,
-  "today_pct": -0.51,
-  "d7_usd": -0.7196,
-  "d7_pct": -1.9,
+  "today_usd": -0.1457,
+  "today_pct": -0.39,
+  "d7_usd": -0.6742,
+  "d7_pct": -1.78,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -0.7221,
-  "total_pct": -1.9,
+  "total_usd": -0.6767,
+  "total_pct": -1.78,
   "trades_today": 5,
   "trades_7d": 9,
   "wins_7d": 2,
@@ -1989,22 +1996,26 @@
    37.1615
   ],
   [
-   "2026-10-20T11:55:13Z",
-   37.2079
+   "2026-10-20T11:56:13Z",
+   37.2181
+  ],
+  [
+   "2026-10-20T12:10:13Z",
+   37.2533
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
-  "equity": 37.2079,
-  "day_pnl_pct": -0.51,
-  "total_pct_vs_baseline": -1.9,
+  "equity": 37.2533,
+  "day_pnl_pct": -0.39,
+  "total_pct_vs_baseline": -1.78,
   "realized": -0.731,
-  "funding": 0.00115,
-  "upnl": 0.0422,
+  "funding": 0.00147,
+  "upnl": 0.0874,
   "fills": 19,
-  "margin_used": 0.6518,
+  "margin_used": 0.6507,
   "positions": {
-   "BTC": 26.07
+   "BTC": 26.03
   },
   "coins": [
    "BTC",
@@ -2017,11 +2028,11 @@
   ]
  },
  "account": {
-  "equity": 37.2079,
-  "total_pct_vs_baseline": -1.9,
-  "free_equity": 37.2079,
-  "sizing_equity": 37.2079,
-  "margin_used_total": 0.6518,
+  "equity": 37.2534,
+  "total_pct_vs_baseline": -1.78,
+  "free_equity": 37.2534,
+  "sizing_equity": 37.2533,
+  "margin_used_total": 0.6507,
   "external_margin_used": 0,
   "shared_with": "HST (other coins, isolated margin, cloid 0x485354)"
  },
