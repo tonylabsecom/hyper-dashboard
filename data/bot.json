@@ -1,12 +1,12 @@
 {
- "updated_at": "2026-10-20T21:27:13Z",
- "published_at": "2026-10-20T21:27:44Z",
+ "updated_at": "2026-10-20T21:42:13Z",
+ "published_at": "2026-10-20T21:42:48Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
-  "updated_utc": "2026-10-20T19:28:31+00:00",
-  "round": 19,
+  "updated_utc": "2026-10-20T21:28:56+00:00",
+  "round": 20,
   "current_version": "v1.2-swing",
   "params": {
    "rsi_lo": 40,
@@ -39,38 +39,38 @@
    "ZEC",
    "BNB"
   ],
-  "change_tested": "atrp_min: 0.002 -> 0.0025",
+  "change_tested": "swing_n: 5 -> 4",
   "promoted": false,
   "new_version": null,
   "result": "kept v1.2-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
   "metrics": {
    "current": {
-    "n": 711,
-    "pf": 0.865,
-    "sharpe": -1.46,
-    "expectancy": -0.0851,
-    "win": 0.339,
-    "mdd_R": 68.48,
-    "max_dd_pct": 96.59,
-    "end_equity": 186.5
+    "n": 714,
+    "pf": 0.871,
+    "sharpe": -1.4,
+    "expectancy": -0.0811,
+    "win": 0.342,
+    "mdd_R": 67.14,
+    "max_dd_pct": 96.42,
+    "end_equity": 204.44
    },
    "variant": {
-    "n": 714,
-    "pf": 0.866,
-    "sharpe": -1.45,
-    "expectancy": -0.0847,
-    "win": 0.339,
-    "mdd_R": 68.47,
-    "max_dd_pct": 96.61,
-    "end_equity": 185.18
+    "n": 718,
+    "pf": 0.841,
+    "sharpe": -1.81,
+    "expectancy": -0.1001,
+    "win": 0.338,
+    "mdd_R": 78.42,
+    "max_dd_pct": 97.64,
+    "end_equity": 140.5
    }
   },
   "improvement_pct": {
-   "pf": 0.1,
-   "sharpe": 0.7,
-   "expectancy": 0.5
+   "pf": -3.4,
+   "sharpe": -29.3,
+   "expectancy": -23.4
   },
-  "warning": "Current version v1.2-swing has NEGATIVE expectancy (-0.085R, PF 0.865) on the last 365 days — it loses money in backtest.",
+  "warning": "Current version v1.2-swing has NEGATIVE expectancy (-0.081R, PF 0.871) on the last 365 days — it loses money in backtest.",
   "next_round": "every 2h, or sooner after 15 new live signals",
   "guards": null
  },
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-20T21:27:40Z",
-  "equity": 4849.65,
-  "pnl": -150.35,
+  "updated_at": "2026-10-20T21:42:45Z",
+  "equity": 4855.16,
+  "pnl": -144.84,
   "sleeves": 3,
   "open_positions": 2,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -1.99,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-20T13:27:57Z",
-    5001.95
-   ],
-   [
-    "2026-10-20T13:32:58Z",
-    5009.83
-   ],
-   [
-    "2026-10-20T13:37:59Z",
-    4973.57
-   ],
    [
     "2026-10-20T13:43:00Z",
     4980.96
@@ -731,16 +719,35 @@
    [
     "2026-10-20T21:25:15Z",
     4849.59
+   ],
+   [
+    "2026-10-20T21:30:16Z",
+    4848.81
+   ],
+   [
+    "2026-10-20T21:35:17Z",
+    4855.71
+   ],
+   [
+    "2026-10-20T21:40:21Z",
+    4858.47
    ]
   ]
  },
  "lessons": [
-  "Evolution round 19: current v1.2-swing; tested atrp_min 0.002 -> 0.0025; kept v1.2-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
-  "PF 0.865 -> 0.866; Sharpe -1.46 -> -1.45; expectancy -0.0851R -> -0.0847R; max DD 96.59% -> 96.61%; trades 711 -> 714",
-  "WARNING: Current version v1.2-swing has NEGATIVE expectancy (-0.085R, PF 0.865) on the last 365 days — it loses money in backtest.",
+  "Evolution round 20: current v1.2-swing; tested swing_n 5 -> 4; kept v1.2-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
+  "PF 0.871 -> 0.841; Sharpe -1.4 -> -1.81; expectancy -0.0811R -> -0.1001R; max DD 96.42% -> 97.64%; trades 714 -> 718",
+  "WARNING: Current version v1.2-swing has NEGATIVE expectancy (-0.081R, PF 0.871) on the last 365 days — it loses money in backtest.",
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-20T21:28:56Z",
+   "type": "evolution",
+   "title": "Round #20: swing_n 5 -> 4 — NOT promoted",
+   "detail": "Trigger: schedule 2h. PF 0.871 -> 0.841; Sharpe -1.4 -> -1.81; expectancy -0.0811R -> -0.1001R; max DD 96.42% -> 97.64%; trades 714 -> 718 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-20T21:25:13Z",
    "type": "trade",
@@ -1432,13 +1439,6 @@
    "type": "system",
    "title": "Live bot started (v1.0)",
    "detail": "Coins BTC, ETH; mode LIVE.",
-   "version": "v1.0"
-  },
-  {
-   "ts_utc": "2026-10-18T16:35:26Z",
-   "type": "evolution",
-   "title": "v1.0 launched live (15m trend-pullback, BTC/ETH)",
-   "detail": "Params: RSI pullback 40-60, min confluence 4/5, volume x1.0, wick >= 0.4, swing stop (5 bars) / 1.5x ATR, min stop 0.5%, TP1 50% at 1.5R, TP2 3R (single TP 2R if halves < $10), breakeven at 1R, EMA gap >= 0.2%, ATR% >= 0.2%, 24h time stop. Hard limits: 0.5% risk/trade, open risk <= 3%, margin <= 10%, leverage 20-40x, daily stop -3%, kill switch -20% vs 37.93 USDC, entries 07-21 UTC, news filter. 12-month backtest: PF 0.88, expectancy -0.072R, max DD 34.6%, 932 trades. WARNING: unprofitable in backtest; running live by owner's choice.",
    "version": "v1.0"
   }
  ],
@@ -2201,7 +2201,11 @@
    36.7044
   ],
   [
-   "2026-10-20T21:27:13Z",
+   "2026-10-20T21:28:13Z",
+   35.3969
+  ],
+  [
+   "2026-10-20T21:42:13Z",
    35.3969
   ]
  ],
