@@ -1,12 +1,12 @@
 {
- "updated_at": "2026-10-20T19:27:13Z",
- "published_at": "2026-10-20T19:27:16Z",
+ "updated_at": "2026-10-20T19:42:13Z",
+ "published_at": "2026-10-20T19:42:20Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
-  "updated_utc": "2026-10-20T17:28:04+00:00",
-  "round": 18,
+  "updated_utc": "2026-10-20T19:28:31+00:00",
+  "round": 19,
   "current_version": "v1.2-swing",
   "params": {
    "rsi_lo": 40,
@@ -39,38 +39,38 @@
    "ZEC",
    "BNB"
   ],
-  "change_tested": "gap_min: 0.002 -> 0.0025",
+  "change_tested": "atrp_min: 0.002 -> 0.0025",
   "promoted": false,
   "new_version": null,
   "result": "kept v1.2-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
   "metrics": {
    "current": {
     "n": 711,
-    "pf": 0.868,
-    "sharpe": -1.43,
-    "expectancy": -0.0834,
+    "pf": 0.865,
+    "sharpe": -1.46,
+    "expectancy": -0.0851,
     "win": 0.339,
     "mdd_R": 68.48,
     "max_dd_pct": 96.59,
-    "end_equity": 194.87
+    "end_equity": 186.5
    },
    "variant": {
-    "n": 712,
-    "pf": 0.828,
-    "sharpe": -1.92,
-    "expectancy": -0.1091,
-    "win": 0.333,
-    "mdd_R": 78.82,
-    "max_dd_pct": 98.11,
-    "end_equity": 98.36
+    "n": 714,
+    "pf": 0.866,
+    "sharpe": -1.45,
+    "expectancy": -0.0847,
+    "win": 0.339,
+    "mdd_R": 68.47,
+    "max_dd_pct": 96.61,
+    "end_equity": 185.18
    }
   },
   "improvement_pct": {
-   "pf": -4.6,
-   "sharpe": -34.3,
-   "expectancy": -30.8
+   "pf": 0.1,
+   "sharpe": 0.7,
+   "expectancy": 0.5
   },
-  "warning": "Current version v1.2-swing has NEGATIVE expectancy (-0.083R, PF 0.868) on the last 365 days — it loses money in backtest.",
+  "warning": "Current version v1.2-swing has NEGATIVE expectancy (-0.085R, PF 0.865) on the last 365 days — it loses money in backtest.",
   "next_round": "every 2h, or sooner after 15 new live signals",
   "guards": null
  },
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-20T19:27:13Z",
-  "equity": 4905.5,
-  "pnl": -94.5,
+  "updated_at": "2026-10-20T19:42:19Z",
+  "equity": 4885.34,
+  "pnl": -114.66,
   "sleeves": 3,
   "open_positions": 2,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -1.79,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-20T11:27:15Z",
-    4995.67
-   ],
-   [
-    "2026-10-20T11:32:20Z",
-    4996.94
-   ],
-   [
-    "2026-10-20T11:37:21Z",
-    5004.35
-   ],
    [
     "2026-10-20T11:42:21Z",
     4986.53
@@ -731,16 +719,35 @@
    [
     "2026-10-20T19:24:37Z",
     4905.56
+   ],
+   [
+    "2026-10-20T19:29:37Z",
+    4902.18
+   ],
+   [
+    "2026-10-20T19:34:42Z",
+    4892.94
+   ],
+   [
+    "2026-10-20T19:39:42Z",
+    4891.62
    ]
   ]
  },
  "lessons": [
-  "Evolution round 18: current v1.2-swing; tested gap_min 0.002 -> 0.0025; kept v1.2-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
-  "PF 0.868 -> 0.828; Sharpe -1.43 -> -1.92; expectancy -0.0834R -> -0.1091R; max DD 96.59% -> 98.11%; trades 711 -> 712",
-  "WARNING: Current version v1.2-swing has NEGATIVE expectancy (-0.083R, PF 0.868) on the last 365 days — it loses money in backtest.",
+  "Evolution round 19: current v1.2-swing; tested atrp_min 0.002 -> 0.0025; kept v1.2-swing — 0 metrics improved >= 8% (none); max DD WORSE; sample ok",
+  "PF 0.865 -> 0.866; Sharpe -1.46 -> -1.45; expectancy -0.0851R -> -0.0847R; max DD 96.59% -> 96.61%; trades 711 -> 714",
+  "WARNING: Current version v1.2-swing has NEGATIVE expectancy (-0.085R, PF 0.865) on the last 365 days — it loses money in backtest.",
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-20T19:28:31Z",
+   "type": "evolution",
+   "title": "Round #19: atrp_min 0.002 -> 0.0025 — NOT promoted",
+   "detail": "Trigger: schedule 2h. PF 0.865 -> 0.866; Sharpe -1.46 -> -1.45; expectancy -0.0851R -> -0.0847R; max DD 96.59% -> 96.61%; trades 711 -> 714 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-20T17:28:04Z",
    "type": "evolution",
@@ -1432,13 +1439,6 @@
    "type": "decision",
    "title": "24h time stop (96 x 15m bars)",
    "detail": "Any position still open after 24 hours (96 bars) is closed at market, so capital and risk are not tied up in stale trades.",
-   "version": "v1.0"
-  },
-  {
-   "ts_utc": "2026-10-18T16:32:50Z",
-   "type": "decision",
-   "title": "Minimum stop distance set to 0.5%",
-   "detail": "Owner's range was 0.3-0.5%. 0.3% was backtested and performed worse (more noise stop-outs), so v1.0 uses 0.5% (top of range). A hard floor of 0.3% is enforced in the live bot regardless of evolved parameters.",
    "version": "v1.0"
   }
  ],
@@ -2154,7 +2154,11 @@
    37.022
   ],
   [
-   "2026-10-20T19:27:13Z",
+   "2026-10-20T19:28:13Z",
+   37.022
+  ],
+  [
+   "2026-10-20T19:42:13Z",
    37.022
   ]
  ],
