@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-21T21:22:13Z",
- "published_at": "2026-10-21T21:22:54Z",
+ "updated_at": "2026-10-21T21:37:13Z",
+ "published_at": "2026-10-21T21:37:58Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-21T21:22:50Z",
-  "equity": 4668.6,
-  "pnl": -331.4,
+  "updated_at": "2026-10-21T21:37:54Z",
+  "equity": 4664.45,
+  "pnl": -335.55,
   "sleeves": 3,
   "open_positions": 2,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -4.11,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-21T13:21:30Z",
-    4759.89
-   ],
-   [
-    "2026-10-21T13:26:35Z",
-    4759.99
-   ],
-   [
-    "2026-10-21T13:31:37Z",
-    4782.85
-   ],
    [
     "2026-10-21T13:36:38Z",
     4807.41
@@ -731,6 +719,18 @@
    [
     "2026-10-21T21:20:40Z",
     4674.15
+   ],
+   [
+    "2026-10-21T21:25:42Z",
+    4666.82
+   ],
+   [
+    "2026-10-21T21:30:43Z",
+    4664.59
+   ],
+   [
+    "2026-10-21T21:35:47Z",
+    4659.34
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-21T21:35:34Z",
+   "type": "evolution",
+   "title": "No untested one-parameter variant left for v1.2-swing",
+   "detail": "Every neighbour in the search space was already tested; waiting for new data or a new version.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-21T19:35:14Z",
    "type": "evolution",
@@ -1432,13 +1439,6 @@
    "type": "system",
    "title": "Live bot started (v1.1-swing)",
    "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-18T17:23:08Z",
-   "type": "decision",
-   "title": "Sizing now uses worst allowed fill (0.5% risk is a hard cap incl. slippage)",
-   "detail": "Owner decision: position size = 0.5% of equity / |IOC limit price - stop|, so even a fill at the 0.2% slippage limit risks at most 0.5%. Min-stop trades get smaller (e.g. SOL at a 0.5% stop: about 0.26 SOL / 26.6 USD instead of 0.37 / 37.9; still above the 10 USD minimum). New entries only. The open SOL short (0.52% actual risk) is accepted as-is: its stop, TP1 and trailing logic are untouched. Backtest sizing updated to match.",
    "version": "v1.1-swing"
   }
  ],
@@ -2600,7 +2600,11 @@
    34.0482
   ],
   [
-   "2026-10-21T21:22:13Z",
+   "2026-10-21T21:28:13Z",
+   34.0482
+  ],
+  [
+   "2026-10-21T21:37:13Z",
    34.0482
   ]
  ],
