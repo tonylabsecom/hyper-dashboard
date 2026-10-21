@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-21T10:29:14Z",
- "published_at": "2026-10-21T10:35:03Z",
+ "updated_at": "2026-10-21T10:49:13Z",
+ "published_at": "2026-10-21T10:50:10Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-21T10:29:44Z",
-  "equity": 4813.48,
-  "pnl": -186.52,
+  "updated_at": "2026-10-21T10:50:04Z",
+  "equity": 4797.49,
+  "pnl": -202.51,
   "sleeves": 3,
   "open_positions": 3,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -3.27,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-21T02:27:16Z",
-    4859.42
-   ],
-   [
-    "2026-10-21T02:32:17Z",
-    4861.75
-   ],
-   [
-    "2026-10-21T02:37:18Z",
-    4851.82
-   ],
    [
     "2026-10-21T02:42:19Z",
     4855.57
@@ -731,6 +719,18 @@
    [
     "2026-10-21T10:26:02Z",
     4810.42
+   ],
+   [
+    "2026-10-21T10:35:08Z",
+    4810.11
+   ],
+   [
+    "2026-10-21T10:40:11Z",
+    4814.54
+   ],
+   [
+    "2026-10-21T10:45:16Z",
+    4796.59
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-21T10:35:17Z",
+   "type": "system",
+   "title": "Live bot started (v1.2-swing)",
+   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-21T09:31:40Z",
    "type": "evolution",
@@ -1433,13 +1440,6 @@
    "title": "Swing trial: v1.0 -> v1.1-swing (PROMOTED swing exits)",
    "detail": "Owner: swing trading. Candidate: max hold 5 days (was 24h), runner trailed after TP1 with a 1H-ATR x3 chandelier, no fixed TP2. 7-coin portfolio, last 365d, fees + Hyperliquid funding incl.: PF 0.792 -> 0.813; Sharpe -3.91 -> -2.7; expectancy -0.1275R -> -0.1148R; max DD 75.62% -> 63.5%; trades 2101 -> 1621. Reason: 2 metrics improved >= 8% (sharpe, expectancy); max DD not worse; sample ok. Both versions still LOSE money in backtest. Rollback: evolve.py --rollback v1.0.",
    "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-18T17:16:56Z",
-   "type": "decision",
-   "title": "Swing exits tested (owner: swing trading, 15m entries, hold along 1H/4H trend)",
-   "detail": "Replaced the 24h time stop with a multi-day max hold and tested trailing the runner after TP1 with a 1H-ATR chandelier (k=2 or 3), with or without a 3R TP2 cap. 7-coin portfolio, 12 months, fees + Hyperliquid funding: v1.0 fixed 1d (old): PF 0.79, Sharpe -3.97, exp -0.129R, DD 76.03%, n 2100; fixed 3d: PF 0.796, Sharpe -3.82, exp -0.126R, DD 74.87%, n 2082; fixed 5d: PF 0.796, Sharpe -3.82, exp -0.126R, DD 74.87%, n 2082; trail k2 3d: PF 0.808, Sharpe -2.9, exp -0.118R, DD 69.72%, n 1861; trail+TP2 3R k2 3d: PF 0.791, Sharpe -3.98, exp -0.129R, DD 76.55%, n 2123; trail k3 3d: PF 0.811, Sharpe -2.74, exp -0.116R, DD 64.03%, n 1625; trail+TP2 3R k3 3d: PF 0.792, Sharpe -3.89, exp -0.128R, DD 75.88%, n 2094; trail k2 5d: PF 0.808, Sharpe -2.9, exp -0.118R, DD 69.72%, n 1861; trail+TP2 3R k2 5d: PF 0.791, Sharpe -3.98, exp -0.129R, DD 76.55%, n 2123; trail k3 5d: PF 0.812, Sharpe -2.71, exp -0.115R, DD 63.72%, n 1621; trail+TP2 3R k3 5d: PF 0.792, Sharpe -3.89, exp -0.128R, DD 75.88%, n 20",
-   "version": "v1.0"
   }
  ],
  "version": "v1.2-swing",
@@ -2428,7 +2428,11 @@
    34.0482
   ],
   [
-   "2026-10-21T10:29:14Z",
+   "2026-10-21T10:43:13Z",
+   34.0482
+  ],
+  [
+   "2026-10-21T10:49:13Z",
    34.0482
   ]
  ],
