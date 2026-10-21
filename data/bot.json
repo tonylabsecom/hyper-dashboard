@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-21T23:08:13Z",
- "published_at": "2026-10-21T23:08:21Z",
+ "updated_at": "2026-10-21T23:23:13Z",
+ "published_at": "2026-10-21T23:23:48Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-21T23:08:21Z",
-  "equity": 4714.37,
-  "pnl": -285.63,
+  "updated_at": "2026-10-21T23:23:44Z",
+  "equity": 4711.63,
+  "pnl": -288.37,
   "sleeves": 3,
   "open_positions": 2,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -4.13,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-21T15:07:28Z",
-    4673.86
-   ],
-   [
-    "2026-10-21T15:12:32Z",
-    4669.92
-   ],
-   [
-    "2026-10-21T15:17:36Z",
-    4680.96
-   ],
    [
     "2026-10-21T15:22:36Z",
     4694.5
@@ -731,6 +719,18 @@
    [
     "2026-10-21T23:06:32Z",
     4714.95
+   ],
+   [
+    "2026-10-21T23:08:49Z",
+    4713.88
+   ],
+   [
+    "2026-10-21T23:13:50Z",
+    4710.64
+   ],
+   [
+    "2026-10-21T23:18:53Z",
+    4713.55
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-21T23:08:51Z",
+   "type": "system",
+   "title": "Live bot started (v1.2-swing)",
+   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-21T21:35:34Z",
    "type": "evolution",
@@ -1432,13 +1439,6 @@
    "type": "trade",
    "title": "Closed SOL SHORT: 0.0363R",
    "detail": "PnL 0.007142 USDC (after fees); entry 102.27, initial stop 102.80145, TP1 hit False, breakeven False.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T00:44:07Z",
-   "type": "system",
-   "title": "Live bot started (v1.1-swing)",
-   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
    "version": "v1.1-swing"
   }
  ],
@@ -2628,7 +2628,11 @@
    34.0482
   ],
   [
-   "2026-10-21T23:08:13Z",
+   "2026-10-21T23:13:13Z",
+   34.0482
+  ],
+  [
+   "2026-10-21T23:23:13Z",
    34.0482
   ]
  ],
