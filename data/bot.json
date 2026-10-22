@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-22T21:29:13Z",
- "published_at": "2026-10-22T21:29:39Z",
+ "updated_at": "2026-10-22T21:44:13Z",
+ "published_at": "2026-10-22T21:44:43Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-22T21:29:37Z",
-  "equity": 5035.26,
-  "pnl": 35.26,
+  "updated_at": "2026-10-22T21:44:42Z",
+  "equity": 5034.23,
+  "pnl": 34.23,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.01,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-22T13:25:58Z",
-    4997.0
-   ],
-   [
-    "2026-10-22T13:31:02Z",
-    4999.4
-   ],
-   [
-    "2026-10-22T13:36:07Z",
-    4987.83
-   ],
    [
     "2026-10-22T13:41:08Z",
     5017.37
@@ -731,6 +719,18 @@
    [
     "2026-10-22T21:25:34Z",
     5028.77
+   ],
+   [
+    "2026-10-22T21:30:38Z",
+    5029.91
+   ],
+   [
+    "2026-10-22T21:35:40Z",
+    5040.45
+   ],
+   [
+    "2026-10-22T21:40:41Z",
+    5035.96
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-22T21:41:11Z",
+   "type": "evolution",
+   "title": "No untested one-parameter variant left for v1.2-swing",
+   "detail": "Every neighbour in the search space was already tested; waiting for new data or a new version.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-22T01:39:13Z",
    "type": "trade",
@@ -1432,13 +1439,6 @@
    "type": "evolution",
    "title": "Round 3 ran with the old 07-21 session",
    "detail": "Round 3 (02:44 UTC, rsi_hi 60 to 62, not promoted) was scored before the daemon reloaded the 24h setting. The variant is un-marked as tested so it can be re-scored with 24h; the daemon was restarted at 02:51 UTC. Next round due 04:44 UTC.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T02:44:52Z",
-   "type": "evolution",
-   "title": "Round #3: rsi_hi 60 -> 62 — NOT promoted",
-   "detail": "Trigger: schedule 2h. PF 0.881 -> 0.879; Sharpe -1.64 -> -1.61; expectancy -0.0714R -> -0.0728R; max DD 46.36% -> 47.52%; trades 1934 -> 1962 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
    "version": "v1.1-swing"
   }
  ],
@@ -2999,7 +2999,11 @@
    32.6445
   ],
   [
-   "2026-10-22T21:29:13Z",
+   "2026-10-22T21:30:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-22T21:44:13Z",
    32.6445
   ]
  ],
