@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T01:00:13Z",
- "published_at": "2026-10-23T01:00:36Z",
+ "updated_at": "2026-10-23T01:15:13Z",
+ "published_at": "2026-10-23T01:15:40Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -338,28 +338,16 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T01:00:35Z",
-  "equity": 5035.85,
-  "pnl": 35.85,
+  "updated_at": "2026-10-23T01:15:38Z",
+  "equity": 5039.67,
+  "pnl": 39.67,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
-  "fees": 37.41,
+  "fees": 37.44,
   "funding": -6.18,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-22T16:57:59Z",
-    5066.79
-   ],
-   [
-    "2026-10-22T17:03:03Z",
-    5061.27
-   ],
-   [
-    "2026-10-22T17:08:05Z",
-    5069.92
-   ],
    [
     "2026-10-22T17:13:06Z",
     5073.06
@@ -731,6 +719,18 @@
    [
     "2026-10-23T00:57:16Z",
     5035.8
+   ],
+   [
+    "2026-10-23T01:02:22Z",
+    5034.09
+   ],
+   [
+    "2026-10-23T01:07:26Z",
+    5039.77
+   ],
+   [
+    "2026-10-23T01:12:29Z",
+    5036.74
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T01:15:19Z",
+   "type": "decision",
+   "title": "Skipped SOL signal",
+   "detail": "Valid signal not taken: total account margin would exceed 35% of account equity (11.57 > 11.54; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T00:15:23Z",
    "type": "decision",
@@ -1432,13 +1439,6 @@
    "type": "decision",
    "title": "Backtest v1.1-swing: 24h vs 07-21 UTC session (7 coins, 12 months)",
    "detail": "Fees, Hyperliquid funding and worst-fill sizing included, 5000 USD start. Session 07-21 UTC: 1934 trades (5.3/day), PF 0.881, Sharpe -1.64, exp -0.071R, max DD 46.36%, return -42.5%. 24h: 2556 trades (7.0/day), PF 0.782, Sharpe -3.64, exp -0.133R, max DD 74.28%, return -73.9%. At live equity 37.89 USD: session 1761 trades (4.82/day), PF 0.858, Sharpe -1.4, exp -0.090R, max DD 56.95%, return -49.6%; 24h 1863 trades (5.1/day), PF 0.804, Sharpe -2.29, exp -0.129R, max DD 65.08%, return -63.1%.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T02:50:06Z",
-   "type": "risk",
-   "title": "Warning: 24h trading is WORSE than session-limited in backtest",
-   "detail": "24h adds about 1.7 trades/day but lowers PF (0.881 to 0.782) and expectancy (-0.071R to -0.133R), and raises max DD (46% to 74%). Applied anyway per owner override.",
    "version": "v1.1-swing"
   }
  ],
@@ -3055,7 +3055,11 @@
    32.6445
   ],
   [
-   "2026-10-23T01:00:13Z",
+   "2026-10-23T01:01:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T01:15:13Z",
    32.6445
   ]
  ],
