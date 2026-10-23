@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T01:45:13Z",
- "published_at": "2026-10-23T01:45:48Z",
+ "updated_at": "2026-10-23T02:00:13Z",
+ "published_at": "2026-10-23T02:00:52Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -338,28 +338,16 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T01:45:45Z",
-  "equity": 5032.69,
-  "pnl": 32.69,
+  "updated_at": "2026-10-23T02:00:47Z",
+  "equity": 5041.84,
+  "pnl": 41.84,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
   "fees": 37.44,
-  "funding": -6.18,
+  "funding": -6.23,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-22T17:43:24Z",
-    5054.06
-   ],
-   [
-    "2026-10-22T17:48:28Z",
-    5056.16
-   ],
-   [
-    "2026-10-22T17:53:33Z",
-    5053.82
-   ],
    [
     "2026-10-22T17:58:36Z",
     5068.25
@@ -731,6 +719,18 @@
    [
     "2026-10-23T01:42:49Z",
     5036.49
+   ],
+   [
+    "2026-10-23T01:47:51Z",
+    5026.56
+   ],
+   [
+    "2026-10-23T01:52:55Z",
+    5032.43
+   ],
+   [
+    "2026-10-23T01:57:59Z",
+    5038.04
    ]
   ]
  },
@@ -741,6 +741,20 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T02:00:17Z",
+   "type": "decision",
+   "title": "Skipped HYPE signal",
+   "detail": "Valid signal not taken: total account margin would exceed 60% of account equity (19.61 > 19.57; HST 0.00).",
+   "version": "v1.2-swing"
+  },
+  {
+   "ts_utc": "2026-10-23T02:00:16Z",
+   "type": "decision",
+   "title": "Skipped ETH signal",
+   "detail": "Valid signal not taken: total account margin would exceed 28% of account equity (9.29 > 9.27; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T01:15:19Z",
    "type": "decision",
@@ -1425,20 +1439,6 @@
    "type": "system",
    "title": "Live bot started (v1.1-swing)",
    "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T02:50:06Z",
-   "type": "decision",
-   "title": "OWNER OVERRIDE: entries allowed 24h (07-21 UTC session limit removed)",
-   "detail": "Owner Tony explicitly instructed: trade all hours. This is an owner override, NOT an automatic loosening. Session is a fixed setting (tp_strategy.SESSION = 0-24 UTC), not an evolvable parameter: Evolution cannot re-add or remove it, and every backtest/Evolution round now uses 24h, same as live. Recorded in versions/current.json as owner_overrides. All other hard limits unchanged (news filter still active). Applied 02:41 UTC with the account flat.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T02:50:06Z",
-   "type": "decision",
-   "title": "Backtest v1.1-swing: 24h vs 07-21 UTC session (7 coins, 12 months)",
-   "detail": "Fees, Hyperliquid funding and worst-fill sizing included, 5000 USD start. Session 07-21 UTC: 1934 trades (5.3/day), PF 0.881, Sharpe -1.64, exp -0.071R, max DD 46.36%, return -42.5%. 24h: 2556 trades (7.0/day), PF 0.782, Sharpe -3.64, exp -0.133R, max DD 74.28%, return -73.9%. At live equity 37.89 USD: session 1761 trades (4.82/day), PF 0.858, Sharpe -1.4, exp -0.090R, max DD 56.95%, return -49.6%; 24h 1863 trades (5.1/day), PF 0.804, Sharpe -2.29, exp -0.129R, max DD 65.08%, return -63.1%.",
    "version": "v1.1-swing"
   }
  ],
@@ -3067,7 +3067,11 @@
    32.6445
   ],
   [
-   "2026-10-23T01:45:13Z",
+   "2026-10-23T01:46:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T02:00:13Z",
    32.6445
   ]
  ],
