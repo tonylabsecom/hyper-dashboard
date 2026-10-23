@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T12:03:13Z",
- "published_at": "2026-10-23T12:03:37Z",
+ "updated_at": "2026-10-23T12:18:13Z",
+ "published_at": "2026-10-23T12:18:41Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -132,9 +132,9 @@
  "last_signal": {
   "coin": "BNB",
   "side": "NO SIGNAL",
-  "price": 747.5,
-  "time": "2026-10-23T12:00:21Z",
-  "reason": "None on 15m bar 11:45: close 747.5 vs VWAP --, RSI 63.2 — no setup"
+  "price": 746.37,
+  "time": "2026-10-23T12:15:22Z",
+  "reason": "None on 15m bar 12:00: close 746.37 vs VWAP --, RSI 57.4 — no setup"
  },
  "confidence": null,
  "confidence_basis": null,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T12:03:35Z",
-  "equity": 5029.79,
-  "pnl": 29.79,
+  "updated_at": "2026-10-23T12:18:40Z",
+  "equity": 5031.53,
+  "pnl": 31.53,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.65,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T04:04:07Z",
-    5019.91
-   ],
-   [
-    "2026-10-23T04:09:10Z",
-    5022.38
-   ],
-   [
-    "2026-10-23T04:14:15Z",
-    5023.8
-   ],
    [
     "2026-10-23T04:19:16Z",
     5024.44
@@ -731,6 +719,18 @@
    [
     "2026-10-23T12:02:39Z",
     5031.39
+   ],
+   [
+    "2026-10-23T12:07:41Z",
+    5033.2
+   ],
+   [
+    "2026-10-23T12:12:44Z",
+    5035.26
+   ],
+   [
+    "2026-10-23T12:17:44Z",
+    5039.33
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T12:15:15Z",
+   "type": "decision",
+   "title": "Skipped BTC signal",
+   "detail": "Valid signal not taken: total account margin would exceed 18% of account equity (5.81 > 5.80; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T12:00:16Z",
    "type": "decision",
@@ -1433,13 +1440,6 @@
    "title": "Live bot started (v1.1-swing)",
    "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
    "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T14:15:25Z",
-   "type": "trade",
-   "title": "Opened kPEPE",
-   "detail": "Entry 0.004116, qty 2763.0, stop 0.004053, risk $0.1741, exit mode single.",
-   "version": null
   }
  ],
  "version": "v1.2-swing",
@@ -3235,7 +3235,11 @@
    32.6445
   ],
   [
-   "2026-10-23T12:03:13Z",
+   "2026-10-23T12:16:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T12:18:13Z",
    32.6445
   ]
  ],
