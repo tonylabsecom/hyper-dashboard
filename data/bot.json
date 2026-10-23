@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T14:34:13Z",
- "published_at": "2026-10-23T14:34:21Z",
+ "updated_at": "2026-10-23T14:49:13Z",
+ "published_at": "2026-10-23T14:49:25Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -121,14 +121,14 @@
    "szDecimals": 3
   }
  },
- "equity": 32.2411,
- "day_pnl_pct": -1.24,
- "total_pct_vs_baseline": -15.0,
+ "equity": 33.2094,
+ "day_pnl_pct": 1.73,
+ "total_pct_vs_baseline": -12.45,
  "baseline": 37.93,
  "trades_today": 1,
  "open_risk_usd": 1.2401,
  "positions": {
-  "BNB": 194.72
+  "BNB": 195.69
  },
  "pending_orders": 0,
  "last_signal": {
@@ -144,7 +144,7 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -0.98,
-  "pnl_today": -0.4034,
+  "pnl_today": 0.5649,
   "triggered": true
  },
  "kill_switch": false,
@@ -340,9 +340,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T14:34:16Z",
-  "equity": 5038.28,
-  "pnl": 38.28,
+  "updated_at": "2026-10-23T14:49:23Z",
+  "equity": 5028.2,
+  "pnl": 28.2,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -350,18 +350,6 @@
   "funding": -6.74,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T06:35:11Z",
-    5023.62
-   ],
-   [
-    "2026-10-23T06:40:14Z",
-    5023.63
-   ],
-   [
-    "2026-10-23T06:45:15Z",
-    5021.72
-   ],
    [
     "2026-10-23T06:50:17Z",
     5020.26
@@ -733,6 +721,18 @@
    [
     "2026-10-23T14:33:43Z",
     5038.59
+   ],
+   [
+    "2026-10-23T14:38:45Z",
+    5026.48
+   ],
+   [
+    "2026-10-23T14:43:47Z",
+    5026.71
+   ],
+   [
+    "2026-10-23T14:48:49Z",
+    5027.07
    ]
   ]
  },
@@ -1445,8 +1445,8 @@
   }
  ],
  "version": "v1.2-swing",
- "margin_used": 19.4724,
- "upnl": -0.3132,
+ "margin_used": 19.5693,
+ "upnl": 0.6551,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1469,18 +1469,18 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-23T13:30:28Z",
-   "notional": 194.72,
+   "notional": 195.69,
    "version": "v1.2-swing"
   }
  },
  "pnl": {
-  "today_usd": -0.4034,
-  "today_pct": -1.24,
-  "d7_usd": -5.6864,
-  "d7_pct": -14.99,
+  "today_usd": 0.5649,
+  "today_pct": 1.73,
+  "d7_usd": -4.7181,
+  "d7_pct": -12.44,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -5.6889,
-  "total_pct": -15.0,
+  "total_usd": -4.7206,
+  "total_pct": -12.45,
   "trades_today": 0,
   "trades_7d": 13,
   "wins_7d": 2,
@@ -2218,10 +2218,6 @@
    37.022
   ],
   [
-   "2026-10-20T19:28:13Z",
-   37.022
-  ],
-  [
    "2026-10-20T19:43:13Z",
    37.022
   ],
@@ -2486,6 +2482,10 @@
    34.0482
   ],
   [
+   "2026-10-21T12:13:13Z",
+   34.0482
+  ],
+  [
    "2026-10-21T12:28:13Z",
    34.0482
   ],
@@ -2747,10 +2747,6 @@
   ],
   [
    "2026-10-22T04:43:13Z",
-   32.6445
-  ],
-  [
-   "2026-10-22T04:58:13Z",
    32.6445
   ],
   [
@@ -3282,26 +3278,30 @@
    32.9405
   ],
   [
-   "2026-10-23T14:31:13Z",
-   32.1497
+   "2026-10-23T14:16:13Z",
+   32.1993
   ],
   [
-   "2026-10-23T14:34:13Z",
-   32.2411
+   "2026-10-23T14:46:13Z",
+   33.0345
+  ],
+  [
+   "2026-10-23T14:49:13Z",
+   33.2094
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
-  "equity": 32.2411,
-  "day_pnl_pct": -1.24,
-  "total_pct_vs_baseline": -15.0,
+  "equity": 33.2094,
+  "day_pnl_pct": 1.73,
+  "total_pct_vs_baseline": -12.45,
   "realized": -5.3403,
   "funding": -0.00091,
-  "upnl": -0.3132,
+  "upnl": 0.6551,
   "fills": 31,
-  "margin_used": 19.4724,
+  "margin_used": 19.5693,
   "positions": {
-   "BNB": 194.72
+   "BNB": 195.69
   },
   "coins": [
    "BTC",
@@ -3314,11 +3314,11 @@
   ]
  },
  "account": {
-  "equity": 32.2411,
-  "total_pct_vs_baseline": -15.0,
-  "free_equity": 32.2411,
-  "sizing_equity": 32.2411,
-  "margin_used_total": 19.4724,
+  "equity": 33.2094,
+  "total_pct_vs_baseline": -12.45,
+  "free_equity": 33.2094,
+  "sizing_equity": 33.2094,
+  "margin_used_total": 19.5693,
   "external_margin_used": 0,
   "shared_with": "HST (other coins, isolated margin, cloid 0x485354)"
  },
