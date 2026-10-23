@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T13:03:13Z",
- "published_at": "2026-10-23T13:03:53Z",
+ "updated_at": "2026-10-23T13:18:13Z",
+ "published_at": "2026-10-23T13:18:57Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -132,9 +132,9 @@
  "last_signal": {
   "coin": "BNB",
   "side": "NO SIGNAL",
-  "price": 745.73,
-  "time": "2026-10-23T13:00:23Z",
-  "reason": "None on 15m bar 12:45: close 745.73 vs VWAP --, RSI 53.6 — no setup"
+  "price": 745.71,
+  "time": "2026-10-23T13:15:21Z",
+  "reason": "None on 15m bar 13:00: close 745.71 vs VWAP --, RSI 53.5 — no setup"
  },
  "confidence": null,
  "confidence_basis": null,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T13:03:51Z",
-  "equity": 5027.15,
-  "pnl": 27.15,
+  "updated_at": "2026-10-23T13:18:53Z",
+  "equity": 5030.32,
+  "pnl": 30.32,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.7,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T05:04:34Z",
-    5026.77
-   ],
-   [
-    "2026-10-23T05:09:36Z",
-    5023.45
-   ],
-   [
-    "2026-10-23T05:14:39Z",
-    5021.61
-   ],
    [
     "2026-10-23T05:19:42Z",
     5021.33
@@ -731,6 +719,18 @@
    [
     "2026-10-23T13:03:01Z",
     5025.88
+   ],
+   [
+    "2026-10-23T13:08:05Z",
+    5029.62
+   ],
+   [
+    "2026-10-23T13:13:06Z",
+    5029.23
+   ],
+   [
+    "2026-10-23T13:18:09Z",
+    5030.32
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T13:15:16Z",
+   "type": "decision",
+   "title": "Skipped HYPE signal",
+   "detail": "Valid signal not taken: total account margin would exceed 60% of account equity (19.62 > 19.59; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T12:30:15Z",
    "type": "decision",
@@ -1433,13 +1440,6 @@
    "title": "Skipped ZEC signal",
    "detail": "Valid signal not taken: notional 0.00 < $10.",
    "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T15:00:18Z",
-   "type": "trade",
-   "title": "Opened ETH",
-   "detail": "Entry 2407.9, qty 0.0109, stop 2423.0, risk $0.1646, exit mode partial.",
-   "version": null
   }
  ],
  "version": "v1.2-swing",
@@ -3251,7 +3251,11 @@
    32.6445
   ],
   [
-   "2026-10-23T13:03:13Z",
+   "2026-10-23T13:16:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T13:18:13Z",
    32.6445
   ]
  ],
