@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T09:32:13Z",
- "published_at": "2026-10-23T09:32:53Z",
+ "updated_at": "2026-10-23T09:47:13Z",
+ "published_at": "2026-10-23T09:47:57Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -132,9 +132,9 @@
  "last_signal": {
   "coin": "BNB",
   "side": "NO SIGNAL",
-  "price": 744.39,
-  "time": "2026-10-23T09:30:22Z",
-  "reason": "None on 15m bar 09:15: close 744.39 vs VWAP --, RSI 62.7 — no setup"
+  "price": 745.47,
+  "time": "2026-10-23T09:45:21Z",
+  "reason": "None on 15m bar 09:30: close 745.47 vs VWAP --, RSI 66.8 — no setup"
  },
  "confidence": null,
  "confidence_basis": null,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T09:32:50Z",
-  "equity": 5031.59,
-  "pnl": 31.59,
+  "updated_at": "2026-10-23T09:47:56Z",
+  "equity": 5033.7,
+  "pnl": 33.7,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.52,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T01:32:40Z",
-    5037.26
-   ],
-   [
-    "2026-10-23T01:37:45Z",
-    5043.82
-   ],
-   [
-    "2026-10-23T01:42:49Z",
-    5036.49
-   ],
    [
     "2026-10-23T01:47:51Z",
     5026.56
@@ -731,6 +719,18 @@
    [
     "2026-10-23T09:31:28Z",
     5034.98
+   ],
+   [
+    "2026-10-23T09:36:28Z",
+    5032.62
+   ],
+   [
+    "2026-10-23T09:41:31Z",
+    5033.89
+   ],
+   [
+    "2026-10-23T09:46:34Z",
+    5033.27
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T09:45:14Z",
+   "type": "decision",
+   "title": "Skipped BTC signal",
+   "detail": "Valid signal not taken: total account margin would exceed 18% of account equity (5.82 > 5.81; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T09:30:16Z",
    "type": "decision",
@@ -1432,13 +1439,6 @@
    "type": "decision",
    "title": "Skipped kPEPE signal",
    "detail": "Valid signal not taken: another position is losing.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T11:01:42Z",
-   "type": "evolution",
-   "title": "Round #7: wick_min 0.4 -> 0.45 — NOT promoted",
-   "detail": "Trigger: schedule 2h. PF 0.784 -> 0.789; Sharpe -3.6 -> -3.49; expectancy -0.1322R -> -0.1297R; max DD 74.19% -> 72.72%; trades 2551 -> 2494 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD not worse; sample ok.",
    "version": "v1.1-swing"
   }
  ],
@@ -3195,7 +3195,11 @@
    32.6445
   ],
   [
-   "2026-10-23T09:32:13Z",
+   "2026-10-23T09:46:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T09:47:13Z",
    32.6445
   ]
  ],
