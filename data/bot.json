@@ -1,7 +1,7 @@
 {
- "updated_at": "2026-10-23T14:03:13Z",
- "published_at": "2026-10-23T14:04:12Z",
- "status": "RUNNING",
+ "updated_at": "2026-10-23T14:19:13Z",
+ "published_at": "2026-10-23T14:19:16Z",
+ "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
@@ -121,14 +121,14 @@
    "szDecimals": 3
   }
  },
- "equity": 33.0188,
- "day_pnl_pct": 1.15,
- "total_pct_vs_baseline": -12.95,
+ "equity": 31.7426,
+ "day_pnl_pct": -2.76,
+ "total_pct_vs_baseline": -16.31,
  "baseline": 37.93,
  "trades_today": 1,
  "open_risk_usd": 1.2401,
  "positions": {
-  "BNB": 195.5
+  "BNB": 194.23
  },
  "pending_orders": 0,
  "last_signal": {
@@ -144,11 +144,11 @@
   "enabled": true,
   "limit_pct": -3.0,
   "limit_usd": -0.98,
-  "pnl_today": 0.3743,
-  "triggered": false
+  "pnl_today": -0.9019,
+  "triggered": true
  },
  "kill_switch": false,
- "halted": null,
+ "halted": "daily -3%",
  "limits": {
   "risk_per_trade_pct": 5.0,
   "margin_cap_max_pct": 60.0,
@@ -340,9 +340,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T14:04:08Z",
-  "equity": 5019.08,
-  "pnl": 19.08,
+  "updated_at": "2026-10-23T14:19:13Z",
+  "equity": 5049.79,
+  "pnl": 49.79,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -350,18 +350,6 @@
   "funding": -6.74,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T06:04:58Z",
-    5023.78
-   ],
-   [
-    "2026-10-23T06:10:00Z",
-    5020.63
-   ],
-   [
-    "2026-10-23T06:15:03Z",
-    5020.02
-   ],
    [
     "2026-10-23T06:20:05Z",
     5018.52
@@ -733,6 +721,18 @@
    [
     "2026-10-23T14:03:30Z",
     5017.36
+   ],
+   [
+    "2026-10-23T14:08:31Z",
+    5022.69
+   ],
+   [
+    "2026-10-23T14:13:33Z",
+    5036.33
+   ],
+   [
+    "2026-10-23T14:18:34Z",
+    5044.17
    ]
   ]
  },
@@ -743,6 +743,27 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T14:17:13Z",
+   "type": "risk",
+   "title": "Daily stop -3% hit",
+   "detail": "No new entries until the next UTC day.",
+   "version": null
+  },
+  {
+   "ts_utc": "2026-10-23T14:15:17Z",
+   "type": "decision",
+   "title": "Skipped HYPE signal",
+   "detail": "Valid signal not taken: notional 0.00 < $10.",
+   "version": "v1.2-swing"
+  },
+  {
+   "ts_utc": "2026-10-23T14:15:14Z",
+   "type": "decision",
+   "title": "Skipped BTC signal",
+   "detail": "Valid signal not taken: notional 0.82 < $10.",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T13:30:28Z",
    "type": "trade",
@@ -1421,32 +1442,11 @@
    "title": "Live bot restarted for HST coexistence; open positions kept",
    "detail": "Restarted 15:29 UTC with BTC long, ETH short and kPEPE long open. State reloaded; exchange orders and positions identical before and after restart (5 orders: BTC stop + TP1, ETH stop + TP1, kPEPE breakeven stop moved by the old process at 15:29 UTC as normal management). Dry-run test with a fake isolated DOGE position and HST orders (DOGE, ARB, and one on BTC): none were touched in normal, own kill-switch and account -20% scenarios.",
    "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T15:29:12Z",
-   "type": "trade",
-   "title": "kPEPE stop moved to breakeven",
-   "detail": "Price reached +1R (mark 0.0041789999999999996).",
-   "version": null
-  },
-  {
-   "ts_utc": "2026-10-19T15:14:34Z",
-   "type": "evolution",
-   "title": "Round #9: atrp_min 0.002 -> 0.0025 — NOT promoted",
-   "detail": "Trigger: schedule 2h. PF 0.783 -> 0.774; Sharpe -3.63 -> -3.82; expectancy -0.133R -> -0.1389R; max DD 74.37% -> 75.72%; trades 2558 -> 2557 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T15:12:50Z",
-   "type": "system",
-   "title": "Live bot started (v1.1-swing)",
-   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
-   "version": "v1.1-swing"
   }
  ],
  "version": "v1.2-swing",
- "margin_used": 19.5502,
- "upnl": 0.4646,
+ "margin_used": 19.4226,
+ "upnl": -0.8117,
  "margin_cap_pct": 10.0,
  "session_utc": [
   0,
@@ -1469,18 +1469,18 @@
    "tp1_done": false,
    "mode": "partial",
    "opened_at": "2026-10-23T13:30:28Z",
-   "notional": 195.5,
+   "notional": 194.23,
    "version": "v1.2-swing"
   }
  },
  "pnl": {
-  "today_usd": 0.3743,
-  "today_pct": 1.15,
-  "d7_usd": -4.9087,
-  "d7_pct": -12.94,
+  "today_usd": -0.9019,
+  "today_pct": -2.76,
+  "d7_usd": -6.1849,
+  "d7_pct": -16.31,
   "d7_since": "2026-10-18T13:49:19Z",
-  "total_usd": -4.9112,
-  "total_pct": -12.95,
+  "total_usd": -6.1874,
+  "total_pct": -16.31,
   "trades_today": 0,
   "trades_7d": 13,
   "wins_7d": 2,
@@ -3282,26 +3282,26 @@
    32.695
   ],
   [
-   "2026-10-23T14:01:13Z",
-   32.9405
+   "2026-10-23T14:16:13Z",
+   32.1993
   ],
   [
-   "2026-10-23T14:03:13Z",
-   33.0188
+   "2026-10-23T14:19:13Z",
+   31.7426
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
-  "equity": 33.0188,
-  "day_pnl_pct": 1.15,
-  "total_pct_vs_baseline": -12.95,
+  "equity": 31.7426,
+  "day_pnl_pct": -2.76,
+  "total_pct_vs_baseline": -16.31,
   "realized": -5.3403,
   "funding": -0.00091,
-  "upnl": 0.4646,
+  "upnl": -0.8117,
   "fills": 31,
-  "margin_used": 19.5502,
+  "margin_used": 19.4226,
   "positions": {
-   "BNB": 195.5
+   "BNB": 194.23
   },
   "coins": [
    "BTC",
@@ -3314,11 +3314,11 @@
   ]
  },
  "account": {
-  "equity": 33.0189,
-  "total_pct_vs_baseline": -12.95,
-  "free_equity": 33.0189,
-  "sizing_equity": 33.0188,
-  "margin_used_total": 19.5502,
+  "equity": 31.7426,
+  "total_pct_vs_baseline": -16.31,
+  "free_equity": 31.7426,
+  "sizing_equity": 31.7426,
+  "margin_used_total": 19.4226,
   "external_margin_used": 0,
   "shared_with": "HST (other coins, isolated margin, cloid 0x485354)"
  },
