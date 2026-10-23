@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-22T23:45:13Z",
- "published_at": "2026-10-22T23:45:15Z",
+ "updated_at": "2026-10-23T00:00:13Z",
+ "published_at": "2026-10-23T00:00:19Z",
  "status": "HALTED",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -122,10 +122,10 @@
   }
  },
  "equity": 32.6445,
- "day_pnl_pct": -4.12,
+ "day_pnl_pct": 0.0,
  "total_pct_vs_baseline": -13.93,
  "baseline": 37.93,
- "trades_today": 1,
+ "trades_today": 0,
  "open_risk_usd": 0,
  "positions": {},
  "pending_orders": 0,
@@ -338,28 +338,16 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-22T23:45:13Z",
-  "equity": 5038.01,
-  "pnl": 38.01,
+  "updated_at": "2026-10-23T00:00:17Z",
+  "equity": 5037.28,
+  "pnl": 37.28,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
   "fees": 37.41,
-  "funding": -6.1,
+  "funding": -6.14,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-22T15:42:20Z",
-    5026.22
-   ],
-   [
-    "2026-10-22T15:47:22Z",
-    5032.36
-   ],
-   [
-    "2026-10-22T15:52:24Z",
-    5024.3
-   ],
    [
     "2026-10-22T15:57:29Z",
     5010.9
@@ -731,6 +719,18 @@
    [
     "2026-10-22T23:41:42Z",
     5039.2
+   ],
+   [
+    "2026-10-22T23:46:46Z",
+    5037.2
+   ],
+   [
+    "2026-10-22T23:51:47Z",
+    5036.43
+   ],
+   [
+    "2026-10-22T23:56:48Z",
+    5035.84
    ]
   ]
  },
@@ -1462,7 +1462,7 @@
   "d7_since": "2026-10-18T13:49:19Z",
   "total_usd": -5.2855,
   "total_pct": -13.93,
-  "trades_today": 1,
+  "trades_today": 0,
   "trades_7d": 13,
   "wins_7d": 2,
   "closed_total": 13,
@@ -3035,14 +3035,18 @@
    32.6445
   ],
   [
-   "2026-10-22T23:45:13Z",
+   "2026-10-22T23:46:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T00:00:13Z",
    32.6445
   ]
  ],
  "equity_basis": "own (our coins only: anchor + our realized PnL - fees + funding + uPnL)",
  "bot_stats": {
   "equity": 32.6445,
-  "day_pnl_pct": -4.12,
+  "day_pnl_pct": 0.0,
   "total_pct_vs_baseline": -13.93,
   "realized": -5.2526,
   "funding": 0.00154,
