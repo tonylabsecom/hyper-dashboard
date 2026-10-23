@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T12:18:13Z",
- "published_at": "2026-10-23T12:18:41Z",
+ "updated_at": "2026-10-23T12:33:13Z",
+ "published_at": "2026-10-23T12:33:45Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -132,9 +132,9 @@
  "last_signal": {
   "coin": "BNB",
   "side": "NO SIGNAL",
-  "price": 746.37,
-  "time": "2026-10-23T12:15:22Z",
-  "reason": "None on 15m bar 12:00: close 746.37 vs VWAP --, RSI 57.4 — no setup"
+  "price": 746.68,
+  "time": "2026-10-23T12:30:20Z",
+  "reason": "None on 15m bar 12:15: close 746.68 vs VWAP --, RSI 58.5 — no setup"
  },
  "confidence": null,
  "confidence_basis": null,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T12:18:40Z",
-  "equity": 5031.53,
-  "pnl": 31.53,
+  "updated_at": "2026-10-23T12:33:41Z",
+  "equity": 5027.14,
+  "pnl": 27.14,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.65,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T04:19:16Z",
-    5024.44
-   ],
-   [
-    "2026-10-23T04:24:22Z",
-    5022.64
-   ],
-   [
-    "2026-10-23T04:29:23Z",
-    5026.98
-   ],
    [
     "2026-10-23T04:34:25Z",
     5027.92
@@ -731,6 +719,18 @@
    [
     "2026-10-23T12:17:44Z",
     5039.33
+   ],
+   [
+    "2026-10-23T12:22:48Z",
+    5032.61
+   ],
+   [
+    "2026-10-23T12:27:50Z",
+    5032.43
+   ],
+   [
+    "2026-10-23T12:32:51Z",
+    5027.17
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T12:30:15Z",
+   "type": "decision",
+   "title": "Skipped ETH signal",
+   "detail": "Valid signal not taken: total account margin would exceed 28% of account equity (9.32 > 9.30; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T12:15:15Z",
    "type": "decision",
@@ -1433,13 +1440,6 @@
    "title": "Opened ETH",
    "detail": "Entry 2407.9, qty 0.0109, stop 2423.0, risk $0.1646, exit mode partial.",
    "version": null
-  },
-  {
-   "ts_utc": "2026-10-19T14:38:03Z",
-   "type": "system",
-   "title": "Live bot started (v1.1-swing)",
-   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
-   "version": "v1.1-swing"
   }
  ],
  "version": "v1.2-swing",
@@ -3239,7 +3239,11 @@
    32.6445
   ],
   [
-   "2026-10-23T12:18:13Z",
+   "2026-10-23T12:31:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T12:33:13Z",
    32.6445
   ]
  ],
