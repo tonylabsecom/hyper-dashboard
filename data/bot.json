@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T08:17:13Z",
- "published_at": "2026-10-23T08:17:33Z",
+ "updated_at": "2026-10-23T08:32:13Z",
+ "published_at": "2026-10-23T08:32:37Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -132,9 +132,9 @@
  "last_signal": {
   "coin": "BNB",
   "side": "NO SIGNAL",
-  "price": 745.91,
-  "time": "2026-10-23T08:15:22Z",
-  "reason": "None on 15m bar 08:00: close 745.91 vs VWAP --, RSI 80.9 — no setup"
+  "price": 746.55,
+  "time": "2026-10-23T08:30:22Z",
+  "reason": "None on 15m bar 08:15: close 746.55 vs VWAP --, RSI 82.2 — no setup"
  },
  "confidence": null,
  "confidence_basis": null,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T08:17:28Z",
-  "equity": 5023.64,
-  "pnl": 23.64,
+  "updated_at": "2026-10-23T08:32:33Z",
+  "equity": 5025.16,
+  "pnl": 25.16,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.48,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-23T00:16:54Z",
-    5047.4
-   ],
-   [
-    "2026-10-23T00:21:58Z",
-    5045.66
-   ],
-   [
-    "2026-10-23T00:27:03Z",
-    5048.59
-   ],
    [
     "2026-10-23T00:32:04Z",
     5041.43
@@ -731,6 +719,18 @@
    [
     "2026-10-23T08:15:55Z",
     5025.73
+   ],
+   [
+    "2026-10-23T08:20:56Z",
+    5024.02
+   ],
+   [
+    "2026-10-23T08:25:58Z",
+    5025.34
+   ],
+   [
+    "2026-10-23T08:31:00Z",
+    5025.91
    ]
   ]
  },
@@ -3175,7 +3175,11 @@
    32.6445
   ],
   [
-   "2026-10-23T08:17:13Z",
+   "2026-10-23T08:31:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T08:32:13Z",
    32.6445
   ]
  ],
