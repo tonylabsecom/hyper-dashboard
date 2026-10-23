@@ -1,7 +1,7 @@
 {
- "updated_at": "2026-10-23T00:00:13Z",
- "published_at": "2026-10-23T00:00:19Z",
- "status": "HALTED",
+ "updated_at": "2026-10-23T00:15:13Z",
+ "published_at": "2026-10-23T00:15:24Z",
+ "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
  "evolution": {
@@ -141,12 +141,12 @@
  "daily_stop": {
   "enabled": true,
   "limit_pct": -3.0,
-  "limit_usd": -1.02,
-  "pnl_today": -1.4037,
-  "triggered": true
+  "limit_usd": -0.98,
+  "pnl_today": 0.0,
+  "triggered": false
  },
  "kill_switch": false,
- "halted": "daily -3%",
+ "halted": null,
  "limits": {
   "risk_per_trade_pct": 5.0,
   "margin_cap_max_pct": 60.0,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T00:00:17Z",
-  "equity": 5037.28,
-  "pnl": 37.28,
+  "updated_at": "2026-10-23T00:15:20Z",
+  "equity": 5045.28,
+  "pnl": 45.28,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.14,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-22T15:57:29Z",
-    5010.9
-   ],
-   [
-    "2026-10-22T16:02:29Z",
-    5014.03
-   ],
-   [
-    "2026-10-22T16:07:30Z",
-    5015.72
-   ],
    [
     "2026-10-22T16:12:33Z",
     5015.0
@@ -731,6 +719,18 @@
    [
     "2026-10-22T23:56:48Z",
     5035.84
+   ],
+   [
+    "2026-10-23T00:01:50Z",
+    5038.96
+   ],
+   [
+    "2026-10-23T00:06:52Z",
+    5040.89
+   ],
+   [
+    "2026-10-23T00:11:53Z",
+    5045.37
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T00:15:23Z",
+   "type": "decision",
+   "title": "Skipped BNB signal",
+   "detail": "Valid signal not taken: total account margin would exceed 60% of account equity (19.58 > 19.54; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-22T21:41:11Z",
    "type": "evolution",
@@ -1433,13 +1440,6 @@
    "title": "Warning: 24h trading is WORSE than session-limited in backtest",
    "detail": "24h adds about 1.7 trades/day but lowers PF (0.881 to 0.782) and expectancy (-0.071R to -0.133R), and raises max DD (46% to 74%). Applied anyway per owner override.",
    "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T02:50:06Z",
-   "type": "evolution",
-   "title": "Round 3 ran with the old 07-21 session",
-   "detail": "Round 3 (02:44 UTC, rsi_hi 60 to 62, not promoted) was scored before the daemon reloaded the 24h setting. The variant is un-marked as tested so it can be re-scored with 24h; the daemon was restarted at 02:51 UTC. Next round due 04:44 UTC.",
-   "version": "v1.1-swing"
   }
  ],
  "version": "v1.2-swing",
@@ -1455,8 +1455,8 @@
  "kill_level_usd": 30.344,
  "position_details": {},
  "pnl": {
-  "today_usd": -1.4037,
-  "today_pct": -4.12,
+  "today_usd": 0.0,
+  "today_pct": 0.0,
   "d7_usd": -5.283,
   "d7_pct": -13.93,
   "d7_since": "2026-10-18T13:49:19Z",
@@ -3039,7 +3039,11 @@
    32.6445
   ],
   [
-   "2026-10-23T00:00:13Z",
+   "2026-10-23T00:01:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T00:15:13Z",
    32.6445
   ]
  ],
