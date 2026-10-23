@@ -1,6 +1,6 @@
 {
- "updated_at": "2026-10-23T04:16:13Z",
- "published_at": "2026-10-23T04:16:28Z",
+ "updated_at": "2026-10-23T04:31:13Z",
+ "published_at": "2026-10-23T04:31:32Z",
  "status": "RUNNING",
  "mode": "LIVE",
  "strategy": "15M TREND-PULLBACK v1.2-swing · BTC/ETH/HYPE/SOL/kPEPE/ZEC/BNB · SELF-EVOLVING",
@@ -132,9 +132,9 @@
  "last_signal": {
   "coin": "BNB",
   "side": "NO SIGNAL",
-  "price": 738.77,
-  "time": "2026-10-23T04:15:23Z",
-  "reason": "None on 15m bar 04:00: close 738.77 vs VWAP --, RSI 70.4 — no setup"
+  "price": 739.37,
+  "time": "2026-10-23T04:30:23Z",
+  "reason": "None on 15m bar 04:15: close 739.37 vs VWAP --, RSI 72.1 — no setup"
  },
  "confidence": null,
  "confidence_basis": null,
@@ -338,9 +338,9 @@
   }
  },
  "paper_copy": {
-  "updated_at": "2026-10-23T04:16:27Z",
-  "equity": 5024.83,
-  "pnl": 24.83,
+  "updated_at": "2026-10-23T04:31:29Z",
+  "equity": 5025.93,
+  "pnl": 25.93,
   "sleeves": 3,
   "open_positions": 7,
   "ws_connected": true,
@@ -348,18 +348,6 @@
   "funding": -6.32,
   "started_at": "2026-10-18T15:42:33Z",
   "equity_curve": [
-   [
-    "2026-10-22T20:14:59Z",
-    5042.88
-   ],
-   [
-    "2026-10-22T20:19:59Z",
-    5054.78
-   ],
-   [
-    "2026-10-22T20:25:03Z",
-    5056.17
-   ],
    [
     "2026-10-22T20:30:04Z",
     5052.62
@@ -731,6 +719,18 @@
    [
     "2026-10-23T04:14:15Z",
     5023.8
+   ],
+   [
+    "2026-10-23T04:19:16Z",
+    5024.44
+   ],
+   [
+    "2026-10-23T04:24:22Z",
+    5022.64
+   ],
+   [
+    "2026-10-23T04:29:23Z",
+    5026.98
    ]
   ]
  },
@@ -741,6 +741,13 @@
   "Hard limits unchanged: risk <= 0.5%/trade, leverage <= 40x, SL always on, safety filters never loosened"
  ],
  "journal": [
+  {
+   "ts_utc": "2026-10-23T04:30:19Z",
+   "type": "decision",
+   "title": "Skipped SOL signal",
+   "detail": "Valid signal not taken: total account margin would exceed 35% of account equity (11.43 > 11.40; HST 0.00).",
+   "version": "v1.2-swing"
+  },
   {
    "ts_utc": "2026-10-23T02:00:17Z",
    "type": "decision",
@@ -1432,13 +1439,6 @@
    "type": "evolution",
    "title": "Round #4: vol_mult 1.0 -> 1.1 — NOT promoted",
    "detail": "Trigger: schedule 2h. PF 0.782 -> 0.759; Sharpe -3.64 -> -3.86; expectancy -0.1337R -> -0.1513R; max DD 74.4% -> 78.61%; trades 2556 -> 2489 (last 365d, fees incl., 7-coin portfolio: BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB). Reason: 0 metrics improved >= 8% (none); max DD WORSE; sample ok.",
-   "version": "v1.1-swing"
-  },
-  {
-   "ts_utc": "2026-10-19T03:34:26Z",
-   "type": "system",
-   "title": "Live bot started (v1.1-swing)",
-   "detail": "Coins BTC, ETH, HYPE, SOL, kPEPE, ZEC, BNB; mode LIVE.",
    "version": "v1.1-swing"
   }
  ],
@@ -3108,6 +3108,10 @@
   ],
   [
    "2026-10-23T04:16:13Z",
+   32.6445
+  ],
+  [
+   "2026-10-23T04:31:13Z",
    32.6445
   ]
  ],
